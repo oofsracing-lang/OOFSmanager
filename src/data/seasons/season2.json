@@ -1,7 +1,7 @@
 {
   "season": "Season 2",
   "currentRound": 7,
-  "totalRounds": 0,
+  "totalRounds": 8,
   "drivers": [
     {
       "id": 1,
@@ -4122,6 +4122,13 @@
       "track": "Fuji Speedway",
       "date": "2025-12-12",
       "status": "Completed"
+    },
+    {
+      "id": 8,
+      "name": "Round 8",
+      "track": "Spa",
+      "date": "2025-12-18",
+      "status": "Scheduled"
     }
   ],
   "penalties": {
