@@ -48,7 +48,9 @@ export const ChampionshipProvider = ({ children }) => {
     // When season changes, we need to load that season's penalties.
     useEffect(() => {
         const saved = localStorage.getItem(`srm_penalties_s${currentSeasonId}`);
-        setPenalties(saved ? JSON.parse(saved) : {});
+        // Fix: Fallback to baked-in data if localStorage is empty
+        const defaultData = seasons[currentSeasonId] || latestSeason;
+        setPenalties(saved ? JSON.parse(saved) : (defaultData.penalties || {}));
     }, [currentSeasonId]);
 
     // Save penalties when they change
@@ -74,7 +76,9 @@ export const ChampionshipProvider = ({ children }) => {
     useEffect(() => {
         const key = `srm_manual_positions_s${currentSeasonId}`;
         const saved = localStorage.getItem(key);
-        setManualPositions(saved ? JSON.parse(saved) : {});
+        // Fix: Fallback to baked-in data if localStorage is empty
+        const defaultData = seasons[currentSeasonId] || latestSeason;
+        setManualPositions(saved ? JSON.parse(saved) : (defaultData.manualPositions || {}));
     }, [currentSeasonId]);
 
     // Save manual positions when they change
