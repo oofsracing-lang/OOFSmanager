@@ -1,7 +1,7 @@
 {
   "season": "Season 2",
-  "currentRound": 5,
-  "totalRounds": 8,
+  "currentRound": 7,
+  "totalRounds": 0,
   "drivers": [
     {
       "id": 1,
@@ -13,53 +13,101 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 34,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 7,
+          "classPosition": 7,
+          "laps": 23,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 23
+          "bestLap": 111.894,
+          "status": "None",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 41,
-          "attendance": "Raced",
-          "ballastChange": 0,
+          "position": 4,
+          "classPosition": 4,
+          "laps": 25,
           "finishTime": 2786.3175,
-          "finishTimeFormatted": "46:26.318",
-          "timePenalty": 0,
-          "laps": 25
+          "bestLap": 105.2269,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 41,
-          "attendance": "Raced",
-          "ballastChange": 0,
+          "position": 4,
+          "classPosition": 4,
+          "laps": 26,
           "finishTime": 2740.7976,
-          "finishTimeFormatted": "45:40.798",
-          "timePenalty": 0,
-          "laps": 26
+          "bestLap": 100.9319,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 44,
-          "attendance": "Raced",
-          "ballastChange": 5,
+          "position": 3,
+          "classPosition": 3,
+          "laps": 12,
           "finishTime": 2751.9176,
-          "finishTimeFormatted": "45:51.918",
-          "timePenalty": 0,
-          "laps": 12
+          "bestLap": 216.4844,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 50,
-          "attendance": "Raced",
-          "ballastChange": 15,
+          "position": 1,
+          "classPosition": 1,
+          "laps": 21,
           "finishTime": 2703.5575,
-          "finishTimeFormatted": "45:03.557",
-          "timePenalty": 0,
-          "laps": 21
+          "bestLap": 120.1188,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 3,
+          "classPosition": 3,
+          "laps": 24,
+          "finishTime": 2803.3976,
+          "bestLap": 111.5632,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 10,
+          "classPosition": 10,
+          "laps": 25,
+          "finishTime": 2556.0376,
+          "bestLap": 92.9202,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -73,53 +121,101 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 47,
-          "attendance": "Raced",
-          "ballastChange": 10,
+          "position": 2,
+          "classPosition": 2,
+          "laps": 24,
           "finishTime": 2808.9976,
-          "finishTimeFormatted": "46:48.998",
-          "timePenalty": 0,
-          "laps": 24
+          "bestLap": 110.9391,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 38,
-          "attendance": "Raced",
-          "ballastChange": -5,
+          "position": 5,
+          "classPosition": 5,
+          "laps": 25,
           "finishTime": 2793.8175,
-          "finishTimeFormatted": "46:33.818",
-          "timePenalty": 0,
-          "laps": 25
+          "bestLap": 105.1265,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 35,
-          "attendance": "Raced",
-          "ballastChange": -10,
+          "position": 6,
+          "classPosition": 6,
+          "laps": 25,
           "finishTime": 2728.0974,
-          "finishTimeFormatted": "45:28.097",
-          "timePenalty": 0,
-          "laps": 25
+          "bestLap": 99.319,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 47,
-          "attendance": "Raced",
-          "ballastChange": 10,
+          "position": 2,
+          "classPosition": 2,
+          "laps": 12,
           "finishTime": 2751.2775,
-          "finishTimeFormatted": "45:51.278",
-          "timePenalty": 0,
-          "laps": 12
+          "bestLap": 214.9528,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 33,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 23,
+          "classPosition": 8,
+          "laps": 6,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 6
+          "bestLap": 116.9768,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 4,
+          "classPosition": 4,
+          "laps": 24,
+          "finishTime": 2806.1176,
+          "bestLap": 110.1042,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 4,
+          "classPosition": 4,
+          "laps": 26,
+          "finishTime": 2500.8975,
+          "bestLap": 91.3855,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -133,49 +229,87 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 50,
-          "attendance": "Raced",
-          "ballastChange": 15,
+          "position": 1,
+          "classPosition": 1,
+          "laps": 24,
           "finishTime": 2792.7175,
-          "finishTimeFormatted": "46:32.718",
-          "timePenalty": 0,
-          "laps": 24
+          "bestLap": 110.3818,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 50,
-          "attendance": "Raced",
-          "ballastChange": 15,
+          "position": 1,
+          "classPosition": 1,
+          "laps": 25,
           "finishTime": 2724.2574,
-          "finishTimeFormatted": "45:24.257",
-          "timePenalty": 0,
-          "laps": 25
+          "bestLap": 103.4618,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 47,
-          "attendance": "Raced",
-          "ballastChange": 10,
+          "position": 2,
+          "classPosition": 2,
+          "laps": 26,
           "finishTime": 2702.3774,
-          "finishTimeFormatted": "45:02.377",
-          "timePenalty": 0,
-          "laps": 26
+          "bestLap": 99.1689,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 50,
-          "attendance": "Raced",
-          "ballastChange": 15,
+          "position": 1,
+          "classPosition": 1,
+          "laps": 12,
           "finishTime": 2715.4374,
-          "finishTimeFormatted": "45:15.437",
-          "timePenalty": 0,
-          "laps": 12
+          "bestLap": 213.9536,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
-          "raceId": 5,
+          "raceId": 6,
+          "position": 2,
+          "classPosition": 2,
+          "laps": 24,
+          "finishTime": 2763.2975,
+          "bestLap": 109.6787,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 1,
+          "classPosition": 1,
+          "laps": 26,
+          "finishTime": 2483.9175,
+          "bestLap": 91.4938,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -189,53 +323,101 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 41,
-          "attendance": "Raced",
-          "ballastChange": 0,
+          "position": 4,
+          "classPosition": 4,
+          "laps": 24,
           "finishTime": 2866.5574,
-          "finishTimeFormatted": "47:46.557",
-          "timePenalty": 0,
-          "laps": 24
+          "bestLap": 112.5042,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 34,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 7,
+          "classPosition": 7,
+          "laps": 25,
           "finishTime": 2808.9176,
-          "finishTimeFormatted": "46:48.918",
-          "timePenalty": 0,
-          "laps": 25
+          "bestLap": 106.7832,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 34,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 7,
+          "classPosition": 7,
+          "laps": 25,
           "finishTime": 2741.9575,
-          "finishTimeFormatted": "45:41.958",
-          "timePenalty": 0,
-          "laps": 25
+          "bestLap": 101.4239,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 38,
-          "attendance": "Raced",
-          "ballastChange": -5,
+          "position": 5,
+          "classPosition": 5,
+          "laps": 12,
           "finishTime": 2799.0575,
-          "finishTimeFormatted": "46:39.057",
-          "timePenalty": 0,
-          "laps": 12
+          "bestLap": 219.0258,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 34,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 22,
+          "classPosition": 7,
+          "laps": 12,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 12
+          "bestLap": 118.6205,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 6,
+          "classPosition": 6,
+          "laps": 24,
+          "finishTime": 2847.4176,
+          "bestLap": 111.5508,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 6,
+          "classPosition": 6,
+          "laps": 26,
+          "finishTime": 2534.5176,
+          "bestLap": 93.1519,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -249,53 +431,87 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 44,
-          "attendance": "Raced",
-          "ballastChange": 5,
+          "position": 3,
+          "classPosition": 3,
+          "laps": 24,
           "finishTime": 2846.9175,
-          "finishTimeFormatted": "47:26.918",
-          "timePenalty": 0,
-          "laps": 24
+          "bestLap": 112.2902,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 35,
-          "attendance": "Raced",
-          "ballastChange": -10,
+          "position": 6,
+          "classPosition": 6,
+          "laps": 25,
           "finishTime": 2795.7975,
-          "finishTimeFormatted": "46:35.798",
-          "timePenalty": 0,
-          "laps": 25
+          "bestLap": 105.1988,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 33,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 8,
+          "classPosition": 8,
+          "laps": 25,
           "finishTime": 2758.2175,
-          "finishTimeFormatted": "45:58.218",
-          "timePenalty": 0,
-          "laps": 25
+          "bestLap": 99.7004,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 33,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 8,
+          "classPosition": 8,
+          "laps": 12,
           "finishTime": 2856.5375,
-          "finishTimeFormatted": "47:36.537",
-          "timePenalty": 0,
-          "laps": 12
+          "bestLap": 216.0088,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 35,
-          "attendance": "Raced",
-          "ballastChange": -10,
+          "position": 21,
+          "classPosition": 6,
+          "laps": 18,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 18
+          "bestLap": 117.7408,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 8,
+          "classPosition": 8,
+          "laps": 26,
+          "finishTime": 2578.8775,
+          "bestLap": 93.3928,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -309,53 +525,73 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 35,
-          "attendance": "Raced",
-          "ballastChange": -10,
+          "position": 6,
+          "classPosition": 6,
+          "laps": 24,
           "finishTime": 2899.2776,
-          "finishTimeFormatted": "48:19.278",
-          "timePenalty": 0,
-          "laps": 24
+          "bestLap": 112.7141,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 32,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 9,
+          "classPosition": 9,
+          "laps": 23,
           "finishTime": 2727.6576,
-          "finishTimeFormatted": "45:27.658",
-          "timePenalty": 10,
-          "laps": 23
+          "bestLap": 105.4622,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 38,
-          "attendance": "Raced",
-          "ballastChange": -5,
+          "position": 5,
+          "classPosition": 5,
+          "laps": 26,
           "finishTime": 2749.8933,
-          "finishTimeFormatted": "45:49.893",
-          "timePenalty": 0,
-          "laps": 26
+          "bestLap": 100.2974,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 30,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 28,
+          "classPosition": 11,
+          "laps": 7,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 7
+          "bestLap": 215.3032,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 41,
-          "attendance": "Raced",
-          "ballastChange": 0,
+          "position": 4,
+          "classPosition": 4,
+          "laps": 21,
           "finishTime": 2769.1031,
-          "finishTimeFormatted": "46:09.103",
-          "timePenalty": 0,
-          "laps": 21
+          "bestLap": 117.1549,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -369,53 +605,100 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 32,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 9,
+          "classPosition": 9,
+          "laps": 23,
           "finishTime": 2832.5774,
-          "finishTimeFormatted": "47:12.577",
-          "timePenalty": 0,
-          "laps": 23
+          "bestLap": 112.3133,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 31,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 11,
+          "classPosition": 11,
+          "laps": 23,
           "finishTime": 2754.8375,
-          "finishTimeFormatted": "45:54.838",
-          "timePenalty": 0,
-          "laps": 23
+          "bestLap": 106.0066,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 30,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 34,
+          "classPosition": 11,
+          "laps": 1,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 1
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 35,
-          "attendance": "Raced",
-          "ballastChange": -10,
+          "position": 6,
+          "classPosition": 6,
+          "laps": 12,
           "finishTime": 2808.4975,
-          "finishTimeFormatted": "46:48.497",
-          "timePenalty": 0,
-          "laps": 12
+          "bestLap": 217.8236,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 47,
-          "attendance": "Raced",
-          "ballastChange": 10,
+          "position": 2,
+          "classPosition": 2,
+          "laps": 21,
           "finishTime": 2736.7574,
-          "finishTimeFormatted": "45:36.757",
-          "timePenalty": 0,
-          "laps": 21
+          "bestLap": 117.3215,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 34,
+          "classPosition": 10,
+          "laps": 6,
+          "finishTime": null,
+          "bestLap": 111.4827,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 32,
+          "classPosition": 12,
+          "laps": 5,
+          "finishTime": null,
+          "bestLap": 93.518,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -428,50 +711,74 @@
       "team": "OOFS Racing",
       "raceResults": [
         {
-          "raceId": 1,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
           "raceId": 2,
-          "points": 47,
-          "attendance": "Raced",
-          "ballastChange": 10,
+          "position": 2,
+          "classPosition": 2,
+          "laps": 25,
           "finishTime": 2737.3976,
-          "finishTimeFormatted": "45:37.398",
-          "timePenalty": 0,
-          "laps": 25
+          "bestLap": 103.8331,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 50,
-          "attendance": "Raced",
-          "ballastChange": 15,
+          "position": 1,
+          "classPosition": 1,
+          "laps": 26,
           "finishTime": 2702.0376,
-          "finishTimeFormatted": "45:02.038",
-          "timePenalty": 0,
-          "laps": 26
+          "bestLap": 98.8267,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 29,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 29,
+          "classPosition": 12,
+          "laps": 5,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 5
+          "bestLap": 215.7885,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 38,
-          "attendance": "Raced",
-          "ballastChange": -5,
+          "position": 5,
+          "classPosition": 5,
+          "laps": 21,
           "finishTime": 2789.0175,
-          "finishTimeFormatted": "46:29.017",
-          "timePenalty": 0,
-          "laps": 21
+          "bestLap": 116.3887,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 3,
+          "classPosition": 3,
+          "laps": 26,
+          "finishTime": 2489.4375,
+          "bestLap": 91.1274,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -485,49 +792,87 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 33,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 8,
+          "classPosition": 8,
+          "laps": 23,
           "finishTime": 2796.1575,
-          "finishTimeFormatted": "46:36.157",
-          "timePenalty": 0,
-          "laps": 23
+          "bestLap": 115.0127,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 30,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 10,
+          "classPosition": 10,
+          "laps": 23,
           "finishTime": 2740.4774,
-          "finishTimeFormatted": "45:40.477",
-          "timePenalty": 60,
-          "laps": 23
+          "bestLap": 107.9587,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 31,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 10,
+          "classPosition": 10,
+          "laps": 24,
           "finishTime": 2761.9775,
-          "finishTimeFormatted": "46:01.977",
-          "timePenalty": 0,
-          "laps": 24
+          "bestLap": 102.3456,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 31,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 10,
+          "classPosition": 10,
+          "laps": 12,
           "finishTime": 2944.6774,
-          "finishTimeFormatted": "49:04.677",
-          "timePenalty": 0,
-          "laps": 12
+          "bestLap": 220.8992,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
-          "raceId": 5,
+          "raceId": 6,
+          "position": 7,
+          "classPosition": 7,
+          "laps": 24,
+          "finishTime": 2873.7975,
+          "bestLap": 113.5728,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 7,
+          "classPosition": 7,
+          "laps": 26,
+          "finishTime": 2562.5974,
+          "bestLap": 93.4639,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -541,49 +886,86 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 29,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 31,
+          "classPosition": 12,
+          "laps": 20,
           "finishTime": 2888.1174,
-          "finishTimeFormatted": "48:08.117",
-          "timePenalty": 0,
-          "laps": 20
-        },
-        {
-          "raceId": 2,
+          "bestLap": 115.526,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 32,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 9,
+          "classPosition": 9,
+          "laps": 25,
           "finishTime": 2799.9575,
-          "finishTimeFormatted": "46:39.958",
-          "timePenalty": 0,
-          "laps": 25
+          "bestLap": 101.5722,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 32,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 9,
+          "classPosition": 9,
+          "laps": 12,
           "finishTime": 2874.3576,
-          "finishTimeFormatted": "47:54.358",
-          "timePenalty": 0,
-          "laps": 12
+          "bestLap": 221.9371,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 32,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 25,
+          "classPosition": 9,
+          "laps": 5,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 5
+          "bestLap": 122.0709,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 9,
+          "classPosition": 9,
+          "laps": 23,
+          "finishTime": 2861.3976,
+          "bestLap": 112.8452,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 35,
+          "classPosition": 13,
+          "laps": 0,
+          "finishTime": null,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -597,49 +979,72 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 36,
+          "classPosition": 14,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 33,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 8,
+          "classPosition": 8,
+          "laps": 24,
           "finishTime": 2802.7775,
-          "finishTimeFormatted": "46:42.778",
-          "timePenalty": 0,
-          "laps": 24
+          "bestLap": 104.7445,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 44,
-          "attendance": "Raced",
-          "ballastChange": 5,
+          "position": 3,
+          "classPosition": 3,
+          "laps": 26,
           "finishTime": 2726.8574,
-          "finishTimeFormatted": "45:26.857",
-          "timePenalty": 0,
-          "laps": 26
+          "bestLap": 99.3355,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 41,
-          "attendance": "Raced",
-          "ballastChange": 0,
+          "position": 4,
+          "classPosition": 4,
+          "laps": 12,
           "finishTime": 2762.0575,
-          "finishTimeFormatted": "46:02.057",
-          "timePenalty": 0,
-          "laps": 12
+          "bestLap": 215.002,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
-          "raceId": 5,
+          "raceId": 7,
+          "position": 5,
+          "classPosition": 5,
+          "laps": 26,
+          "finishTime": 2530.5774,
+          "bestLap": 91.665,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -653,49 +1058,86 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 38,
-          "attendance": "Raced",
-          "ballastChange": -5,
+          "position": 5,
+          "classPosition": 5,
+          "laps": 24,
           "finishTime": 2885.7576,
-          "finishTimeFormatted": "48:05.758",
-          "timePenalty": 0,
-          "laps": 24
+          "bestLap": 110.6582,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 29,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 30,
+          "classPosition": 12,
+          "laps": 23,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 23
+          "bestLap": 104.4677,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 37,
+          "classPosition": 13,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 34,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 7,
+          "classPosition": 7,
+          "laps": 12,
           "finishTime": 2809.5175,
-          "finishTimeFormatted": "46:49.517",
-          "timePenalty": 0,
-          "laps": 12
+          "bestLap": 214.6469,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
-          "raceId": 5,
+          "raceId": 6,
+          "position": 1,
+          "classPosition": 1,
+          "laps": 24,
+          "finishTime": 2762.9774,
+          "bestLap": 109.8062,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 2,
+          "classPosition": 2,
+          "laps": 26,
+          "finishTime": 2486.3574,
+          "bestLap": 91.1843,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -709,153 +1151,219 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 31,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 10,
+          "classPosition": 10,
+          "laps": 23,
           "finishTime": 2832.8374,
-          "finishTimeFormatted": "47:12.837",
-          "timePenalty": 60,
-          "laps": 23
+          "bestLap": 111.4166,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 44,
-          "attendance": "Raced",
-          "ballastChange": 5,
+          "position": 3,
+          "classPosition": 3,
+          "laps": 25,
           "finishTime": 2750.1376,
-          "finishTimeFormatted": "45:50.138",
-          "timePenalty": 0,
-          "laps": 25
+          "bestLap": 104.4458,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
-          "raceId": 3,
+          "raceId": 6,
+          "position": 8,
+          "classPosition": 8,
+          "laps": 23,
+          "finishTime": 2834.2975,
+          "bestLap": 110.6606,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
-          "raceId": 4,
+          "raceId": 7,
+          "position": 31,
+          "classPosition": 11,
+          "laps": 6,
+          "finishTime": null,
+          "bestLap": 92.4653,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 5,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
     {
       "id": 14,
       "name": "Abe Wozniak",
-      "class": "LMP2",
+      "class": "LMGT3",
       "totalPoints": 57,
       "currentBallast": 0,
       "team": "OOFS Racing",
       "raceResults": [
         {
           "raceId": 1,
-          "points": 30,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 11,
+          "classPosition": 11,
+          "laps": 22,
           "finishTime": 2811.3574,
-          "finishTimeFormatted": "46:51.357",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 111.1168,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 27,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 33,
+          "classPosition": 14,
+          "laps": 4,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 4
-        },
-        {
-          "raceId": 3,
+          "bestLap": 105.7296,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 0,
-          "attendance": "Raced",
-          "ballastChange": 0,
+          "position": 17,
+          "classPosition": 7,
+          "laps": 11,
           "finishTime": 2856.9774,
-          "finishTimeFormatted": "47:36.977",
-          "timePenalty": 0,
-          "laps": 11
+          "bestLap": 244.2869,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0,
+          "position": 24,
+          "classPosition": 16,
+          "laps": 6,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 6
+          "bestLap": 133.7678,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 12,
+          "classPosition": 3,
+          "laps": 22,
+          "finishTime": 2808.3175,
+          "bestLap": 123.0956,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 13,
+          "classPosition": 3,
+          "laps": 24,
+          "finishTime": 2562.1975,
+          "bestLap": 103.2922,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
     {
       "id": 15,
       "name": "Dave Paccagnini",
-      "class": "LMP2",
+      "class": "LMGT3",
       "totalPoints": 56,
       "currentBallast": 0,
       "team": "OOFS Racing",
       "raceResults": [
         {
           "raceId": 1,
-          "points": 28,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 33,
+          "classPosition": 13,
+          "laps": 16,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 16
+          "bestLap": 113.3355,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 28,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 31,
+          "classPosition": 13,
+          "laps": 9,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 9
+          "bestLap": 106.7917,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0,
+          "position": 14,
+          "classPosition": 4,
+          "laps": 24,
           "finishTime": 2808.4174,
-          "finishTimeFormatted": "46:48.417",
-          "timePenalty": 0,
-          "laps": 24
+          "bestLap": 112.5125,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0,
+          "position": 15,
+          "classPosition": 5,
+          "laps": 11,
           "finishTime": 2836.848,
-          "finishTimeFormatted": "47:16.848",
-          "timePenalty": 0,
-          "laps": 11
-        },
-        {
-          "raceId": 5,
+          "bestLap": 245.5052,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -868,38 +1376,32 @@
       "team": "OOFS Racing",
       "raceResults": [
         {
-          "raceId": 1,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 2,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 3,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 4,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
           "raceId": 5,
-          "points": 44,
-          "attendance": "Raced",
-          "ballastChange": 5,
+          "position": 3,
+          "classPosition": 3,
+          "laps": 21,
           "finishTime": 2737.3976,
-          "finishTimeFormatted": "45:37.398",
-          "timePenalty": 0,
-          "laps": 21
+          "bestLap": 116.1835,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 5,
+          "classPosition": 5,
+          "laps": 24,
+          "finishTime": 2830.5775,
+          "bestLap": 111.1213,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -912,38 +1414,45 @@
       "team": "OOFS Racing",
       "raceResults": [
         {
-          "raceId": 1,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 2,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 3,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 4,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
           "raceId": 5,
-          "points": 31,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 26,
+          "classPosition": 10,
+          "laps": 5,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 5
+          "bestLap": 122.8125,
+          "status": "DQ",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 36,
+          "classPosition": 11,
+          "laps": 0,
+          "finishTime": null,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 9,
+          "classPosition": 9,
+          "laps": 25,
+          "finishTime": 2505.7175,
+          "bestLap": 92.7849,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -956,42 +1465,30 @@
       "team": "OOFS Racing",
       "raceResults": [
         {
-          "raceId": 1,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 2,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
           "raceId": 3,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 36,
+          "classPosition": 12,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 36,
+          "classPosition": 13,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
-        },
-        {
-          "raceId": 5,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1004,38 +1501,17 @@
       "team": "OOFS Racing",
       "raceResults": [
         {
-          "raceId": 1,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 2,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 3,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 4,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
           "raceId": 5,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 29,
+          "classPosition": 11,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1049,53 +1525,101 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 50,
-          "attendance": "Raced",
-          "ballastChange": 15,
+          "position": 12,
+          "classPosition": 1,
+          "laps": 22,
           "finishTime": 2831.2776,
-          "finishTimeFormatted": "47:11.278",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 123.8194,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 50,
-          "attendance": "Raced",
-          "ballastChange": 15,
+          "position": 12,
+          "classPosition": 1,
+          "laps": 23,
           "finishTime": 2843.9974,
-          "finishTimeFormatted": "47:23.997",
-          "timePenalty": 0,
-          "laps": 23
+          "bestLap": 118.8872,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 50,
-          "attendance": "Raced",
-          "ballastChange": 15,
+          "position": 11,
+          "classPosition": 1,
+          "laps": 24,
           "finishTime": 2784.9775,
-          "finishTimeFormatted": "46:24.978",
-          "timePenalty": 0,
-          "laps": 24
+          "bestLap": 112.0329,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 44,
-          "attendance": "Raced",
-          "ballastChange": 5,
+          "position": 13,
+          "classPosition": 3,
+          "laps": 11,
           "finishTime": 2809.5975,
-          "finishTimeFormatted": "46:49.597",
-          "timePenalty": 0,
-          "laps": 11
+          "bestLap": 243.1968,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 50,
-          "attendance": "Raced",
-          "ballastChange": 15,
+          "position": 6,
+          "classPosition": 1,
+          "laps": 20,
           "finishTime": 2741.6974,
-          "finishTimeFormatted": "45:41.697",
-          "timePenalty": 0,
-          "laps": 20
+          "bestLap": 130.1527,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 10,
+          "classPosition": 1,
+          "laps": 22,
+          "finishTime": 2787.7032,
+          "bestLap": 122.1262,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 11,
+          "classPosition": 1,
+          "laps": 24,
+          "finishTime": 2547.9732,
+          "bestLap": 102.1016,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1109,53 +1633,101 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 47,
-          "attendance": "Raced",
-          "ballastChange": 10,
+          "position": 13,
+          "classPosition": 2,
+          "laps": 22,
           "finishTime": 2866.1375,
-          "finishTimeFormatted": "47:46.137",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 125.2478,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 47,
-          "attendance": "Raced",
-          "ballastChange": 10,
+          "position": 14,
+          "classPosition": 3,
+          "laps": 22,
           "finishTime": 2727.9176,
-          "finishTimeFormatted": "45:27.918",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 120.0425,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 47,
-          "attendance": "Raced",
-          "ballastChange": 10,
+          "position": 12,
+          "classPosition": 2,
+          "laps": 24,
           "finishTime": 2794.4174,
-          "finishTimeFormatted": "46:34.417",
-          "timePenalty": 0,
-          "laps": 24
+          "bestLap": 112.3448,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 19,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 34,
+          "classPosition": 22,
+          "laps": 1,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 15,
-          "laps": 1
+          "bestLap": 281.8829,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 41,
-          "attendance": "Raced",
-          "ballastChange": 0,
+          "position": 9,
+          "classPosition": 4,
+          "laps": 20,
           "finishTime": 2769.2574,
-          "finishTimeFormatted": "46:09.257",
-          "timePenalty": 0,
-          "laps": 20
+          "bestLap": 132.4355,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 11,
+          "classPosition": 2,
+          "laps": 22,
+          "finishTime": 2807.9974,
+          "bestLap": 124.0576,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 15,
+          "classPosition": 5,
+          "laps": 24,
+          "finishTime": 2585.9776,
+          "bestLap": 103.4731,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1169,53 +1741,101 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 22,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 30,
+          "classPosition": 19,
+          "laps": 20,
           "finishTime": 2824.7576,
-          "finishTimeFormatted": "47:04.758",
-          "timePenalty": 0,
-          "laps": 20
+          "bestLap": 124.9671,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 44,
-          "attendance": "Raced",
-          "ballastChange": 5,
+          "position": 15,
+          "classPosition": 4,
+          "laps": 22,
           "finishTime": 2739.7374,
-          "finishTimeFormatted": "45:39.737",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 119.7656,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 38,
-          "attendance": "Raced",
-          "ballastChange": -5,
+          "position": 15,
+          "classPosition": 5,
+          "laps": 24,
           "finishTime": 2815.0376,
-          "finishTimeFormatted": "46:55.038",
-          "timePenalty": 0,
-          "laps": 24
+          "bestLap": 113.1422,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 47,
-          "attendance": "Raced",
-          "ballastChange": 10,
+          "position": 12,
+          "classPosition": 2,
+          "laps": 11,
           "finishTime": 2807.5175,
-          "finishTimeFormatted": "46:47.517",
-          "timePenalty": 0,
-          "laps": 11
+          "bestLap": 243.9805,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 47,
-          "attendance": "Raced",
-          "ballastChange": 10,
+          "position": 7,
+          "classPosition": 2,
+          "laps": 20,
           "finishTime": 2762.0375,
-          "finishTimeFormatted": "46:02.037",
-          "timePenalty": 0,
-          "laps": 20
+          "bestLap": 132.0528,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 15,
+          "classPosition": 6,
+          "laps": 22,
+          "finishTime": 2840.5775,
+          "bestLap": 122.7325,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 12,
+          "classPosition": 2,
+          "laps": 24,
+          "finishTime": 2551.3574,
+          "bestLap": 102.9039,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1229,53 +1849,101 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 41,
-          "attendance": "Raced",
-          "ballastChange": 0,
+          "position": 15,
+          "classPosition": 4,
+          "laps": 22,
           "finishTime": 2872.3174,
-          "finishTimeFormatted": "47:52.317",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 125.3196,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 35,
-          "attendance": "Raced",
-          "ballastChange": -10,
+          "position": 18,
+          "classPosition": 7,
+          "laps": 22,
           "finishTime": 2768.7574,
-          "finishTimeFormatted": "46:08.757",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 120.3318,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 31,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 20,
+          "classPosition": 10,
+          "laps": 23,
           "finishTime": 2733.8574,
-          "finishTimeFormatted": "45:33.857",
-          "timePenalty": 0,
-          "laps": 23
+          "bestLap": 113.3069,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 35,
-          "attendance": "Raced",
-          "ballastChange": -10,
+          "position": 16,
+          "classPosition": 6,
+          "laps": 11,
           "finishTime": 2848.4975,
-          "finishTimeFormatted": "47:28.497",
-          "timePenalty": 0,
-          "laps": 11
+          "bestLap": 244.9177,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 34,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 12,
+          "classPosition": 7,
+          "laps": 20,
           "finishTime": 2801.2374,
-          "finishTimeFormatted": "46:41.237",
-          "timePenalty": 0,
-          "laps": 20
+          "bestLap": 134.1227,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 16,
+          "classPosition": 7,
+          "laps": 22,
+          "finishTime": 2841.9374,
+          "bestLap": 123.8317,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 22,
+          "classPosition": 12,
+          "laps": 23,
+          "finishTime": 2513.7776,
+          "bestLap": 103.8056,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1289,53 +1957,87 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 28,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 24,
+          "classPosition": 13,
+          "laps": 21,
           "finishTime": 2811.7974,
-          "finishTimeFormatted": "46:51.797",
-          "timePenalty": 0,
-          "laps": 21
+          "bestLap": 126.1144,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 38,
-          "attendance": "Raced",
-          "ballastChange": -5,
+          "position": 17,
+          "classPosition": 6,
+          "laps": 22,
           "finishTime": 2768.2975,
-          "finishTimeFormatted": "46:08.298",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 120.4302,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 30,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 22,
+          "classPosition": 12,
+          "laps": 23,
           "finishTime": 2736.2575,
-          "finishTimeFormatted": "45:36.258",
-          "timePenalty": 0,
-          "laps": 23
+          "bestLap": 112.9323,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 32,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 19,
+          "classPosition": 9,
+          "laps": 11,
           "finishTime": 2876.8576,
-          "finishTimeFormatted": "47:56.858",
-          "timePenalty": 0,
-          "laps": 11
+          "bestLap": 247.785,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 38,
-          "attendance": "Raced",
-          "ballastChange": -5,
+          "position": 10,
+          "classPosition": 5,
+          "laps": 20,
           "finishTime": 2785.6176,
-          "finishTimeFormatted": "46:25.618",
-          "timePenalty": 0,
-          "laps": 20
+          "bestLap": 132.7748,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 19,
+          "classPosition": 10,
+          "laps": 22,
+          "finishTime": 2845.3175,
+          "bestLap": 124.4832,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1349,53 +2051,101 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 44,
-          "attendance": "Raced",
-          "ballastChange": 5,
+          "position": 14,
+          "classPosition": 3,
+          "laps": 22,
           "finishTime": 2868.7776,
-          "finishTimeFormatted": "47:48.778",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 124.9617,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 33,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 20,
+          "classPosition": 9,
+          "laps": 22,
           "finishTime": 2789.4774,
-          "finishTimeFormatted": "46:29.477",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 121.2083,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 21,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 30,
+          "classPosition": 20,
+          "laps": 20,
           "finishTime": 2710.6775,
-          "finishTimeFormatted": "45:10.677",
-          "timePenalty": 0,
-          "laps": 20
+          "bestLap": 113.3955,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 21,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 32,
+          "classPosition": 20,
+          "laps": 2,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 15,
-          "laps": 2
+          "bestLap": 280.3602,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 44,
-          "attendance": "Raced",
-          "ballastChange": 5,
+          "position": 8,
+          "classPosition": 3,
+          "laps": 20,
           "finishTime": 2763.5175,
-          "finishTimeFormatted": "46:03.517",
-          "timePenalty": 0,
-          "laps": 20
+          "bestLap": 132.3982,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 32,
+          "classPosition": 23,
+          "laps": 12,
+          "finishTime": null,
+          "bestLap": 123.0718,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 34,
+          "classPosition": 22,
+          "laps": 1,
+          "finishTime": null,
+          "bestLap": 126.2535,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1409,53 +2159,101 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 33,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 19,
+          "classPosition": 8,
+          "laps": 22,
           "finishTime": 2888.0774,
-          "finishTimeFormatted": "48:08.077",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 125.9434,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 28,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 25,
+          "classPosition": 14,
+          "laps": 22,
           "finishTime": 2827.7775,
-          "finishTimeFormatted": "47:07.778",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 120.4285,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 28,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 23,
+          "classPosition": 13,
+          "laps": 23,
           "finishTime": 2764.9775,
-          "finishTimeFormatted": "46:04.977",
-          "timePenalty": 0,
-          "laps": 23
+          "bestLap": 112.8134,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 26,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 24,
+          "classPosition": 14,
+          "laps": 11,
           "finishTime": 2908.3576,
-          "finishTimeFormatted": "48:28.358",
-          "timePenalty": 15,
-          "laps": 11
+          "bestLap": 245.3379,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 35,
-          "attendance": "Raced",
-          "ballastChange": -10,
+          "position": 11,
+          "classPosition": 6,
+          "laps": 20,
           "finishTime": 2796.1376,
-          "finishTimeFormatted": "46:36.138",
-          "timePenalty": 0,
-          "laps": 20
+          "bestLap": 132.985,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 14,
+          "classPosition": 5,
+          "laps": 22,
+          "finishTime": 2840.4374,
+          "bestLap": 123.843,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 30,
+          "classPosition": 20,
+          "laps": 18,
+          "finishTime": null,
+          "bestLap": 103.7246,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1469,53 +2267,101 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 30,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 22,
+          "classPosition": 11,
+          "laps": 21,
           "finishTime": 2793.2776,
-          "finishTimeFormatted": "46:33.278",
-          "timePenalty": 0,
-          "laps": 21
+          "bestLap": 127.4333,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 31,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 22,
+          "classPosition": 11,
+          "laps": 22,
           "finishTime": 2815.6376,
-          "finishTimeFormatted": "46:55.638",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 121.8799,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 29,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 21,
+          "classPosition": 11,
+          "laps": 23,
           "finishTime": 2735.3376,
-          "finishTimeFormatted": "45:35.338",
-          "timePenalty": 15,
-          "laps": 23
+          "bestLap": 113.6625,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 29,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 22,
+          "classPosition": 12,
+          "laps": 11,
           "finishTime": 2894.4374,
-          "finishTimeFormatted": "48:14.437",
-          "timePenalty": 0,
-          "laps": 11
+          "bestLap": 247.1618,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 30,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 17,
+          "classPosition": 12,
+          "laps": 20,
           "finishTime": 2835.6376,
-          "finishTimeFormatted": "47:15.638",
-          "timePenalty": 0,
-          "laps": 20
+          "bestLap": 133.4113,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 25,
+          "classPosition": 16,
+          "laps": 22,
+          "finishTime": 2878.3375,
+          "bestLap": 124.7517,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 21,
+          "classPosition": 11,
+          "laps": 23,
+          "finishTime": 2502.4976,
+          "bestLap": 104.0679,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1529,53 +2375,101 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 34,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 18,
+          "classPosition": 7,
+          "laps": 22,
           "finishTime": 2887.0376,
-          "finishTimeFormatted": "48:07.038",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 125.631,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 29,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 24,
+          "classPosition": 13,
+          "laps": 22,
           "finishTime": 2827.1976,
-          "finishTimeFormatted": "47:07.198",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 120.0873,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 27,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 24,
+          "classPosition": 14,
+          "laps": 23,
           "finishTime": 2777.6374,
-          "finishTimeFormatted": "46:17.637",
-          "timePenalty": 0,
-          "laps": 23
+          "bestLap": 113.4442,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 22,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 31,
+          "classPosition": 19,
+          "laps": 3,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 3
+          "bestLap": 246.4944,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 27,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 19,
+          "classPosition": 14,
+          "laps": 19,
           "finishTime": 2756.7374,
-          "finishTimeFormatted": "45:56.737",
-          "timePenalty": 0,
-          "laps": 19
+          "bestLap": 135.8815,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 27,
+          "classPosition": 18,
+          "laps": 21,
+          "finishTime": 2776.6974,
+          "bestLap": 124.4272,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 29,
+          "classPosition": 19,
+          "laps": 21,
+          "finishTime": 2534.6575,
+          "bestLap": 103.3613,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1589,53 +2483,100 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 25,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 28,
+          "classPosition": 17,
+          "laps": 21,
           "finishTime": 2835.4175,
-          "finishTimeFormatted": "47:15.418",
-          "timePenalty": 0,
-          "laps": 21
+          "bestLap": 127.693,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 26,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 27,
+          "classPosition": 16,
+          "laps": 22,
           "finishTime": 2834.3175,
-          "finishTimeFormatted": "47:14.318",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 122.5537,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 26,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 25,
+          "classPosition": 15,
+          "laps": 23,
           "finishTime": 2800.9174,
-          "finishTimeFormatted": "46:40.917",
-          "timePenalty": 0,
-          "laps": 23
+          "bestLap": 114.3014,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 28,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 23,
+          "classPosition": 13,
+          "laps": 11,
           "finishTime": 2897.0175,
-          "finishTimeFormatted": "48:17.017",
-          "timePenalty": 0,
-          "laps": 11
+          "bestLap": 249.4992,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 32,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 14,
+          "classPosition": 9,
+          "laps": 20,
           "finishTime": 2825.7975,
-          "finishTimeFormatted": "47:05.798",
-          "timePenalty": 0,
-          "laps": 20
+          "bestLap": 133.3102,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 23,
+          "classPosition": 14,
+          "laps": 22,
+          "finishTime": 2862.4374,
+          "bestLap": 123.8539,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 36,
+          "classPosition": 23,
+          "laps": 0,
+          "finishTime": null,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1649,49 +2590,58 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 38,
-          "attendance": "Raced",
-          "ballastChange": -5,
+          "position": 16,
+          "classPosition": 5,
+          "laps": 22,
           "finishTime": 2874.7974,
-          "finishTimeFormatted": "47:54.797",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 125.7965,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 35,
+          "classPosition": 21,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 44,
-          "attendance": "Raced",
-          "ballastChange": 5,
+          "position": 13,
+          "classPosition": 3,
+          "laps": 24,
           "finishTime": 2795.0974,
-          "finishTimeFormatted": "46:35.097",
-          "timePenalty": 0,
-          "laps": 24
+          "bestLap": 112.0817,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 50,
-          "attendance": "Raced",
-          "ballastChange": 15,
+          "position": 11,
+          "classPosition": 1,
+          "laps": 11,
           "finishTime": 2804.5975,
-          "finishTimeFormatted": "46:44.597",
-          "timePenalty": 0,
-          "laps": 11
-        },
-        {
-          "raceId": 5,
+          "bestLap": 242.7117,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1705,49 +2655,87 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 21,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 32,
+          "classPosition": 20,
+          "laps": 20,
           "finishTime": 2888.2974,
-          "finishTimeFormatted": "48:08.297",
-          "timePenalty": 0,
-          "laps": 20
+          "bestLap": 125.0542,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 34,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 19,
+          "classPosition": 8,
+          "laps": 22,
           "finishTime": 2780.5174,
-          "finishTimeFormatted": "46:20.517",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 120.6753,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 35,
-          "attendance": "Raced",
-          "ballastChange": -10,
+          "position": 16,
+          "classPosition": 6,
+          "laps": 23,
           "finishTime": 2717.3774,
-          "finishTimeFormatted": "45:17.377",
-          "timePenalty": 0,
-          "laps": 23
+          "bestLap": 113.2327,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 41,
-          "attendance": "Raced",
-          "ballastChange": 0,
+          "position": 14,
+          "classPosition": 4,
+          "laps": 11,
           "finishTime": 2835.7975,
-          "finishTimeFormatted": "47:15.798",
-          "timePenalty": 0,
-          "laps": 11
+          "bestLap": 244.9536,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
-          "raceId": 5,
+          "raceId": 6,
+          "position": 18,
+          "classPosition": 9,
+          "laps": 22,
+          "finishTime": 2843.6776,
+          "bestLap": 123.8715,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 26,
+          "classPosition": 16,
+          "laps": 23,
+          "finishTime": 2570.7976,
+          "bestLap": 104.3302,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1761,49 +2749,87 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 23,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 29,
+          "classPosition": 18,
+          "laps": 21,
           "finishTime": 2903.5176,
-          "finishTimeFormatted": "48:23.518",
-          "timePenalty": 0,
-          "laps": 21
-        },
-        {
-          "raceId": 2,
+          "bestLap": 127.6454,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 34,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 17,
+          "classPosition": 7,
+          "laps": 23,
           "finishTime": 2723.5776,
-          "finishTimeFormatted": "45:23.578",
-          "timePenalty": 0,
-          "laps": 23
+          "bestLap": 113.2754,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 31,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 20,
+          "classPosition": 10,
+          "laps": 11,
           "finishTime": 2888.4176,
-          "finishTimeFormatted": "48:08.418",
-          "timePenalty": 0,
-          "laps": 11
+          "bestLap": 249.1602,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 28,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 18,
+          "classPosition": 13,
+          "laps": 19,
           "finishTime": 2709.8776,
-          "finishTimeFormatted": "45:09.878",
-          "timePenalty": 0,
-          "laps": 19
+          "bestLap": 135.6023,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 13,
+          "classPosition": 4,
+          "laps": 22,
+          "finishTime": 2837.9176,
+          "bestLap": 123.7083,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 16,
+          "classPosition": 6,
+          "laps": 24,
+          "finishTime": 2589.4175,
+          "bestLap": 104.1585,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1817,49 +2843,87 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 35,
-          "attendance": "Raced",
-          "ballastChange": -10,
+          "position": 17,
+          "classPosition": 6,
+          "laps": 22,
           "finishTime": 2876.3975,
-          "finishTimeFormatted": "47:56.398",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 125.3364,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 24,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 28,
+          "classPosition": 17,
+          "laps": 21,
           "finishTime": 2745.6376,
-          "finishTimeFormatted": "45:45.638",
-          "timePenalty": 0,
-          "laps": 21
+          "bestLap": 124.2832,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 22,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 29,
+          "classPosition": 19,
+          "laps": 22,
           "finishTime": 2759.2375,
-          "finishTimeFormatted": "45:59.238",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 113.1746,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 33,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 18,
+          "classPosition": 8,
+          "laps": 11,
           "finishTime": 2864.4774,
-          "finishTimeFormatted": "47:44.477",
-          "timePenalty": 0,
-          "laps": 11
+          "bestLap": 247.3033,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
-          "raceId": 5,
+          "raceId": 6,
+          "position": 26,
+          "classPosition": 17,
+          "laps": 22,
+          "finishTime": 2930.0975,
+          "bestLap": 124.1591,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 27,
+          "classPosition": 17,
+          "laps": 22,
+          "finishTime": 2565.2175,
+          "bestLap": 103.9805,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1873,49 +2937,87 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 29,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 23,
+          "classPosition": 12,
+          "laps": 21,
           "finishTime": 2799.2175,
-          "finishTimeFormatted": "46:39.218",
-          "timePenalty": 0,
-          "laps": 21
+          "bestLap": 126.7844,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 30,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 23,
+          "classPosition": 12,
+          "laps": 22,
           "finishTime": 2822.0975,
-          "finishTimeFormatted": "47:02.097",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 122.879,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 24,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 27,
+          "classPosition": 17,
+          "laps": 22,
           "finishTime": 2735.3574,
-          "finishTimeFormatted": "45:35.357",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 112.9241,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 27,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 25,
+          "classPosition": 15,
+          "laps": 11,
           "finishTime": 2919.1974,
-          "finishTimeFormatted": "48:39.197",
-          "timePenalty": 0,
-          "laps": 11
+          "bestLap": 246.5481,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
-          "raceId": 5,
+          "raceId": 6,
+          "position": 21,
+          "classPosition": 12,
+          "laps": 22,
+          "finishTime": 2858.5575,
+          "bestLap": 123.9023,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 20,
+          "classPosition": 10,
+          "laps": 23,
+          "finishTime": 2500.7576,
+          "bestLap": 104.0814,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1929,49 +3031,59 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 24,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 26,
+          "classPosition": 15,
+          "laps": 21,
           "finishTime": 2821.1575,
-          "finishTimeFormatted": "47:01.157",
-          "timePenalty": 15,
-          "laps": 21
+          "bestLap": 125.5471,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 32,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 21,
+          "classPosition": 10,
+          "laps": 22,
           "finishTime": 2790.7775,
-          "finishTimeFormatted": "46:30.778",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 121.5923,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 32,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 19,
+          "classPosition": 9,
+          "laps": 23,
           "finishTime": 2731.3574,
-          "finishTimeFormatted": "45:31.357",
-          "timePenalty": 0,
-          "laps": 23
+          "bestLap": 112.965,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 20,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 33,
+          "classPosition": 21,
+          "laps": 1,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 1
-        },
-        {
-          "raceId": 5,
+          "bestLap": 260.8661,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -1985,49 +3097,59 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 27,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 25,
+          "classPosition": 14,
+          "laps": 21,
           "finishTime": 2813.1775,
-          "finishTimeFormatted": "46:53.177",
-          "timePenalty": 0,
-          "laps": 21
+          "bestLap": 127.9541,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 27,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 26,
+          "classPosition": 15,
+          "laps": 22,
           "finishTime": 2833.1776,
-          "finishTimeFormatted": "47:13.178",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 122.774,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 18,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 33,
+          "classPosition": 23,
+          "laps": 4,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 4
+          "bestLap": 114.0087,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 25,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 26,
+          "classPosition": 16,
+          "laps": 11,
           "finishTime": 3040.8976,
-          "finishTimeFormatted": "50:40.898",
-          "timePenalty": 0,
-          "laps": 11
-        },
-        {
-          "raceId": 5,
+          "bestLap": 251.0422,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -2041,53 +3163,100 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 38,
+          "classPosition": 24,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 23,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 29,
+          "classPosition": 18,
+          "laps": 19,
           "finishTime": 2775.9574,
-          "finishTimeFormatted": "46:15.957",
-          "timePenalty": 0,
-          "laps": 19
+          "bestLap": 123.2778,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 20,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 31,
+          "classPosition": 21,
+          "laps": 20,
           "finishTime": 2743.1174,
-          "finishTimeFormatted": "45:43.117",
-          "timePenalty": 0,
-          "laps": 20
+          "bestLap": 114.3721,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 24,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 27,
+          "classPosition": 17,
+          "laps": 10,
           "finishTime": 2823.5375,
-          "finishTimeFormatted": "47:03.537",
-          "timePenalty": 0,
-          "laps": 10
+          "bestLap": 249.4963,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 29,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 16,
+          "classPosition": 11,
+          "laps": 20,
           "finishTime": 2831.7574,
-          "finishTimeFormatted": "47:11.757",
-          "timePenalty": 45,
-          "laps": 20
+          "bestLap": 133.8457,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 20,
+          "classPosition": 11,
+          "laps": 22,
+          "finishTime": 2847.0975,
+          "bestLap": 123.2771,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 17,
+          "classPosition": 7,
+          "laps": 24,
+          "finishTime": 2704.3174,
+          "bestLap": 103.006,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -2100,46 +3269,46 @@
       "team": "OOFS Racing",
       "raceResults": [
         {
-          "raceId": 1,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 2,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
           "raceId": 3,
-          "points": 25,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 26,
+          "classPosition": 16,
+          "laps": 22,
           "finishTime": 2704.9975,
-          "finishTimeFormatted": "45:04.997",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 113.1436,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 30,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 21,
+          "classPosition": 11,
+          "laps": 11,
           "finishTime": 2893.0975,
-          "finishTimeFormatted": "48:13.097",
-          "timePenalty": 0,
-          "laps": 11
+          "bestLap": 246.5298,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 33,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 13,
+          "classPosition": 8,
+          "laps": 20,
           "finishTime": 2802.7975,
-          "finishTimeFormatted": "46:42.798",
-          "timePenalty": 0,
-          "laps": 20
+          "bestLap": 132.8166,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -2153,53 +3322,99 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 31,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 21,
+          "classPosition": 10,
+          "laps": 22,
           "finishTime": 3027.7974,
-          "finishTimeFormatted": "50:27.797",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 126.1804,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 34,
+          "classPosition": 20,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 33,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 18,
+          "classPosition": 8,
+          "laps": 23,
           "finishTime": 2723.8574,
-          "finishTimeFormatted": "45:23.857",
-          "timePenalty": 0,
-          "laps": 23
+          "bestLap": 112.6031,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 23,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 30,
+          "classPosition": 18,
+          "laps": 4,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 4
+          "bestLap": 251.6888,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 27,
+          "classPosition": 17,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 33,
+          "classPosition": 24,
+          "laps": 8,
+          "finishTime": null,
+          "bestLap": 123.8044,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 18,
+          "classPosition": 8,
+          "laps": 24,
+          "finishTime": 2722.5974,
+          "bestLap": 103.3885,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -2210,54 +3425,7 @@
       "totalPoints": 79,
       "currentBallast": 0,
       "team": "OOFS Racing",
-      "raceResults": [
-        {
-          "raceId": 1,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0,
-          "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 16
-        },
-        {
-          "raceId": 2,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0,
-          "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 9
-        },
-        {
-          "raceId": 3,
-          "points": 41,
-          "attendance": "Raced",
-          "ballastChange": 0,
-          "finishTime": 2808.4174,
-          "finishTimeFormatted": "46:48.417",
-          "timePenalty": 0,
-          "laps": 24
-        },
-        {
-          "raceId": 4,
-          "points": 38,
-          "attendance": "Raced",
-          "ballastChange": -5,
-          "finishTime": 2836.848,
-          "finishTimeFormatted": "47:16.848",
-          "timePenalty": 0,
-          "laps": 11
-        },
-        {
-          "raceId": 5,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        }
-      ]
+      "raceResults": []
     },
     {
       "id": 41,
@@ -2266,54 +3434,7 @@
       "totalPoints": 59,
       "currentBallast": 0,
       "team": "OOFS Racing",
-      "raceResults": [
-        {
-          "raceId": 1,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0,
-          "finishTime": 2811.3574,
-          "finishTimeFormatted": "46:51.357",
-          "timePenalty": 0,
-          "laps": 22
-        },
-        {
-          "raceId": 2,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0,
-          "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 4
-        },
-        {
-          "raceId": 3,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 4,
-          "points": 34,
-          "attendance": "Raced",
-          "ballastChange": -15,
-          "finishTime": 2856.9774,
-          "finishTimeFormatted": "47:36.977",
-          "timePenalty": 0,
-          "laps": 11
-        },
-        {
-          "raceId": 5,
-          "points": 25,
-          "attendance": "Raced",
-          "ballastChange": -15,
-          "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 6
-        }
-      ]
+      "raceResults": []
     },
     {
       "id": 42,
@@ -2325,41 +3446,45 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 26,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 27,
+          "classPosition": 16,
+          "laps": 21,
           "finishTime": 2823.9776,
-          "finishTimeFormatted": "47:03.978",
-          "timePenalty": 0,
-          "laps": 21
-        },
-        {
-          "raceId": 2,
+          "bestLap": 126.8331,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 3,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 4,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 5,
-          "points": 31,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 15,
+          "classPosition": 10,
+          "laps": 20,
           "finishTime": 2831.5175,
-          "finishTimeFormatted": "47:11.517",
-          "timePenalty": 0,
-          "laps": 20
+          "bestLap": 136.1611,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 28,
+          "classPosition": 18,
+          "laps": 22,
+          "finishTime": 2590.3574,
+          "bestLap": 104.1614,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -2373,41 +3498,45 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 32,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 20,
+          "classPosition": 9,
+          "laps": 22,
           "finishTime": 2907.5652,
-          "finishTimeFormatted": "48:27.565",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 125.2195,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 2,
-          "points": 22,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 32,
+          "classPosition": 19,
+          "laps": 8,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 8
+          "bestLap": 120.5931,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
-          "raceId": 3,
+          "raceId": 6,
+          "position": 17,
+          "classPosition": 8,
+          "laps": 22,
+          "finishTime": 2842.4974,
+          "bestLap": 123.2404,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 4,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 5,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -2420,38 +3549,32 @@
       "team": "OOFS Racing",
       "raceResults": [
         {
-          "raceId": 1,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
           "raceId": 2,
-          "points": 41,
-          "attendance": "Raced",
-          "ballastChange": 0,
+          "position": 16,
+          "classPosition": 5,
+          "laps": 22,
           "finishTime": 2766.5575,
-          "finishTimeFormatted": "46:06.557",
-          "timePenalty": 0,
-          "laps": 22
+          "bestLap": 120.7378,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
-          "raceId": 3,
+          "raceId": 6,
+          "position": 29,
+          "classPosition": 20,
+          "laps": 21,
+          "finishTime": 2815.5775,
+          "bestLap": 124.5976,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 4,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 5,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -2464,38 +3587,46 @@
       "team": "OOFS Racing",
       "raceResults": [
         {
-          "raceId": 1,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 2,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 3,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 4,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
           "raceId": 5,
-          "points": 26,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 20,
+          "classPosition": 15,
+          "laps": 19,
           "finishTime": 2774.6776,
-          "finishTimeFormatted": "46:14.678",
-          "timePenalty": 0,
-          "laps": 19
+          "bestLap": 136.5054,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 6,
+          "position": 35,
+          "classPosition": 25,
+          "laps": 4,
+          "finishTime": null,
+          "bestLap": 125.3686,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 25,
+          "classPosition": 15,
+          "laps": 23,
+          "finishTime": 2529.0974,
+          "bestLap": 104.8886,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -2508,38 +3639,18 @@
       "team": "OOFS Racing",
       "raceResults": [
         {
-          "raceId": 1,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
           "raceId": 2,
-          "points": 25,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 13,
+          "classPosition": 2,
+          "laps": 23,
           "finishTime": 2968.8976,
-          "finishTimeFormatted": "49:28.898",
-          "timePenalty": 135,
-          "laps": 22
-        },
-        {
-          "raceId": 3,
+          "bestLap": 119.2864,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 4,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 5,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -2553,41 +3664,30 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 35,
+          "classPosition": 22,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
-        },
-        {
-          "raceId": 2,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 23,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 28,
+          "classPosition": 18,
+          "laps": 22,
           "finishTime": 2750.5376,
-          "finishTimeFormatted": "45:50.538",
-          "timePenalty": 5,
-          "laps": 22
-        },
-        {
-          "raceId": 4,
+          "bestLap": 112.9602,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 5,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -2601,45 +3701,43 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 34,
+          "classPosition": 21,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
-        },
-        {
-          "raceId": 2,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 3,
-          "points": 19,
-          "attendance": "Raced",
-          "ballastChange": -15,
+          "position": 32,
+          "classPosition": 22,
+          "laps": 6,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 10,
-          "laps": 6
+          "bestLap": 119.3854,
+          "status": "DQ",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 37,
+          "classPosition": 24,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
-        },
-        {
-          "raceId": 5,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -2653,37 +3751,16 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 37,
+          "classPosition": 23,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
-        },
-        {
-          "raceId": 2,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 3,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 4,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 5,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -2697,37 +3774,16 @@
       "raceResults": [
         {
           "raceId": 1,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 39,
+          "classPosition": 25,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
-        },
-        {
-          "raceId": 2,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 3,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 4,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 5,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -2740,38 +3796,17 @@
       "team": "OOFS Racing",
       "raceResults": [
         {
-          "raceId": 1,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
           "raceId": 2,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 36,
+          "classPosition": 22,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
-        },
-        {
-          "raceId": 3,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 4,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 5,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -2784,42 +3819,30 @@
       "team": "OOFS Racing",
       "raceResults": [
         {
-          "raceId": 1,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 2,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
           "raceId": 3,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 35,
+          "classPosition": 24,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         },
         {
           "raceId": 4,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 35,
+          "classPosition": 23,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
-        },
-        {
-          "raceId": 5,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
           "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
@@ -2832,38 +3855,220 @@
       "team": "OOFS Racing",
       "raceResults": [
         {
-          "raceId": 1,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 2,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 3,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
-          "raceId": 4,
-          "points": 0,
-          "attendance": "Withdrew",
-          "ballastChange": 0
-        },
-        {
           "raceId": 5,
-          "points": 0,
-          "attendance": "DNS",
-          "ballastChange": 0,
+          "position": 28,
+          "classPosition": 18,
+          "laps": 0,
           "finishTime": null,
-          "finishTimeFormatted": null,
-          "timePenalty": 0,
-          "laps": 0
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "name": "Guillermo Paret",
+      "team": "Guillermo Paret",
+      "car": "Chevrolet Corvette Z06 LMGT3.R",
+      "class": "LMGT3",
+      "raceResults": [
+        {
+          "raceId": 6,
+          "position": 30,
+          "classPosition": 21,
+          "laps": 21,
+          "finishTime": 2817.7174,
+          "bestLap": 122.2083,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 14,
+          "classPosition": 4,
+          "laps": 24,
+          "finishTime": 2579.1174,
+          "bestLap": 102.887,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "name": "Alexandre Urie",
+      "team": "Alexandre Urie",
+      "car": "Porsche 911 GT3 R LMGT3",
+      "class": "LMGT3",
+      "raceResults": [
+        {
+          "raceId": 6,
+          "position": 22,
+          "classPosition": 13,
+          "laps": 22,
+          "finishTime": 2859.6974,
+          "bestLap": 123.1885,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "name": "Patricio Fernandez",
+      "team": "Patricio Fernandez",
+      "car": "Ferrari 296 LMGT3",
+      "class": "LMGT3",
+      "raceResults": [
+        {
+          "raceId": 6,
+          "position": 24,
+          "classPosition": 15,
+          "laps": 22,
+          "finishTime": 2871.9374,
+          "bestLap": 123.6519,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "name": "Alessandro Guevara",
+      "team": "Alessandro Guevara",
+      "car": "BMW M4 LMGT3",
+      "class": "LMGT3",
+      "raceResults": [
+        {
+          "raceId": 6,
+          "position": 28,
+          "classPosition": 19,
+          "laps": 21,
+          "finishTime": 2785.7975,
+          "bestLap": 124.113,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 33,
+          "classPosition": 21,
+          "laps": 3,
+          "finishTime": null,
+          "bestLap": 104.9336,
+          "status": "DNF",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "name": "Hans Montes",
+      "team": "Hans Montes",
+      "car": "Ford Mustang LMGT3",
+      "class": "LMGT3",
+      "raceResults": [
+        {
+          "raceId": 6,
+          "position": 31,
+          "classPosition": 22,
+          "laps": 20,
+          "finishTime": 2766.5575,
+          "bestLap": 126.0349,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 7,
+          "position": 19,
+          "classPosition": 9,
+          "laps": 23,
+          "finishTime": 2493.5774,
+          "bestLap": 103.7197,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "name": "Richie Wood",
+      "team": "Richie Wood",
+      "car": "McLaren 720S LMGT3 Evo",
+      "class": "LMGT3",
+      "raceResults": [
+        {
+          "raceId": 7,
+          "position": 23,
+          "classPosition": 13,
+          "laps": 23,
+          "finishTime": 2514.7376,
+          "bestLap": 102.9415,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "name": "Nelson villalobos",
+      "team": "Nelson villalobos",
+      "car": "Ford Mustang LMGT3",
+      "class": "LMGT3",
+      "raceResults": [
+        {
+          "raceId": 7,
+          "position": 24,
+          "classPosition": 14,
+          "laps": 23,
+          "finishTime": 2521.0974,
+          "bestLap": 104.16,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMGT3",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     }
@@ -2871,53 +4076,70 @@
   "races": [
     {
       "id": 1,
-      "name": "Sebring",
-      "date": "2024-10-23",
-      "track": "Sebring International Raceway"
+      "name": "Round 1",
+      "track": "Sebring International Raceway",
+      "date": "2025-10-24",
+      "status": "Completed"
     },
     {
       "id": 2,
-      "name": "Qatar",
-      "date": "2024-10-30",
-      "track": "Lusail International Circuit"
+      "name": "Round 2",
+      "track": "Lusail International Circuit",
+      "date": "2025-10-31",
+      "status": "Completed"
     },
     {
       "id": 3,
-      "name": "Monza",
-      "date": "2024-11-06",
-      "track": "Autodromo Nazionale Monza"
+      "name": "Round 3",
+      "track": "Autodromo Nazionale Monza",
+      "date": "2025-11-07",
+      "status": "Completed"
     },
     {
       "id": 4,
-      "name": "Le Mans",
-      "date": "2024-11-13",
-      "track": "Circuit de la Sarthe"
+      "name": "Round 4",
+      "track": "Circuit de la Sarthe",
+      "date": "2025-11-14",
+      "status": "Completed"
     },
     {
       "id": 5,
-      "name": "Silverstone",
-      "date": "2024-11-20",
-      "track": "Silverstone Circuit"
+      "name": "Round 5",
+      "track": "Silverstone Circuit",
+      "date": "2025-11-21",
+      "status": "Completed"
     },
     {
       "id": 6,
-      "name": "Bahrain",
-      "date": "2024-12-04",
-      "track": "Bahrain International Circuit"
+      "name": "Round 6",
+      "track": "Bahrain International Circuit",
+      "date": "2025-12-05",
+      "status": "Completed"
     },
     {
       "id": 7,
-      "name": "Fuji",
-      "date": "2024-12-11",
-      "track": "Fuji Speedway"
-    },
-    {
-      "id": 8,
-      "name": "Spa",
-      "date": "2024-12-18",
-      "track": "Circuit de Spa-Francorchamps"
+      "name": "Round 7",
+      "track": "Fuji Speedway",
+      "date": "2025-12-12",
+      "status": "Completed"
     }
   ],
-  "penalties": {},
-  "manualPositions": {}
+  "penalties": {
+    "6-2": 15,
+    "6-27": 10,
+    "5-37": 45,
+    "1-13": 60,
+    "1-35": 15,
+    "2-6": 10,
+    "2-9": 60,
+    "3-47": 5,
+    "3-48": 10,
+    "4-21": 15,
+    "4-25": 15,
+    "3-27": 15,
+    "4-26": 15
+  },
+  "manualPositions": {
+    "2-46": 17
+  }
 }

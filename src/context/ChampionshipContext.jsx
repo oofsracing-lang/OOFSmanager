@@ -548,80 +548,26 @@ export const ChampionshipProvider = ({ children }) => {
             }
         });
 
-
-        processClass('LMP2');
-        processClass('LMGT3');
-        processClass('GT4'); // Added GT4 class processing
-    });
-
-    // 2. Recalculate Driver Totals
-    if (data.drivers) {
-        data.drivers.forEach(driver => {
-            if (driver.raceResults) {
-                // Points Calculation with Class Swap Logic
-                // Rule 1: Swap <= Race 2: Keep all points.
-                // Rule 2: Swap > Race 2: Only count points for current class.
-                // Note: "current class" is driver.class.
-
-                // Detect if mixed classes exist
-                const classesDriven = [...new Set(driver.raceResults.map(r => r.drivenClass || driver.class))];
-                const hasSwapped = classesDriven.length > 1;
-
-                let validResults = driver.raceResults;
-
-                if (hasSwapped) {
-                    // Find when the swap happened (first race of the current class)
-                    const currentClassResults = driver.raceResults.filter(r => (r.drivenClass || driver.class) === driver.class);
-                    const firstRaceInCurrentClass = currentClassResults.length > 0
-                        ? Math.min(...currentClassResults.map(r => r.raceId))
-                        : 999;
-
-                    // If swap happened strictly AFTER race 2 (i.e. first race is round 3 or later)
-                    if (firstRaceInCurrentClass > 2) {
-                        // Only count points from the current class results
-                        validResults = currentClassResults;
-                        console.log(`Driver ${driver.name} swapped class > Race 2. Counting only ${driver.class} points.`);
-                    } else {
-                        // Swap was early (Race 1 or 2), keep all points.
-                        console.log(`Driver ${driver.name} swapped class early (<= Race 2). Keeping all points.`);
-                    }
-                }
-
-                driver.totalPoints = validResults.reduce((sum, r) => sum + (r.points || 0), 0);
-
-                // Ballast Calculation (Simulation from Round 1)
-                let runningBallast = 0; // Starting Ballast
-                // Sort results by raceId to ensure chronological order
-                const sortedResults = [...driver.raceResults].sort((a, b) => a.raceId - b.raceId);
-
-                sortedResults.forEach(r => {
-                    // Apply change
-                    runningBallast += (r.ballastChange || 0);
-                    // Clamp 0-45
-                    if (runningBallast < 0) runningBallast = 0;
-                    if (runningBallast > 45) runningBallast = 45;
-                });
-
-                driver.currentBallast = runningBallast;
-            } else {
-                driver.totalPoints = 0;
-                driver.currentBallast = 0;
-            }
-        });
-    }
-
-    return data;
-
-} catch (err) {
-    console.error("Critical Error processing championship data:", err);
-    return {
-        season: 'Data Corruption Error',
-        races: [],
-        drivers: [],
-        currentRound: 0,
-        error: err.message
+        // 3. Force Reload to re-initialize fresh from file Defaults
+        window.location.reload();
     };
-    changeSeason,
+
+    const exportSeasonData = () => {
+        // Create an object that includes the current Race Data, Penalties, and Manual Positions
+        const exportObj = {
+            ...seasonData,
+            penalties: penalties,
+            manualPositions: manualPositions
+        };
+
+        return JSON.stringify(exportObj, null, 2);
+    };
+
+    const value = {
+        championshipData: processedData,
+        loading,
+        currentSeasonId,
+        changeSeason,
         seasonList,
         updatePenalty,
         importRaceResults,
@@ -631,14 +577,15 @@ export const ChampionshipProvider = ({ children }) => {
         updateManualPosition,
         manualPositions,
         exportSeasonData
+    };
+
+    return (
+        <ChampionshipContext.Provider value={value}>
+            {children}
+        </ChampionshipContext.Provider>
+    );
 };
 
-return (
-    <ChampionshipContext.Provider value={value}>
-        {children}
-    </ChampionshipContext.Provider>
-);
-};
 
 export const useChampionship = () => {
     const context = useContext(ChampionshipContext);

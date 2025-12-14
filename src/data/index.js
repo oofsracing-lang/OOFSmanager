@@ -1,5 +1,5 @@
-import { championshipData as season2 } from './seasons/season2';
-import { championshipData as season3 } from './seasons/season3';
+import season2 from './seasons/season2.json';
+import season3 from './seasons/season3.json';
 
 export const seasons = {
     2: season2,

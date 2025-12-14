@@ -1,595 +1,242 @@
 {
-    "season": "Season 3",
-    "currentRound": 1,
-    "totalRounds": 8,
-    "drivers": [
-        {
-            "id": 1,
-            "name": "Joseph Tippen",
-            "team": "Joseph Tippen",
-            "car": "Oreca 07",
-            "class": "LMP2",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 3,
-                    "classPosition": 3,
-                    "laps": 21,
-                    "totalTime": 2737.3976,
-                    "bestLap": 116.1835,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 2,
-            "name": "Donovan Bailey",
-            "team": "Donovan Bailey",
-            "car": "Oreca 07",
-            "class": "LMP2",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 5,
-                    "classPosition": 5,
-                    "laps": 21,
-                    "totalTime": 2789.0175,
-                    "bestLap": 116.3887,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 3,
-            "name": "Jeremy Wade",
-            "team": "Jeremy Wade",
-            "car": "Oreca 07",
-            "class": "LMP2",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 23,
-                    "classPosition": 8,
-                    "laps": 6,
-                    "bestLap": 116.9768,
-                    "status": "DNF",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 4,
-            "name": "Brian Crane",
-            "team": "Brian Crane",
-            "car": "Oreca 07",
-            "class": "LMP2",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 4,
-                    "classPosition": 4,
-                    "laps": 21,
-                    "totalTime": 2769.1031,
-                    "bestLap": 117.1549,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 5,
-            "name": "Nick Johnson",
-            "team": "Nick Johnson",
-            "car": "Oreca 07",
-            "class": "LMP2",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 2,
-                    "classPosition": 2,
-                    "laps": 21,
-                    "totalTime": 2736.7574,
-                    "bestLap": 117.3215,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 6,
-            "name": "p thomas",
-            "team": "p thomas",
-            "car": "Oreca 07",
-            "class": "LMP2",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 21,
-                    "classPosition": 6,
-                    "laps": 18,
-                    "bestLap": 117.7408,
-                    "status": "DNF",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 7,
-            "name": "Chris MacLennan",
-            "team": "Chris MacLennan",
-            "car": "Oreca 07",
-            "class": "LMP2",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 22,
-                    "classPosition": 7,
-                    "laps": 12,
-                    "bestLap": 118.6205,
-                    "status": "DNF",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 8,
-            "name": "James Rubio",
-            "team": "James Rubio",
-            "car": "Oreca 07",
-            "class": "LMP2",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 1,
-                    "classPosition": 1,
-                    "laps": 21,
-                    "totalTime": 2703.5575,
-                    "bestLap": 120.1188,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 9,
-            "name": "Gage Galvin",
-            "team": "Gage Galvin",
-            "car": "Oreca 07",
-            "class": "LMP2",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 25,
-                    "classPosition": 9,
-                    "laps": 5,
-                    "bestLap": 122.0709,
-                    "status": "DNF",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 10,
-            "name": "Andrew Canelli",
-            "team": "Andrew Canelli",
-            "car": "McLaren 720S LMGT3 Evo",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 6,
-                    "classPosition": 1,
-                    "laps": 20,
-                    "totalTime": 2741.6974,
-                    "bestLap": 130.1527,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 11,
-            "name": "Nathan Sides",
-            "team": "Nathan Sides",
-            "car": "Lexus RCF LMGT3",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 7,
-                    "classPosition": 2,
-                    "laps": 20,
-                    "totalTime": 2762.0375,
-                    "bestLap": 132.0528,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 12,
-            "name": "Grayson Head",
-            "team": "Grayson Head",
-            "car": "Mercedes-AMG LMGT3",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 8,
-                    "classPosition": 3,
-                    "laps": 20,
-                    "totalTime": 2763.5175,
-                    "bestLap": 132.3982,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 13,
-            "name": "Jesse Olsen",
-            "team": "Jesse Olsen",
-            "car": "McLaren 720S LMGT3 Evo",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 9,
-                    "classPosition": 4,
-                    "laps": 20,
-                    "totalTime": 2769.2574,
-                    "bestLap": 132.4355,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 14,
-            "name": "J P#2423",
-            "team": "J P#2423",
-            "car": "BMW M4 LMGT3",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 10,
-                    "classPosition": 5,
-                    "laps": 20,
-                    "totalTime": 2785.6176,
-                    "bestLap": 132.7748,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 15,
-            "name": "Donnie Greathouse",
-            "team": "Donnie Greathouse",
-            "car": "BMW M4 LMGT3",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 13,
-                    "classPosition": 8,
-                    "laps": 20,
-                    "totalTime": 2802.7975,
-                    "bestLap": 132.8166,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 16,
-            "name": "Justin Fortuna",
-            "team": "Justin Fortuna",
-            "car": "Ford Mustang LMGT3",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 11,
-                    "classPosition": 6,
-                    "laps": 20,
-                    "totalTime": 2796.1376,
-                    "bestLap": 132.985,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 17,
-            "name": "Rich Spoon",
-            "team": "Rich Spoon",
-            "car": "Ford Mustang LMGT3",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 14,
-                    "classPosition": 9,
-                    "laps": 20,
-                    "totalTime": 2825.7975,
-                    "bestLap": 133.3102,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 18,
-            "name": "Macaronie Tout Garni",
-            "team": "Macaronie Tout Garni",
-            "car": "BMW M4 LMGT3",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 17,
-                    "classPosition": 12,
-                    "laps": 20,
-                    "totalTime": 2835.6376,
-                    "bestLap": 133.4113,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 19,
-            "name": "Abe Wozniak",
-            "team": "Abe Wozniak",
-            "car": "Aston Martin Vantage AMR LMGT3",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 24,
-                    "classPosition": 16,
-                    "laps": 6,
-                    "bestLap": 133.7678,
-                    "status": "DNF",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 20,
-            "name": "Honest Kirby",
-            "team": "Honest Kirby",
-            "car": "Ferrari 296 LMGT3",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 16,
-                    "classPosition": 11,
-                    "laps": 20,
-                    "totalTime": 2831.7574,
-                    "bestLap": 133.8457,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 21,
-            "name": "Ayrton Torres",
-            "team": "Ayrton Torres",
-            "car": "Lexus RCF LMGT3",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 12,
-                    "classPosition": 7,
-                    "laps": 20,
-                    "totalTime": 2801.2374,
-                    "bestLap": 134.1227,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 22,
-            "name": "Matthew Canelli",
-            "team": "Matthew Canelli",
-            "car": "BMW M4 LMGT3",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 18,
-                    "classPosition": 13,
-                    "laps": 19,
-                    "totalTime": 2709.8776,
-                    "bestLap": 135.6023,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 23,
-            "name": "Dustin Rand",
-            "team": "Dustin Rand",
-            "car": "Aston Martin Vantage AMR LMGT3",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 19,
-                    "classPosition": 14,
-                    "laps": 19,
-                    "totalTime": 2756.7374,
-                    "bestLap": 135.8815,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 24,
-            "name": "Dave Harris",
-            "team": "Dave Harris",
-            "car": "Ford Mustang LMGT3",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 15,
-                    "classPosition": 10,
-                    "laps": 20,
-                    "totalTime": 2831.5175,
-                    "bestLap": 136.1611,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 25,
-            "name": "David Carter#5529",
-            "team": "David Carter#5529",
-            "car": "McLaren 720S LMGT3 Evo",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 20,
-                    "classPosition": 15,
-                    "laps": 19,
-                    "totalTime": 2774.6776,
-                    "bestLap": 136.5054,
-                    "status": "Finished Normally",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 26,
-            "name": "Ross McLean",
-            "team": "Ross McLean",
-            "car": "Porsche 911 GT3 R LMGT3",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 27,
-                    "classPosition": 17,
-                    "laps": 0,
-                    "status": "DNF",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 27,
-            "name": "Alexandre Rivard",
-            "team": "Alexandre Rivard",
-            "car": "McLaren 720S LMGT3 Evo",
-            "class": "LMGT3",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 28,
-                    "classPosition": 18,
-                    "laps": 0,
-                    "status": "DNF",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 28,
-            "name": "Patches U",
-            "team": "Patches U",
-            "car": "Oreca 07",
-            "class": "LMP2",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 29,
-                    "classPosition": 11,
-                    "laps": 0,
-                    "status": "DNF",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        },
-        {
-            "id": 29,
-            "name": "Santhosh Kumarasamy",
-            "team": "Santhosh Kumarasamy",
-            "car": "Oreca 07",
-            "class": "LMP2",
-            "raceResults": [
-                {
-                    "raceId": 3,
-                    "position": 26,
-                    "classPosition": 10,
-                    "laps": 5,
-                    "bestLap": 122.8125,
-                    "status": "DQ",
-                    "attendance": "Raced",
-                    "points": 0
-                }
-            ]
-        }
-    ],
-    "races": [
-        {
-            "id": 1,
-            "name": "Round 1",
-            "track": "Spa-Francorchamps",
-            "date": "2025-01-10"
-        },
-        {
-            "id": 2,
-            "name": "Round 2",
-            "track": "Monza",
-            "date": "2025-01-24"
-        },
-        {
-            "id": 3,
-            "name": "Round 3",
-            "track": "Silverstone Circuit",
-            "date": "2025-11-21"
-        }
-    ]
+  "season": "Season 3",
+  "currentRound": 0,
+  "totalRounds": 0,
+  "drivers": [
+    {
+      "id": 1,
+      "name": "Joseph Tippen",
+      "team": "Joseph Tippen",
+      "car": "Oreca 07",
+      "class": "LMP2",
+      "raceResults": []
+    },
+    {
+      "id": 2,
+      "name": "Donovan Bailey",
+      "team": "Donovan Bailey",
+      "car": "Oreca 07",
+      "class": "LMP2",
+      "raceResults": []
+    },
+    {
+      "id": 3,
+      "name": "Jeremy Wade",
+      "team": "Jeremy Wade",
+      "car": "Oreca 07",
+      "class": "LMP2",
+      "raceResults": []
+    },
+    {
+      "id": 4,
+      "name": "Brian Crane",
+      "team": "Brian Crane",
+      "car": "Oreca 07",
+      "class": "LMP2",
+      "raceResults": []
+    },
+    {
+      "id": 5,
+      "name": "Nick Johnson",
+      "team": "Nick Johnson",
+      "car": "Oreca 07",
+      "class": "LMP2",
+      "raceResults": []
+    },
+    {
+      "id": 6,
+      "name": "p thomas",
+      "team": "p thomas",
+      "car": "Oreca 07",
+      "class": "LMP2",
+      "raceResults": []
+    },
+    {
+      "id": 7,
+      "name": "Chris MacLennan",
+      "team": "Chris MacLennan",
+      "car": "Oreca 07",
+      "class": "LMP2",
+      "raceResults": []
+    },
+    {
+      "id": 8,
+      "name": "James Rubio",
+      "team": "James Rubio",
+      "car": "Oreca 07",
+      "class": "LMP2",
+      "raceResults": []
+    },
+    {
+      "id": 9,
+      "name": "Gage Galvin",
+      "team": "Gage Galvin",
+      "car": "Oreca 07",
+      "class": "LMP2",
+      "raceResults": []
+    },
+    {
+      "id": 10,
+      "name": "Andrew Canelli",
+      "team": "Andrew Canelli",
+      "car": "McLaren 720S LMGT3 Evo",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 11,
+      "name": "Nathan Sides",
+      "team": "Nathan Sides",
+      "car": "Lexus RCF LMGT3",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 12,
+      "name": "Grayson Head",
+      "team": "Grayson Head",
+      "car": "Mercedes-AMG LMGT3",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 13,
+      "name": "Jesse Olsen",
+      "team": "Jesse Olsen",
+      "car": "McLaren 720S LMGT3 Evo",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 14,
+      "name": "J P#2423",
+      "team": "J P#2423",
+      "car": "BMW M4 LMGT3",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 15,
+      "name": "Donnie Greathouse",
+      "team": "Donnie Greathouse",
+      "car": "BMW M4 LMGT3",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 16,
+      "name": "Justin Fortuna",
+      "team": "Justin Fortuna",
+      "car": "Ford Mustang LMGT3",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 17,
+      "name": "Rich Spoon",
+      "team": "Rich Spoon",
+      "car": "Ford Mustang LMGT3",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 18,
+      "name": "Macaronie Tout Garni",
+      "team": "Macaronie Tout Garni",
+      "car": "BMW M4 LMGT3",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 19,
+      "name": "Abe Wozniak",
+      "team": "Abe Wozniak",
+      "car": "Aston Martin Vantage AMR LMGT3",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 20,
+      "name": "Honest Kirby",
+      "team": "Honest Kirby",
+      "car": "Ferrari 296 LMGT3",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 21,
+      "name": "Ayrton Torres",
+      "team": "Ayrton Torres",
+      "car": "Lexus RCF LMGT3",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 22,
+      "name": "Matthew Canelli",
+      "team": "Matthew Canelli",
+      "car": "BMW M4 LMGT3",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 23,
+      "name": "Dustin Rand",
+      "team": "Dustin Rand",
+      "car": "Aston Martin Vantage AMR LMGT3",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 24,
+      "name": "Dave Harris",
+      "team": "Dave Harris",
+      "car": "Ford Mustang LMGT3",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 25,
+      "name": "David Carter#5529",
+      "team": "David Carter#5529",
+      "car": "McLaren 720S LMGT3 Evo",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 26,
+      "name": "Ross McLean",
+      "team": "Ross McLean",
+      "car": "Porsche 911 GT3 R LMGT3",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 27,
+      "name": "Alexandre Rivard",
+      "team": "Alexandre Rivard",
+      "car": "McLaren 720S LMGT3 Evo",
+      "class": "LMGT3",
+      "raceResults": []
+    },
+    {
+      "id": 28,
+      "name": "Patches U",
+      "team": "Patches U",
+      "car": "Oreca 07",
+      "class": "LMP2",
+      "raceResults": []
+    },
+    {
+      "id": 29,
+      "name": "Santhosh Kumarasamy",
+      "team": "Santhosh Kumarasamy",
+      "car": "Oreca 07",
+      "class": "LMP2",
+      "raceResults": []
+    }
+  ],
+  "races": [],
+  "penalties": {},
+  "manualPositions": {}
 }

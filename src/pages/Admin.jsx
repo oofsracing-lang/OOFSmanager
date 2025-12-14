@@ -6,6 +6,10 @@ const Admin = () => {
     const [selectedRace, setSelectedRace] = useState(null);
     const { championshipData, updatePenalty, updateManualPosition, importRaceResults, addRound, deleteRound, resetSeasonData, exportSeasonData } = useChampionship();
 
+    // Export Modal State
+    const [showExport, setShowExport] = useState(false);
+    const [exportText, setExportText] = useState('');
+
     // Safety Check
     if (!championshipData || !championshipData.races) {
         return (
@@ -177,11 +181,47 @@ const Admin = () => {
                 <button
                     className="btn btn-primary"
                     style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
-                    onClick={exportSeasonData}
+                    onClick={() => {
+                        const data = exportSeasonData();
+                        setExportText(data);
+                        setShowExport(true);
+                    }}
                 >
                     Export Season Data
                 </button>
             </div>
+
+            {/* Export Modal Overlay */}
+            {showExport && (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 1000,
+                    display: 'flex', justifyContent: 'center', alignItems: 'center'
+                }}>
+                    <div className="glass-panel" style={{ width: '80%', maxWidth: '600px', padding: '2rem', display: 'flex', flexDirection: 'column' }}>
+                        <h3>Export Data</h3>
+                        <p>Copy the text below and paste it into <strong>src/data/seasons/season2.json</strong> in VS Code.</p>
+                        <textarea
+                            readOnly
+                            value={exportText}
+                            style={{
+                                width: '100%', height: '300px',
+                                backgroundColor: '#1a1a1a', color: '#fff',
+                                border: '1px solid #333', padding: '1rem',
+                                marginBottom: '1rem'
+                            }}
+                            onClick={(e) => e.target.select()}
+                        />
+                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+                            <button className="btn btn-primary" onClick={() => {
+                                navigator.clipboard.writeText(exportText);
+                                alert("Copied to Clipboard!");
+                            }}>Copy to Clipboard</button>
+                            <button className="btn btn-outline-danger" onClick={() => setShowExport(false)}>Close</button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Standard XML Ingestion */}
             <div className="glass-panel" style={{ padding: '2rem', marginBottom: '2rem', textAlign: 'center' }}>
