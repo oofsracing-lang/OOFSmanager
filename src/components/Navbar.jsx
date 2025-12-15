@@ -19,19 +19,7 @@ const Navbar = () => {
             top: 0,
             zIndex: 100
         }}>
-            <div style={{ display: 'flex', alignItems: 'center', marginRight: 'var(--space-xl)' }}>
-                <img src={logo} alt="OOFS Racing" style={{ height: '48px', marginRight: 'var(--space-md)' }} />
-                <h1 style={{
-                    fontSize: '1.4rem',
-                    margin: 0,
-                    color: 'white',
-                    textTransform: 'uppercase',
-                    letterSpacing: '1px',
-                    fontStyle: 'italic' // Racing feel
-                }}>
-                    OOFS <span style={{ color: 'var(--primary)' }}>Manager</span>
-                </h1>
-            </div>
+
             <NavLink
                 to="/"
                 className={({ isActive }) => isActive ? 'btn btn-primary' : 'btn btn-ghost'}

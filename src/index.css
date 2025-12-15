@@ -53,8 +53,13 @@
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--bg-app);
-  /* Radial gradient for depth/lighting effect */
-  background-image: radial-gradient(circle at 50% 0%, #1a237e 0%, var(--bg-app) 60%);
+  /* Background image with dark overlay */
+  background-image:
+    linear-gradient(rgba(10, 11, 16, 0.85), rgba(10, 11, 16, 0.95)),
+    url('/racing_bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
   color: var(--text-main);
   line-height: 1.5;
