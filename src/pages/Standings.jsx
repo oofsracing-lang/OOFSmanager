@@ -4,13 +4,38 @@ import { useChampionship } from '../context/ChampionshipContext';
 
 const Standings = () => {
     const [selectedClass, setSelectedClass] = useState('LMGT3');
+    const [useDropRound, setUseDropRound] = useState(false);
     const { championshipData } = useChampionship();
 
     // Filter and sort drivers by class and points
     const getClassStandings = (className) => {
         return championshipData.drivers
             .filter(d => d.class === className)
-            .sort((a, b) => b.totalPoints - a.totalPoints)
+            .map(driver => {
+                // Calculate Drop Round Data
+                const results = driver.raceResults || [];
+                const roundsCompleted = results.length;
+                const roundsHeld = championshipData.currentRound;
+
+                // If they missed a race, their lowest score is 0.
+                // If they did every race, lowest is min(points).
+                let droppedPoints = 0;
+
+                if (roundsCompleted < roundsHeld) {
+                    droppedPoints = 0;
+                } else if (results.length > 0) {
+                    droppedPoints = Math.min(...results.map(r => r.points || 0));
+                }
+
+                const adjustedPoints = (driver.totalPoints || 0) - droppedPoints;
+
+                return {
+                    ...driver,
+                    droppedPoints,
+                    effectivePoints: useDropRound ? adjustedPoints : driver.totalPoints
+                };
+            })
+            .sort((a, b) => b.effectivePoints - a.effectivePoints)
             .map((driver, index) => ({ ...driver, position: index + 1 }));
     };
 
@@ -25,19 +50,36 @@ const Standings = () => {
                 </p>
 
                 {/* Class Selector */}
-                <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
-                    <button
-                        className={selectedClass === 'LMGT3' ? 'btn btn-primary' : 'btn btn-ghost'}
-                        onClick={() => setSelectedClass('LMGT3')}
-                    >
-                        LMGT3
-                    </button>
-                    <button
-                        className={selectedClass === 'LMP2' ? 'btn btn-primary' : 'btn btn-ghost'}
-                        onClick={() => setSelectedClass('LMP2')}
-                    >
-                        LMP2-UR
-                    </button>
+                <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', gap: '1rem' }}>
+                        <button
+                            className={selectedClass === 'LMGT3' ? 'btn btn-primary' : 'btn btn-ghost'}
+                            onClick={() => setSelectedClass('LMGT3')}
+                        >
+                            LMGT3
+                        </button>
+                        <button
+                            className={selectedClass === 'LMP2' ? 'btn btn-primary' : 'btn btn-ghost'}
+                            onClick={() => setSelectedClass('LMP2')}
+                        >
+                            LMP2-UR
+                        </button>
+                    </div>
+
+                    <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Drop Round:</span>
+                        <button
+                            className={useDropRound ? 'btn btn-primary' : 'btn btn-ghost'}
+                            onClick={() => setUseDropRound(!useDropRound)}
+                            style={{
+                                padding: '0.25rem 0.75rem',
+                                fontSize: '0.8rem',
+                                border: useDropRound ? 'none' : '1px solid var(--border-color)'
+                            }}
+                        >
+                            {useDropRound ? 'Enabled (-1 Worst)' : 'Disabled'}
+                        </button>
+                    </div>
                 </div>
 
                 {/* Standings Table */}
@@ -89,7 +131,17 @@ const Standings = () => {
                                         fontWeight: 'bold',
                                         color: 'var(--success)'
                                     }}>
-                                        {driver.totalPoints}
+                                        {driver.effectivePoints}
+                                        {useDropRound && (
+                                            <span style={{
+                                                display: 'block',
+                                                fontSize: '0.7rem',
+                                                color: 'var(--text-dim)',
+                                                fontWeight: 'normal'
+                                            }}>
+                                                (Dropped: {driver.droppedPoints})
+                                            </span>
+                                        )}
                                     </td>
                                     <td style={{
                                         padding: '1rem 0.5rem',

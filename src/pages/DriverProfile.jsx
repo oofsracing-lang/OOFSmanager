@@ -21,9 +21,31 @@ const DriverProfile = () => {
     const racesCompleted = driver.raceResults.filter(r => r.attendance === 'Raced').length;
 
     // Use points from the calculated context, which are already updated
-    const bestResult = driver.raceResults.length > 0
-        ? Math.max(...driver.raceResults.map(r => r.points || 0))
-        : 0;
+    // Calculate Best Result (Position)
+    const racedResults = driver.raceResults.filter(r => r.attendance === 'Raced');
+    let bestPosition = '-';
+
+    if (racedResults.length > 0) {
+        const positions = racedResults.map(result => {
+            // Use calculated newPosition if available (from context calculation), otherwise classPosition, then raw position
+            if (result.newPosition) return result.newPosition;
+            if (result.classPosition) return result.classPosition;
+            if (result.position) return result.position;
+
+            // Fallback calculation if position is missing
+            const raceStandings = championshipData.drivers
+                .filter(d => d.class === driver.class)
+                .map(d => ({
+                    id: d.id,
+                    points: d.raceResults.find(r => r.raceId === result.raceId)?.points || 0
+                }))
+                .sort((a, b) => b.points - a.points);
+            return raceStandings.findIndex(d => d.id === driver.id) + 1;
+        });
+
+        const minPos = Math.min(...positions);
+        bestPosition = `P${minPos}`;
+    }
 
     const avgPoints = racesCompleted > 0
         ? (driver.totalPoints / racesCompleted).toFixed(1)
@@ -84,7 +106,7 @@ const DriverProfile = () => {
 
                     <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
                         <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Best Result</h4>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--success)' }}>{bestResult} pts</p>
+                        <p style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--success)' }}>{bestPosition}</p>
                     </div>
 
                     <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
@@ -138,10 +160,11 @@ const DriverProfile = () => {
                                         // Calculate Position
                                         let positionDisplay = '-';
                                         if (result.attendance === 'Raced') {
-                                            // The context now provides the calculated position in the result object!
-                                            // If result.position exists, use it.
-                                            if (result.position) {
-                                                positionDisplay = `P${result.position}`;
+                                            // Prioritize recalculated positions (newPosition > classPosition > raw position)
+                                            const finalPos = result.newPosition || result.classPosition || result.position;
+
+                                            if (finalPos) {
+                                                positionDisplay = `P${finalPos}`;
                                             } else {
                                                 // Fallback if not available for some reason (should be available from context)
                                                 const raceStandings = championshipData.drivers
