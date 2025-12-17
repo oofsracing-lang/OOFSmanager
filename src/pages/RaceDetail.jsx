@@ -144,7 +144,7 @@ const RaceDetail = () => {
                         <div style={{ marginBottom: '3rem' }}>
                             <h3 style={{ marginBottom: '1rem', color: 'var(--primary)' }}>LMP2-UR Results</h3>
                             <div style={{ overflowX: 'auto' }}>
-                                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
                                     <thead>
                                         <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--primary)' }}>
                                             <th style={{ padding: '0.75rem 0.5rem' }}>Pos</th>
@@ -198,7 +198,7 @@ const RaceDetail = () => {
                         <div>
                             <h3 style={{ marginBottom: '1rem', color: 'var(--primary)' }}>LMGT3 Results</h3>
                             <div style={{ overflowX: 'auto' }}>
-                                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
                                     <thead>
                                         <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--primary)' }}>
                                             <th style={{ padding: '0.75rem 0.5rem' }}>Pos</th>
@@ -247,6 +247,7 @@ const RaceDetail = () => {
                                 </table>
                             </div>
                         </div>
+
                     </>
                 )}
             </div>

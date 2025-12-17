@@ -62,7 +62,7 @@ const Dashboard = () => {
         <div>
             <h2 style={{ marginBottom: '2rem' }}>Dashboard - {championshipData.season}</h2>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
 
                 {/* Upcoming Schedule */}
                 <div className="glass-panel" style={{ padding: '1.5rem' }}>
@@ -142,23 +142,25 @@ const Dashboard = () => {
                     <h3 style={{ marginBottom: '1rem', color: 'var(--info)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
                         LMP2-UR Top 5
                     </h3>
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                        <tbody>
-                            {top5LMP2.map((d, i) => (
-                                <tr key={d.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                                    <td style={{ padding: '0.5rem 0', fontWeight: 'bold', width: '30px' }}>{i + 1}</td>
-                                    <td style={{ padding: '0.5rem 0' }}>
-                                        <Link to={`/driver/${d.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
-                                            {d.name}
-                                        </Link>
-                                    </td>
-                                    <td style={{ padding: '0.5rem 0', textAlign: 'right', fontWeight: 'bold', color: 'var(--primary)' }}>
-                                        {d.totalPoints}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '300px' }}>
+                            <tbody>
+                                {top5LMP2.map((d, i) => (
+                                    <tr key={d.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                                        <td style={{ padding: '0.5rem 0', fontWeight: 'bold', width: '30px' }}>{i + 1}</td>
+                                        <td style={{ padding: '0.5rem 0' }}>
+                                            <Link to={`/driver/${d.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
+                                                {d.name}
+                                            </Link>
+                                        </td>
+                                        <td style={{ padding: '0.5rem 0', textAlign: 'right', fontWeight: 'bold', color: 'var(--primary)' }}>
+                                            {d.totalPoints}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 {/* LMGT3 Standings Top 5 */}
@@ -166,28 +168,29 @@ const Dashboard = () => {
                     <h3 style={{ marginBottom: '1rem', color: 'var(--warning)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
                         LMGT3 Top 5
                     </h3>
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                        <tbody>
-                            {top5LMGT3.map((d, i) => (
-                                <tr key={d.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                                    <td style={{ padding: '0.5rem 0', fontWeight: 'bold', width: '30px' }}>{i + 1}</td>
-                                    <td style={{ padding: '0.5rem 0' }}>
-                                        <Link to={`/driver/${d.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
-                                            {d.name}
-                                        </Link>
-                                    </td>
-                                    <td style={{ padding: '0.5rem 0', textAlign: 'right', fontWeight: 'bold', color: 'var(--primary)' }}>
-                                        {d.totalPoints}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                    <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '300px' }}>
+                            <tbody>
+                                {top5LMGT3.map((d, i) => (
+                                    <tr key={d.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                                        <td style={{ padding: '0.5rem 0', fontWeight: 'bold', width: '30px' }}>{i + 1}</td>
+                                        <td style={{ padding: '0.5rem 0' }}>
+                                            <Link to={`/driver/${d.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
+                                                {d.name}
+                                            </Link>
+                                        </td>
+                                        <td style={{ padding: '0.5rem 0', textAlign: 'right', fontWeight: 'bold', color: 'var(--primary)' }}>
+                                            {d.totalPoints}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
 
+                </div>
             </div>
-        </div>
-    );
+            );
 };
 
-export default Dashboard;
+            export default Dashboard;

@@ -176,3 +176,39 @@ h1 {
 .text-primary {
   color: var(--primary);
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  :root {
+    --space-lg: 16px;
+    --space-xl: 24px;
+    --space-2xl: 32px;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .container {
+    padding: 0 var(--space-sm);
+  }
+
+  .glass-panel {
+    padding: 1rem !important;
+  }
+
+  /* Force table scrolling on mobile */
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 600px;
+    /* Ensure table keeps shape and scrolls */
+  }
+}

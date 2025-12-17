@@ -8,6 +8,7 @@ const Navbar = () => {
     return (
         <nav style={{
             display: 'flex',
+            flexWrap: 'wrap',
             alignItems: 'center',
             gap: 'var(--space-md)',
             padding: 'var(--space-md) 0',
