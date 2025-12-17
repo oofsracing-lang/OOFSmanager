@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useChampionship } from '../context/ChampionshipContext';
+import { formatDriverName } from '../utils/formatting';
 
 const Standings = () => {
     const [selectedClass, setSelectedClass] = useState('LMGT3');
@@ -119,7 +120,7 @@ const Standings = () => {
                                     </td>
                                     <td style={{ padding: '1rem 0.5rem', fontWeight: '600' }}>
                                         <Link to={`/driver/${driver.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
-                                            {driver.name}
+                                            {formatDriverName(driver.name)}
                                         </Link>
                                     </td>
                                     <td style={{ padding: '1rem 0.5rem', color: 'var(--text-muted)' }}>
@@ -186,7 +187,19 @@ const Standings = () => {
                     ))}
                 </div>
             </div>
-        </div>
+
+
+            {/* Debug Info / Source Indicator */}
+            <div style={{
+                marginTop: '1rem',
+                textAlign: 'center',
+                fontSize: '0.8rem',
+                color: 'var(--text-dim)',
+                fontFamily: 'monospace'
+            }}>
+                Calculation Source: {championshipData.calculationSource || 'Unknown'}
+            </div>
+        </div >
     );
 };
 

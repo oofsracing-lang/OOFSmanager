@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { seasons, latestSeason } from '../data';
 import { parseTime, BALLAST_SYSTEM } from '../utils/raceLogic';
-import { subscribeToSeason, saveSeasonData, updateSeasonFields } from '../firebase/db';
+import { subscribeToSeason, subscribeToStandings, saveSeasonData, updateSeasonFields } from '../firebase/db';
 import { useAuth } from './AuthContext';
 
 const ChampionshipContext = createContext(null);
@@ -14,9 +14,12 @@ export const ChampionshipProvider = ({ children }) => {
     const [loading, setLoading] = useState(false); // Fix: Add missing loading state
 
     // Base Data State (Persistence per season)
-    const [seasonData, setSeasonData] = useState(null); // Init null, wait for DB
+    const [seasonData, setSeasonData] = useState(null);
     const [penalties, setPenalties] = useState({});
     const [manualPositions, setManualPositions] = useState({});
+
+    // Cloud Calculated Standings
+    const [cloudStandings, setCloudStandings] = useState(null);
 
     // Auth for writing permissions
     const { currentUser } = useAuth();
@@ -24,29 +27,34 @@ export const ChampionshipProvider = ({ children }) => {
     // Firestore Subscription
     useEffect(() => {
         setLoading(true);
-        // Subscribe to the season document
-        const unsubscribe = subscribeToSeason(currentSeasonId, (data, isLoading) => {
+        // Subscribe to input data (Races, Drivers List, etc - needed for Admin/Input)
+        const unsubSeason = subscribeToSeason(currentSeasonId, (data, isLoading) => {
             if (data) {
-                // If data exists in cloud, use it
                 setSeasonData(data);
                 setPenalties(data.penalties || {});
                 setManualPositions(data.manualPositions || {});
             } else {
-                // If no data (new season), falling back to local defaults for now
-                // Ideally we should CREATE the doc in cloud if it doesn't exist?
-                // For safety: Load default, but DON'T save it automatically unless user triggers an action?
-                // Or just show "No Data" until Admin Inits?
-                // Let's load the static file as fallback for VIEWING, but if Admin, we might save it.
-                // Simplified: Load static default.
+                // Fallback to local default
                 const defaultData = JSON.parse(JSON.stringify(seasons[currentSeasonId] || latestSeason));
                 setSeasonData(defaultData);
                 setPenalties(defaultData.penalties || {});
                 setManualPositions(defaultData.manualPositions || {});
             }
+            // Only stop loading if we are not waiting for standings? 
+            // Actually loading state usually refers to Input data availability.
             setLoading(isLoading);
         });
 
-        return () => unsubscribe();
+        // Subscribe to OUTPUT data (Calculated Standings)
+        const unsubStandings = subscribeToStandings(currentSeasonId, (data) => {
+            console.log("Cloud Standings Update Recieved:", data ? "Found" : "Not Found");
+            setCloudStandings(data);
+        });
+
+        return () => {
+            unsubSeason();
+            unsubStandings();
+        };
     }, [currentSeasonId]);
 
     // Helpers to save data to cloud (Only if Admin)
@@ -248,8 +256,10 @@ export const ChampionshipProvider = ({ children }) => {
 
         // 1. Process parsed results
         parsedResults.forEach(pResult => {
+            // Hardened matching: Case-insensitive & Trimmed
+            const pResultName = (pResult.name || '').trim();
             // Find or Create Driver
-            let driver = newData.drivers.find(d => d.name === pResult.name);
+            let driver = newData.drivers.find(d => (d.name || '').trim().toLowerCase() === pResultName.toLowerCase());
 
             // Better Class Mapping
             let determinedClass = 'LMGT3'; // Default
@@ -263,7 +273,7 @@ export const ChampionshipProvider = ({ children }) => {
                 const newId = newData.drivers.length > 0 ? Math.max(...newData.drivers.map(d => d.id)) + 1 : 1;
                 driver = {
                     id: newId,
-                    name: pResult.name || 'Unknown Driver',
+                    name: pResultName || 'Unknown Driver',
                     team: pResult.team || '',
                     car: pResult.car || '',
                     class: determinedClass,
@@ -308,7 +318,17 @@ export const ChampionshipProvider = ({ children }) => {
 
     // Derived State (Calculations)
     const processedData = useMemo(() => {
-        console.log("Calculated processedData running...");
+        // PRIORITY 1: Use Cloud Calculated Standings if available and fresh
+        if (cloudStandings && cloudStandings.season === (seasonData?.season)) {
+            console.log("Using Cloud Calculated Standings");
+            return {
+                ...cloudStandings,
+                calculationSource: 'Cloud Backend'
+            };
+        }
+
+        // PRIORITY 2: Local Fallback (The original huge logic)
+        console.log("Calculated processedData running (LOCAL FALLBACK)...");
         // Guard Clause: Prevent crash if data is missing/corrupt
         if (!seasonData || !seasonData.races || !seasonData.drivers) {
             console.error("Missing seasonData in useMemo", seasonData);
@@ -324,6 +344,13 @@ export const ChampionshipProvider = ({ children }) => {
         try {
             console.log("Processing championship data for season:", seasonData.season);
             const data = JSON.parse(JSON.stringify(seasonData));
+
+            // EMERGENCY HOTFIX: Filter out known duplicate/ghost driver IDs
+            // IDs 40 and 41 identified as duplicates for Dave Paccagnini and Abe Wozniak
+            if (data.drivers) {
+                data.drivers = data.drivers.filter(d => ![40, 41].includes(d.id));
+            }
+
             // Points System: P1-P25.
             const pointsTable = [
                 50, 47, 44, 41, 38, // P1-P5
@@ -522,6 +549,8 @@ export const ChampionshipProvider = ({ children }) => {
                 });
             }
 
+            // Add Source Tag
+            data.calculationSource = 'Local Browser (Fallback)';
             return data;
 
         } catch (err) {
@@ -534,7 +563,7 @@ export const ChampionshipProvider = ({ children }) => {
                 error: err.message
             };
         }
-    }, [penalties, manualPositions, seasonData]);
+    }, [penalties, manualPositions, seasonData, cloudStandings]);
 
     const resetSeasonData = () => {
         if (!currentUser) return;

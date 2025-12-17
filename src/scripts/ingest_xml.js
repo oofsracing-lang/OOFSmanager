@@ -69,14 +69,16 @@ async function ingest() {
         // [ { id: 1, name: "Name", class: "Class", raceResults: [ { raceId: 1, position: 1, points: 25, ... } ] } ]
 
         parsedData.results.forEach(result => {
-            let driver = seasonData.drivers.find(d => d.name === result.name);
+            const resultName = (result.name || '').trim();
+            // Case-insensitive match
+            let driver = seasonData.drivers.find(d => (d.name || '').trim().toLowerCase() === resultName.toLowerCase());
 
             if (!driver) {
                 // Create new driver
                 const newDriverId = seasonData.drivers.length > 0 ? Math.max(...seasonData.drivers.map(d => d.id)) + 1 : 1;
                 driver = {
                     id: newDriverId,
-                    name: result.name,
+                    name: resultName, // Use trimmed name
                     team: result.team,
                     car: result.car,
                     class: result.carClass === 'LMP2_ELMS' ? 'LMP2' : 'LMGT3', // Normalize class names

@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { useChampionship } from '../context/ChampionshipContext';
+import { formatDriverName } from '../utils/formatting';
 
 const RaceDetail = () => {
     const { id: raceId } = useParams();
@@ -160,7 +161,7 @@ const RaceDetail = () => {
                                                 <td style={{ padding: '0.75rem 0.5rem', fontWeight: 'bold' }}>P{driver.raceResult.classPosition || index + 1}</td>
                                                 <td style={{ padding: '0.75rem 0.5rem' }}>
                                                     <Link to={`/driver/${driver.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
-                                                        {driver.name}
+                                                        {formatDriverName(driver.name)}
                                                     </Link>
                                                 </td>
                                                 <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>
@@ -214,7 +215,7 @@ const RaceDetail = () => {
                                                 <td style={{ padding: '0.75rem 0.5rem', fontWeight: 'bold' }}>P{driver.raceResult.classPosition || index + 1}</td>
                                                 <td style={{ padding: '0.75rem 0.5rem' }}>
                                                     <Link to={`/driver/${driver.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
-                                                        {driver.name}
+                                                        {formatDriverName(driver.name)}
                                                     </Link>
                                                 </td>
                                                 <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>

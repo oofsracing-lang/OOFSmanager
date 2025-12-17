@@ -29,6 +29,29 @@ export const subscribeToSeason = (seasonId, onDataChange) => {
 };
 
 /**
+ * Subscribe to calculated Standings (Output from Cloud Function)
+ * @param {string|number} seasonId 
+ * @param {function} onDataChange 
+ */
+export const subscribeToStandings = (seasonId, onDataChange) => {
+    const docRef = doc(db, 'standings', String(seasonId));
+
+    // Default to null if not found
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+        if (docSnap.exists()) {
+            onDataChange(docSnap.data(), false);
+        } else {
+            onDataChange(null, false);
+        }
+    }, (error) => {
+        console.error("Standings Subscription Error:", error);
+        onDataChange(null, false, error);
+    });
+
+    return unsubscribe;
+};
+
+/**
  * Save (Overwrite/Merge) season data. 
  * Use this for importing XMLs or changing deep structures.
  * @param {string|number} seasonId 

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useChampionship } from '../context/ChampionshipContext';
-
+import { formatDriverName } from '../utils/formatting';
 const Dashboard = () => {
     const { championshipData } = useChampionship();
 
@@ -112,7 +112,7 @@ const Dashboard = () => {
                                 <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>LMP2-UR Podium</h4>
                                 {recentLMP2.map((d, i) => (
                                     <div key={d.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                                        <span>{i + 1}. {d.name}</span>
+                                        <span>{i + 1}. {formatDriverName(d.name)}</span>
                                         <span style={{ color: 'var(--success)', fontWeight: 'bold' }}>+{d.result.points}</span>
                                     </div>
                                 ))}
@@ -122,7 +122,7 @@ const Dashboard = () => {
                                 <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>LMGT3 Podium</h4>
                                 {recentLMGT3.map((d, i) => (
                                     <div key={d.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                                        <span>{i + 1}. {d.name}</span>
+                                        <span>{i + 1}. {formatDriverName(d.name)}</span>
                                         <span style={{ color: 'var(--success)', fontWeight: 'bold' }}>+{d.result.points}</span>
                                     </div>
                                 ))}
@@ -150,7 +150,7 @@ const Dashboard = () => {
                                         <td style={{ padding: '0.5rem 0', fontWeight: 'bold', width: '30px' }}>{i + 1}</td>
                                         <td style={{ padding: '0.5rem 0' }}>
                                             <Link to={`/driver/${d.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
-                                                {d.name}
+                                                {formatDriverName(d.name)}
                                             </Link>
                                         </td>
                                         <td style={{ padding: '0.5rem 0', textAlign: 'right', fontWeight: 'bold', color: 'var(--primary)' }}>
@@ -176,7 +176,7 @@ const Dashboard = () => {
                                         <td style={{ padding: '0.5rem 0', fontWeight: 'bold', width: '30px' }}>{i + 1}</td>
                                         <td style={{ padding: '0.5rem 0' }}>
                                             <Link to={`/driver/${d.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
-                                                {d.name}
+                                                {formatDriverName(d.name)}
                                             </Link>
                                         </td>
                                         <td style={{ padding: '0.5rem 0', textAlign: 'right', fontWeight: 'bold', color: 'var(--primary)' }}>

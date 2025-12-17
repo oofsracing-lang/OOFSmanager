@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { useChampionship } from '../context/ChampionshipContext';
+import { formatDriverName } from '../utils/formatting';
 
 const DriverProfile = () => {
     const { id: driverId } = useParams();
@@ -76,7 +77,7 @@ const DriverProfile = () => {
                     }}>
                         {driver.class === 'LMP2' ? 'LMP2-UR' : 'LMGT3'}
                     </span>
-                    <h2 style={{ marginBottom: '0.5rem' }}>{driver.name}</h2>
+                    <h2 style={{ marginBottom: '0.5rem' }}>{formatDriverName(driver.name)}</h2>
                     <p style={{ color: 'var(--text-muted)' }}>{driver.team}</p>
                 </div>
 

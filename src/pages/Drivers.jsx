@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useChampionship } from '../context/ChampionshipContext';
+import { formatDriverName } from '../utils/formatting';
 
 const Drivers = () => {
     const { championshipData, loading } = useChampionship();
@@ -35,7 +36,7 @@ const Drivers = () => {
                             height: '100%'
                         }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                <h3 style={{ margin: 0, color: 'white', fontSize: '1.2rem' }}>{driver.name}</h3>
+                                <h3 style={{ margin: 0, color: 'white', fontSize: '1.2rem' }}>{formatDriverName(driver.name)}</h3>
                                 <span style={{
                                     backgroundColor: 'var(--primary)',
                                     color: 'white',
