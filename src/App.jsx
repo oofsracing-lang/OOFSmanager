@@ -32,7 +32,7 @@ function App() {
                 <Route path="races" element={<Races />} />
                 <Route path="races/:id" element={<RaceDetail />} />
                 <Route path="drivers" element={<Drivers />} />
-                <Route path="drivers/:id" element={<DriverProfile />} />
+                <Route path="driver/:id" element={<DriverProfile />} />
                 <Route path="admin" element={
                   <ProtectedRoute>
                     <Admin />

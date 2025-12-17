@@ -2,12 +2,16 @@ import { useParams, Link } from 'react-router-dom';
 import { useChampionship } from '../context/ChampionshipContext';
 
 const DriverProfile = () => {
-    const { driverId } = useParams();
-    const { championshipData } = useChampionship();
-    const driver = championshipData.drivers.find(d => d.id === parseInt(driverId));
+    const { id: driverId } = useParams();
+    const { championshipData, loading } = useChampionship();
+    const driver = championshipData.drivers.find(d => String(d.id) === String(driverId));
+
+    if (loading) {
+        return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading Driver Profile...</div>;
+    }
 
     if (!driver) {
-        return <div>Driver not found</div>;
+        return <div style={{ padding: '2rem', textAlign: 'center' }}>Driver not found (ID: {driverId})</div>;
     }
 
     // Calculate championship position

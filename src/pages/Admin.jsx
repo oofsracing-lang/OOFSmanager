@@ -122,10 +122,30 @@ const Admin = () => {
                     }
 
                     // Import Logic
-                    const maxId = championshipData.races.length > 0 ? Math.max(...championshipData.races.map(r => r.id)) : 0;
-                    const raceIdToUse = maxId + 1;
+                    // Smart Match Logic
+                    const xmlTrack = result.trackName || '';
+                    const normalize = (str) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
 
-                    console.log("Importing to Race ID:", raceIdToUse);
+                    // Look for a scheduled race (incomplete) that matches the XML track name
+                    const matchingRace = championshipData.races.find(r => {
+                        // Only look at future/current races, or races deemed "Scheduled"
+                        // Simple check: Is the name similar?
+                        const dbTrack = normalize(r.track);
+                        const fileTrack = normalize(xmlTrack);
+                        return dbTrack.includes(fileTrack) || fileTrack.includes(dbTrack);
+                    });
+
+                    let raceIdToUse;
+                    if (matchingRace) {
+                        console.log("Smart Match Found! Latching to:", matchingRace.track, "(ID:", matchingRace.id, ")");
+                        raceIdToUse = matchingRace.id;
+                    } else {
+                        const maxId = championshipData.races.length > 0 ? Math.max(...championshipData.races.map(r => r.id)) : 0;
+                        raceIdToUse = maxId + 1;
+                        console.log("No match found. Creating new Round:", raceIdToUse);
+                    }
+
+                    console.log("Final Import Target ID:", raceIdToUse);
 
                     // Update Context
                     importRaceResults(raceIdToUse, result.results, {

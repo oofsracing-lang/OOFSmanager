@@ -75,6 +75,7 @@ const Dashboard = () => {
                                 <div key={race.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <div>
                                         <div style={{ fontWeight: 'bold' }}>{race.name}</div>
+                                        <div style={{ fontSize: '0.9rem', marginBottom: '0.25rem' }}>{race.track}</div>
                                         <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                                             {new Date(race.date).toLocaleDateString()}
                                         </div>

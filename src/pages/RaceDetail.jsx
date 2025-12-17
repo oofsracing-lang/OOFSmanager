@@ -149,7 +149,7 @@ const RaceDetail = () => {
                                         <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--primary)' }}>
                                             <th style={{ padding: '0.75rem 0.5rem' }}>Pos</th>
                                             <th style={{ padding: '0.75rem 0.5rem' }}>Driver</th>
-                                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Time / Status</th>
+                                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Status</th>
                                             <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Points</th>
                                             <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Ballast Δ</th>
                                         </tr>
@@ -165,14 +165,16 @@ const RaceDetail = () => {
                                                 </td>
                                                 <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>
                                                     <span style={{
-                                                        color: driver.raceResult.attendance === 'Raced' ? 'var(--text-muted)' : 'var(--warning)',
+                                                        color: driver.raceResult.laps === 0 ? 'var(--text-muted)' : (driver.raceResult.attendance === 'Raced' ? 'var(--text-muted)' : 'var(--warning)'),
                                                         fontSize: '0.85rem'
                                                     }}>
-                                                        {driver.raceResult.attendance === 'Raced' ?
-                                                            (driver.raceResult.totalPenalty ?
-                                                                <span>Finished <span style={{ color: 'var(--danger)', fontSize: '0.7em' }}>(+{driver.raceResult.totalPenalty}s)</span></span>
-                                                                : "Finished")
-                                                            : driver.raceResult.attendance}
+                                                        {driver.raceResult.laps === 0 ? "DNS" :
+                                                            (driver.raceResult.attendance === 'Raced' ?
+                                                                (driver.raceResult.totalPenalty ?
+                                                                    <span>Finished <span style={{ color: 'var(--danger)', fontSize: '0.7em' }}>(+{driver.raceResult.totalPenalty}s)</span></span>
+                                                                    : "Finished")
+                                                                : driver.raceResult.attendance)
+                                                        }
                                                     </span>
                                                 </td>
                                                 <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', fontWeight: 'bold', color: 'var(--success)' }}>
@@ -201,7 +203,7 @@ const RaceDetail = () => {
                                         <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--primary)' }}>
                                             <th style={{ padding: '0.75rem 0.5rem' }}>Pos</th>
                                             <th style={{ padding: '0.75rem 0.5rem' }}>Driver</th>
-                                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Time / Status</th>
+                                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Status</th>
                                             <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Points</th>
                                             <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Ballast Δ</th>
                                         </tr>
@@ -217,16 +219,16 @@ const RaceDetail = () => {
                                                 </td>
                                                 <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>
                                                     <span style={{
-                                                        color: driver.raceResult.attendance === 'Raced' ? 'var(--text-muted)' : 'var(--warning)',
+                                                        color: driver.raceResult.laps === 0 ? 'var(--text-muted)' : (driver.raceResult.attendance === 'Raced' ? 'var(--text-muted)' : 'var(--warning)'),
                                                         fontSize: '0.85rem'
                                                     }}>
-                                                        {driver.raceResult.attendance === 'Raced' ?
-                                                            (driver.raceResult.finalTime ?
+                                                        {driver.raceResult.laps === 0 ? "DNS" :
+                                                            (driver.raceResult.attendance === 'Raced' ?
                                                                 (driver.raceResult.totalPenalty ?
-                                                                    <span>{(driver.raceResult.finalTime % 60).toFixed(3)} s <span style={{ color: 'var(--danger)', fontSize: '0.7em' }}>(+{driver.raceResult.totalPenalty}s)</span></span>
+                                                                    <span>Finished <span style={{ color: 'var(--danger)', fontSize: '0.7em' }}>(+{driver.raceResult.totalPenalty}s)</span></span>
                                                                     : "Finished")
-                                                                : "Finished")
-                                                            : driver.raceResult.attendance}
+                                                                : driver.raceResult.attendance)
+                                                        }
                                                     </span>
                                                 </td>
                                                 <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', fontWeight: 'bold', color: 'var(--success)' }}>
