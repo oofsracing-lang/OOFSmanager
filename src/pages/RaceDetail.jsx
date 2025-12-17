@@ -2,12 +2,16 @@ import { useParams, Link } from 'react-router-dom';
 import { useChampionship } from '../context/ChampionshipContext';
 
 const RaceDetail = () => {
-    const { raceId } = useParams();
-    const { championshipData } = useChampionship();
-    const race = championshipData.races.find(r => r.id === parseInt(raceId));
+    const { id: raceId } = useParams();
+    const { championshipData, loading } = useChampionship();
+    const race = championshipData.races.find(r => String(r.id) === String(raceId));
+
+    if (loading) {
+        return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading Race Data...</div>;
+    }
 
     if (!race) {
-        return <div>Race not found</div>;
+        return <div style={{ padding: '2rem', textAlign: 'center' }}>Race not found (ID: {raceId})</div>;
     }
 
     const isCompleted = race.id <= championshipData.currentRound;
@@ -63,12 +67,12 @@ const RaceDetail = () => {
     const getClassResults = (className) => {
         return championshipData.drivers
             .filter(d => {
-                const r = d.raceResults.find(res => res.raceId === race.id);
+                const r = d.raceResults.find(res => String(res.raceId) === String(race.id));
                 if (!r) return false; // Must have participated
                 return (r.drivenClass || d.class) === className;
             })
             .map(driver => {
-                const raceResult = driver.raceResults.find(r => r.raceId === race.id);
+                const raceResult = driver.raceResults.find(r => String(r.raceId) === String(race.id));
                 // The results in championshipData from context are already updated with final positions, points, specific to this race/penalty state.
 
                 if (!raceResult) return null;

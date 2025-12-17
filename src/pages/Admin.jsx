@@ -1,10 +1,11 @@
 import { useState, useRef } from 'react';
 import { useChampionship } from '../context/ChampionshipContext';
 import { parseRaceXml } from '../utils/raceParser';
+import { uploadXmlBackup } from '../firebase/db';
 
 const Admin = () => {
     const [selectedRace, setSelectedRace] = useState(null);
-    const { championshipData, updatePenalty, updateManualPosition, importRaceResults, addRound, deleteRound, resetSeasonData, exportSeasonData } = useChampionship();
+    const { championshipData, currentSeasonId, updatePenalty, updateManualPosition, importRaceResults, addRound, deleteRound, resetSeasonData, exportSeasonData } = useChampionship();
 
     // Export Modal State
     const [showExport, setShowExport] = useState(false);
@@ -96,6 +97,17 @@ const Admin = () => {
             console.log("File selected:", file.name);
 
             if (file.name.toLowerCase().endsWith('.xml')) {
+                // 1. Upload Backup first (if it fails, we warn but probably proceed?)
+                // Actually, let's try upload, if fails, just log it.
+                try {
+                    console.log("Attempting backup upload for Season:", currentSeasonId);
+                    await uploadXmlBackup(file, currentSeasonId);
+                } catch (uploadErr) {
+                    console.error("Backup Upload Failed:", uploadErr);
+                    // Non-blocking warning?
+                    alert("Warning: Automatic cloud backup failed (check console). Importing data locally anyway.");
+                }
+
                 const text = await file.text();
                 try {
                     const result = parseRaceXml(text);

@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { seasons, latestSeason } from '../data';
 import { parseTime, BALLAST_SYSTEM } from '../utils/raceLogic';
+import { subscribeToSeason, saveSeasonData, updateSeasonFields } from '../firebase/db';
+import { useAuth } from './AuthContext';
 
 const ChampionshipContext = createContext(null);
 
@@ -12,80 +14,54 @@ export const ChampionshipProvider = ({ children }) => {
     const [loading, setLoading] = useState(false); // Fix: Add missing loading state
 
     // Base Data State (Persistence per season)
-    const [seasonData, setSeasonData] = useState(() => {
-        const key = `srm_data_s${currentSeasonId}`;
-        const saved = localStorage.getItem(key);
-        // Fallback to static initial data if no save exists
-        return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(seasons[currentSeasonId] || latestSeason));
-    });
+    const [seasonData, setSeasonData] = useState(null); // Init null, wait for DB
+    const [penalties, setPenalties] = useState({});
+    const [manualPositions, setManualPositions] = useState({});
 
-    // When season changes, load that season's data (saved or default)
+    // Auth for writing permissions
+    const { currentUser } = useAuth();
+
+    // Firestore Subscription
     useEffect(() => {
-        const key = `srm_data_s${currentSeasonId}`;
-        const saved = localStorage.getItem(key);
-        if (saved) {
-            setSeasonData(JSON.parse(saved));
-        } else {
-            // Load default from file
-            setSeasonData(JSON.parse(JSON.stringify(seasons[currentSeasonId] || latestSeason)));
-        }
+        setLoading(true);
+        // Subscribe to the season document
+        const unsubscribe = subscribeToSeason(currentSeasonId, (data, isLoading) => {
+            if (data) {
+                // If data exists in cloud, use it
+                setSeasonData(data);
+                setPenalties(data.penalties || {});
+                setManualPositions(data.manualPositions || {});
+            } else {
+                // If no data (new season), falling back to local defaults for now
+                // Ideally we should CREATE the doc in cloud if it doesn't exist?
+                // For safety: Load default, but DON'T save it automatically unless user triggers an action?
+                // Or just show "No Data" until Admin Inits?
+                // Let's load the static file as fallback for VIEWING, but if Admin, we might save it.
+                // Simplified: Load static default.
+                const defaultData = JSON.parse(JSON.stringify(seasons[currentSeasonId] || latestSeason));
+                setSeasonData(defaultData);
+                setPenalties(defaultData.penalties || {});
+                setManualPositions(defaultData.manualPositions || {});
+            }
+            setLoading(isLoading);
+        });
+
+        return () => unsubscribe();
     }, [currentSeasonId]);
 
-    // Persist data whenever it changes
-    useEffect(() => {
-        const key = `srm_data_s${currentSeasonId}`;
-        localStorage.setItem(key, JSON.stringify(seasonData));
-    }, [seasonData, currentSeasonId]);
+    // Helpers to save data to cloud (Only if Admin)
+    const saveToCloud = async (newData, newPenalties, newManualPositions) => {
+        if (!currentUser) return; // Only allow writes if logged in
 
-    // Load penalties for the CURRENT season
-    const [penalties, setPenalties] = useState(() => {
-        const saved = localStorage.getItem(`srm_penalties_s${currentSeasonId}`);
-        // Fallback: Check if the loaded default seasonData has penalties baked in
-        if (!saved && seasons[currentSeasonId]?.penalties) return seasons[currentSeasonId].penalties;
-        return saved ? JSON.parse(saved) : {};
-    });
+        const payload = {
+            ...newData,
+            penalties: newPenalties || penalties,
+            manualPositions: newManualPositions || manualPositions
+        };
 
-    // When season changes, we need to load that season's penalties.
-    useEffect(() => {
-        const saved = localStorage.getItem(`srm_penalties_s${currentSeasonId}`);
-        // Fix: Fallback to baked-in data if localStorage is empty
-        const defaultData = seasons[currentSeasonId] || latestSeason;
-        setPenalties(saved ? JSON.parse(saved) : (defaultData.penalties || {}));
-    }, [currentSeasonId]);
+        await saveSeasonData(currentSeasonId, payload);
+    };
 
-    // Save penalties when they change
-    useEffect(() => {
-        localStorage.setItem(`srm_penalties_s${currentSeasonId}`, JSON.stringify(penalties));
-    }, [penalties, currentSeasonId]);
-
-    // State for manual position overrides (forcing rank)
-    const [manualPositions, setManualPositions] = useState(() => {
-        try {
-            const key = `srm_manual_positions_s${currentSeasonId}`;
-            const saved = localStorage.getItem(key);
-            // Fallback: Check if baked into seasonData
-            if (!saved && seasons[currentSeasonId]?.manualPositions) return seasons[currentSeasonId].manualPositions;
-            return saved ? JSON.parse(saved) : {};
-        } catch (e) {
-            console.error("Failed to load manual positions", e);
-            return {};
-        }
-    });
-
-    // When season changes, we need to load that season's manual positions.
-    useEffect(() => {
-        const key = `srm_manual_positions_s${currentSeasonId}`;
-        const saved = localStorage.getItem(key);
-        // Fix: Fallback to baked-in data if localStorage is empty
-        const defaultData = seasons[currentSeasonId] || latestSeason;
-        setManualPositions(saved ? JSON.parse(saved) : (defaultData.manualPositions || {}));
-    }, [currentSeasonId]);
-
-    // Save manual positions when they change
-    useEffect(() => {
-        const key = `srm_manual_positions_s${currentSeasonId}`;
-        localStorage.setItem(key, JSON.stringify(manualPositions));
-    }, [manualPositions, currentSeasonId]);
 
     // Season Switching
     const changeSeason = (id) => {
@@ -100,221 +76,234 @@ export const ChampionshipProvider = ({ children }) => {
     }));
 
     const updatePenalty = (driverId, raceId, seconds) => {
+        if (!currentUser) return;
         const key = `${raceId}-${driverId}`;
-        setPenalties(prev => {
-            const next = { ...prev };
-            if (seconds === 0 || seconds === null) {
-                delete next[key];
-            } else {
-                next[key] = seconds;
-            }
-            return next;
-        });
+        const nextPenalties = { ...penalties };
+
+        if (seconds === 0 || seconds === null) {
+            delete nextPenalties[key];
+        } else {
+            nextPenalties[key] = seconds;
+        }
+
+        // Optimistic Update
+        setPenalties(nextPenalties);
+
+        // Cloud Save (Just the fields ideally, but saving full season is safer for consistency for now)
+        // Or use specific field update
+        updateSeasonFields(currentSeasonId, { penalties: nextPenalties });
     };
 
     const updateManualPosition = (driverId, raceId, position) => {
+        if (!currentUser) return;
         const key = `${raceId}-${driverId}`;
-        setManualPositions(prev => {
-            const next = { ...prev };
-            const parsedPosition = parseInt(position);
-            if (parsedPosition === 0 || isNaN(parsedPosition)) { // 0 or invalid means no override
-                delete next[key];
-            } else {
-                next[key] = parsedPosition;
-            }
-            return next;
-        });
+        const nextManualPositions = { ...manualPositions };
+        const parsedPosition = parseInt(position);
+
+        if (parsedPosition === 0 || isNaN(parsedPosition)) {
+            delete nextManualPositions[key];
+        } else {
+            nextManualPositions[key] = parsedPosition;
+        }
+
+        // Optimistic
+        setManualPositions(nextManualPositions);
+        updateSeasonFields(currentSeasonId, { manualPositions: nextManualPositions });
     };
 
     const addRound = (raceName, raceDate) => {
-        setSeasonData(prev => {
-            const next = JSON.parse(JSON.stringify(prev));
-            const newId = next.races.length > 0 ? Math.max(...next.races.map(r => r.id)) + 1 : 1;
-            next.races.push({
-                id: newId,
-                name: `Round ${newId}`,
-                track: raceName || 'Unknown Track',
-                date: raceDate || new Date().toISOString().split('T')[0],
-                status: 'Scheduled'
-            });
-            next.totalRounds = next.races.length;
-            return next;
+        if (!currentUser) return;
+
+        const nextSeasonData = JSON.parse(JSON.stringify(seasonData));
+        const newId = nextSeasonData.races.length > 0 ? Math.max(...nextSeasonData.races.map(r => r.id)) + 1 : 1;
+
+        nextSeasonData.races.push({
+            id: newId,
+            name: `Round ${newId}`,
+            track: raceName || 'Unknown Track',
+            date: raceDate || new Date().toISOString().split('T')[0],
+            status: 'Scheduled'
         });
+        nextSeasonData.totalRounds = nextSeasonData.races.length;
+
+        // Save Full Object
+        saveSeasonData(currentSeasonId, nextSeasonData);
     };
 
     const deleteRound = (raceId) => {
+        if (!currentUser) return;
         console.log("Deleting Round ID:", raceId);
 
-        setSeasonData(prev => {
-            try {
-                const next = JSON.parse(JSON.stringify(prev));
+        try {
+            const next = JSON.parse(JSON.stringify(seasonData));
 
-                // Remove Race
-                const initialCount = next.races.length;
-                next.races = next.races.filter(r => String(r.id) !== String(raceId));
-                console.log(`Races: ${initialCount} -> ${next.races.length}`);
+            // Remove Race
+            const initialCount = next.races.length;
+            next.races = next.races.filter(r => String(r.id) !== String(raceId));
+            console.log(`Races: ${initialCount} -> ${next.races.length}`);
 
-                next.totalRounds = next.races.length;
+            next.totalRounds = next.races.length;
 
-                // Remove associated results from all drivers
-                if (next.drivers && Array.isArray(next.drivers)) {
-                    next.drivers.forEach(driver => {
-                        if (driver.raceResults && Array.isArray(driver.raceResults)) {
-                            driver.raceResults = driver.raceResults.filter(r => String(r.raceId) !== String(raceId));
-                        }
-                    });
-                }
-
-                // Adjust current round
-                if (next.currentRound >= raceId && next.currentRound > 0) {
-                    const remainingIds = next.races.map(r => r.id);
-                    if (remainingIds.length > 0) {
-                        next.currentRound = Math.max(...remainingIds.filter(id => id < next.currentRound), 0) || Math.min(...remainingIds);
-                    } else {
-                        next.currentRound = 0;
+            // Remove associated results from all drivers
+            if (next.drivers && Array.isArray(next.drivers)) {
+                next.drivers.forEach(driver => {
+                    if (driver.raceResults && Array.isArray(driver.raceResults)) {
+                        driver.raceResults = driver.raceResults.filter(r => String(r.raceId) !== String(raceId));
                     }
-                }
-
-                return next;
-            } catch (err) {
-                console.error("Critical Error in deleteRound:", err);
-                return prev; // Fallback
+                });
             }
-        });
+
+            // Adjust current round
+            if (next.currentRound >= raceId && next.currentRound > 0) {
+                const remainingIds = next.races.map(r => r.id);
+                if (remainingIds.length > 0) {
+                    next.currentRound = Math.max(...remainingIds.filter(id => id < next.currentRound), 0) || Math.min(...remainingIds);
+                } else {
+                    next.currentRound = 0;
+                }
+            }
+
+            saveSeasonData(currentSeasonId, next);
+
+        } catch (err) {
+            console.error("Critical Error in deleteRound:", err);
+        }
     };
 
     const importRaceResults = (raceId, parsedResults, raceInfo = {}) => {
+        if (!currentUser) return; // Secure
+
         console.log("Importing Results:", { raceId, count: parsedResults.length, raceInfo });
-        setSeasonData(prevData => {
-            // Deep clone to avoid mutation
-            const newData = JSON.parse(JSON.stringify(prevData));
 
-            // 0. Update/Add Race Metadata
-            let raceIdToUse = raceId;
-            let existingRaceIndex = -1;
+        // Deep clone to avoid mutation
+        const newData = JSON.parse(JSON.stringify(seasonData));
 
-            // Smart Match: Try to find an existing race with minimal name matching
-            if (raceInfo && raceInfo.trackName) {
-                const normalizedImportTrack = raceInfo.trackName.toLowerCase().replace(/[^a-z0-9]/g, '');
+        // 0. Update/Add Race Metadata
+        let raceIdToUse = raceId;
+        let existingRaceIndex = -1;
 
-                existingRaceIndex = newData.races.findIndex(r => {
-                    const normalizedScheduleTrack = r.track.toLowerCase().replace(/[^a-z0-9]/g, '');
-                    // Check if one contains the other (e.g., "Silverstone" in "Silverstone Circuit" or vice versa)
-                    // Also check strict date match if available? No, dates often shift.
-                    return normalizedScheduleTrack.includes(normalizedImportTrack) || normalizedImportTrack.includes(normalizedScheduleTrack);
-                });
+        // Smart Match: Try to find an existing race with minimal name matching
+        if (raceInfo && raceInfo.trackName) {
+            const normalizedImportTrack = raceInfo.trackName.toLowerCase().replace(/[^a-z0-9]/g, '');
 
-                if (existingRaceIndex !== -1) {
-                    raceIdToUse = newData.races[existingRaceIndex].id;
-                    console.log(`Matched import ${raceInfo.trackName} to existing Round ${raceIdToUse} (${newData.races[existingRaceIndex].track})`);
-                }
-            }
-
-            // Fallback: If passed raceId was just "next available" but we found a match, use the match.
-            // If we didn't find a match, we use the passed raceId (which Admin.jsx calculated as max+1).
-            if (existingRaceIndex === -1 && raceId === newData.races.length + 1) {
-                // Confirm we are appending
-                existingRaceIndex = -1;
-            } else if (existingRaceIndex !== -1) {
-                // If we matched, ensure we update THAT race, not append a new one
-                // But wait, key logic is: if we matched, we use matched ID.
-            }
-
-            let raceDate = new Date().toISOString().split('T')[0];
-            try {
-                if (raceInfo && raceInfo.raceDate) {
-                    const parsedTimestamp = parseInt(raceInfo.raceDate);
-                    if (!isNaN(parsedTimestamp)) {
-                        raceDate = new Date(parsedTimestamp * 1000).toISOString().split('T')[0];
-                    }
-                }
-            } catch (err) {
-                console.error("Date parsing failed", err);
-            }
-
-            if (existingRaceIndex !== -1) {
-                // Update existing
-                newData.races[existingRaceIndex] = {
-                    ...newData.races[existingRaceIndex],
-                    // Don't overwrite track name from schedule with XML name unless explicitly desired. 
-                    // Usually schedule names are "cleaner". Let's keep schedule name but update date.
-                    date: raceDate,
-                    status: 'Completed'
-                };
-            } else {
-                // Add new
-                newData.races.push({
-                    id: raceIdToUse,
-                    name: `Round ${raceIdToUse}`,
-                    track: raceInfo.trackName || 'Unknown Track',
-                    date: raceDate,
-                    status: 'Completed'
-                });
-            }
-
-            // Update Current Round
-            if (raceIdToUse > newData.currentRound) {
-                newData.currentRound = raceIdToUse;
-            }
-
-            // 1. Process parsed results
-            parsedResults.forEach(pResult => {
-                // Find or Create Driver
-                let driver = newData.drivers.find(d => d.name === pResult.name);
-
-                // Better Class Mapping
-                let determinedClass = 'LMGT3'; // Default
-                const rawClass = (pResult.carClass || '').toUpperCase();
-                // Check for generic LMP2 indicators
-                if (rawClass.includes('LMP2') || rawClass.includes('P2') || rawClass.includes('ORECA')) {
-                    determinedClass = 'LMP2';
-                }
-
-                if (!driver) {
-                    const newId = newData.drivers.length > 0 ? Math.max(...newData.drivers.map(d => d.id)) + 1 : 1;
-                    driver = {
-                        id: newId,
-                        name: pResult.name,
-                        team: pResult.team,
-                        car: pResult.car,
-                        class: determinedClass,
-                        raceResults: []
-                    };
-                    newData.drivers.push(driver);
-                } else {
-                    // Update class if needed (e.g. driver switched cars)
-                    // Or keep sticky? Usually good to update if it's the latest race.
-                    // Let's trust the XML for the current state.
-                    driver.class = determinedClass;
-                }
-
-                // Create Result Object
-                const raceResult = {
-                    raceId: Number(raceIdToUse), // Enforce Number
-                    position: Number(pResult.position),
-                    classPosition: Number(pResult.classPosition),
-                    laps: Number(pResult.laps),
-                    finishTime: parseTime(String(pResult.totalTime)),
-                    bestLap: pResult.bestLap,
-                    status: pResult.status || 'Finished',
-                    attendance: 'Raced',
-                    drivenClass: determinedClass, // Store the class driven in this specific race
-                    points: 0,
-                    ballastChange: 0, // Init explicit
-                    effectiveBallastChange: 0
-                };
-
-                // Update or Add Result
-                const existingResultIndex = driver.raceResults.findIndex(r => String(r.raceId) === String(raceIdToUse));
-                if (existingResultIndex !== -1) {
-                    driver.raceResults[existingResultIndex] = { ...driver.raceResults[existingResultIndex], ...raceResult };
-                } else {
-                    driver.raceResults.push(raceResult);
-                }
+            existingRaceIndex = newData.races.findIndex(r => {
+                const normalizedScheduleTrack = r.track.toLowerCase().replace(/[^a-z0-9]/g, '');
+                // Check if one contains the other (e.g., "Silverstone" in "Silverstone Circuit" or vice versa)
+                // Also check strict date match if available? No, dates often shift.
+                return normalizedScheduleTrack.includes(normalizedImportTrack) || normalizedImportTrack.includes(normalizedScheduleTrack);
             });
 
-            return newData;
+            if (existingRaceIndex !== -1) {
+                raceIdToUse = newData.races[existingRaceIndex].id;
+                console.log(`Matched import ${raceInfo.trackName} to existing Round ${raceIdToUse} (${newData.races[existingRaceIndex].track})`);
+            }
+        }
+
+        // Fallback: If passed raceId was just "next available" but we found a match, use the match.
+        // If we didn't find a match, we use the passed raceId (which Admin.jsx calculated as max+1).
+        if (existingRaceIndex === -1 && raceId === newData.races.length + 1) {
+            // Confirm we are appending
+            existingRaceIndex = -1;
+        } else if (existingRaceIndex !== -1) {
+            // If we matched, ensure we update THAT race, not append a new one
+            // But wait, key logic is: if we matched, we use matched ID.
+        }
+
+        let raceDate = new Date().toISOString().split('T')[0];
+        try {
+            if (raceInfo && raceInfo.raceDate) {
+                const parsedTimestamp = parseInt(raceInfo.raceDate);
+                if (!isNaN(parsedTimestamp)) {
+                    raceDate = new Date(parsedTimestamp * 1000).toISOString().split('T')[0];
+                }
+            }
+        } catch (err) {
+            console.error("Date parsing failed", err);
+        }
+
+        if (existingRaceIndex !== -1) {
+            // Update existing
+            newData.races[existingRaceIndex] = {
+                ...newData.races[existingRaceIndex],
+                // Don't overwrite track name from schedule with XML name unless explicitly desired. 
+                // Usually schedule names are "cleaner". Let's keep schedule name but update date.
+                date: raceDate,
+                status: 'Completed'
+            };
+        } else {
+            // Add new
+            newData.races.push({
+                id: raceIdToUse,
+                name: `Round ${raceIdToUse}`,
+                track: raceInfo.trackName || 'Unknown Track',
+                date: raceDate,
+                status: 'Completed'
+            });
+        }
+
+        // Update Current Round
+        if (raceIdToUse > newData.currentRound) {
+            newData.currentRound = raceIdToUse;
+        }
+
+        // 1. Process parsed results
+        parsedResults.forEach(pResult => {
+            // Find or Create Driver
+            let driver = newData.drivers.find(d => d.name === pResult.name);
+
+            // Better Class Mapping
+            let determinedClass = 'LMGT3'; // Default
+            const rawClass = (pResult.carClass || '').toUpperCase();
+            // Check for generic LMP2 indicators
+            if (rawClass.includes('LMP2') || rawClass.includes('P2') || rawClass.includes('ORECA')) {
+                determinedClass = 'LMP2';
+            }
+
+            if (!driver) {
+                const newId = newData.drivers.length > 0 ? Math.max(...newData.drivers.map(d => d.id)) + 1 : 1;
+                driver = {
+                    id: newId,
+                    name: pResult.name || 'Unknown Driver',
+                    team: pResult.team || '',
+                    car: pResult.car || '',
+                    class: determinedClass,
+                    raceResults: []
+                };
+                newData.drivers.push(driver);
+            } else {
+                // Update class if needed (e.g. driver switched cars)
+                // Or keep sticky? Usually good to update if it's the latest race.
+                // Let's trust the XML for the current state.
+                driver.class = determinedClass;
+            }
+
+            // Create Result Object
+            const raceResult = {
+                raceId: Number(raceIdToUse), // Enforce Number
+                position: Number(pResult.position) || 0,
+                classPosition: Number(pResult.classPosition) || 0,
+                laps: Number(pResult.laps) || 0,
+                finishTime: parseTime(String(pResult.totalTime)) || null,
+                bestLap: pResult.bestLap || null,
+                status: pResult.status || 'Finished',
+                attendance: 'Raced',
+                drivenClass: determinedClass, // Store the class driven in this specific race
+                points: 0,
+                ballastChange: 0, // Init explicit
+                effectiveBallastChange: 0
+            };
+
+            // Update or Add Result
+            const existingResultIndex = driver.raceResults.findIndex(r => String(r.raceId) === String(raceIdToUse));
+            if (existingResultIndex !== -1) {
+                driver.raceResults[existingResultIndex] = { ...driver.raceResults[existingResultIndex], ...raceResult };
+            } else {
+                driver.raceResults.push(raceResult);
+            }
         });
+
+        // Save to Cloud
+        saveSeasonData(currentSeasonId, newData);
     };
 
     // Derived State (Calculations)
@@ -381,9 +370,21 @@ export const ChampionshipProvider = ({ children }) => {
 
                         if (rA.laps !== rB.laps) return rB.laps - rA.laps;
 
-                        // Hybrid Logic: Trust XML Position if NO penalties are involved.
+                        // Hybrid Logic: Trust XML Position if NO penalties are involved OR if both are DNFs.
+                        // If both are DNF (originalTime >= 900000), we trust the specific finishing order from the game/XML.
+                        // Adding 15s to "DNF" doesn't make you "more DNF", so we shouldn't change the order.
                         const hasPenaltyA = (rA.totalPenalty || 0) > 0;
                         const hasPenaltyB = (rB.totalPenalty || 0) > 0;
+
+                        const isDnfA = rA.originalTime >= 900000;
+                        const isDnfB = rB.originalTime >= 900000;
+
+                        if (isDnfA && isDnfB) {
+                            // Both DNF: Honor original order regardless of penalty
+                            const posA = rA.classPosition || rA.position || 0;
+                            const posB = rB.classPosition || rB.position || 0;
+                            return posA - posB;
+                        }
 
                         if (!hasPenaltyA && !hasPenaltyB) {
                             // If neither driver has a manual penalty, prioritize the source XML position
@@ -536,24 +537,13 @@ export const ChampionshipProvider = ({ children }) => {
     }, [penalties, manualPositions, seasonData]);
 
     const resetSeasonData = () => {
-        console.log("executing resetSeasonData - NUCLEAR WIPE");
+        if (!currentUser) return;
+        console.log("executing resetSeasonData - CLOUD WIPE");
 
-        // 1. Clear Key State Variables
-        setSeasonData(null);
-        setPenalties({});
-        setManualPositions({});
-
-        // 2. Clear LocalStorage Explicitly for ALL SRM keys
-        const keys = Object.keys(localStorage);
-        keys.forEach(k => {
-            if (k.startsWith('srm_')) {
-                console.log("Removing:", k);
-                localStorage.removeItem(k);
-            }
-        });
-
-        // 3. Force Reload to re-initialize fresh from file Defaults
-        window.location.reload();
+        // Overwrite cloud with default
+        const defaultData = JSON.parse(JSON.stringify(seasons[currentSeasonId] || latestSeason));
+        saveSeasonData(currentSeasonId, defaultData);
+        // Note: We don't need to reload window anymore, the subscription will update the UI
     };
 
     const exportSeasonData = () => {
