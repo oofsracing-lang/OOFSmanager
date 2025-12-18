@@ -331,7 +331,7 @@ export const ChampionshipProvider = ({ children }) => {
         console.log("Calculated processedData running (LOCAL FALLBACK)...");
         // Guard Clause: Prevent crash if data is missing/corrupt
         if (!seasonData || !seasonData.races || !seasonData.drivers) {
-            console.error("Missing seasonData in useMemo", seasonData);
+            // console.debug("Waiting for seasonData...");
             return {
                 season: 'Error',
                 races: [],
