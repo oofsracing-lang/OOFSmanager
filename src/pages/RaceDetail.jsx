@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useChampionship } from '../context/ChampionshipContext';
 import { formatDriverName } from '../utils/formatting';
 
+
 const RaceDetail = () => {
     const { id: raceId } = useParams();
     const { championshipData, loading } = useChampionship();
@@ -141,6 +142,8 @@ const RaceDetail = () => {
                     </div>
                 ) : (
                     <>
+
+
                         {/* LMP2 Results */}
                         <div style={{ marginBottom: '3rem' }}>
                             <h3 style={{ marginBottom: '1rem', color: 'var(--primary)' }}>LMP2-UR Results</h3>

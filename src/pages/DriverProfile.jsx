@@ -25,6 +25,42 @@ const DriverProfile = () => {
     // Calculate statistics
     const racesCompleted = driver.raceResults.filter(r => r.attendance === 'Raced').length;
 
+    // New Stats Calculations
+    const totalLaps = driver.raceResults.reduce((acc, r) => acc + (r.laps || 0), 0);
+    const totalPurpleSectors = driver.raceResults.reduce((acc, r) => acc + (r.purpleSectors || 0), 0);
+    const totalIncidents = driver.raceResults.reduce((acc, r) => acc + (r.incidents || 0), 0);
+    const totalPenalties = driver.raceResults.reduce((acc, r) => acc + (r.penaltyCount || 0), 0);
+
+    // Calculate "Fastest Lap" awards
+    let fastestLapsCount = 0;
+    driver.raceResults.forEach(myResult => {
+        if (!myResult.bestLap || myResult.attendance !== 'Raced') return; // No lap time
+
+        // Convert my lap to seconds for comparison
+        const parseLap = (input) => {
+            if (!input) return 999999;
+            const str = String(input);
+            const parts = str.split(':');
+            if (parts.length === 2) return parseFloat(parts[0]) * 60 + parseFloat(parts[1]);
+            return parseFloat(str);
+        };
+        const myTime = parseLap(myResult.bestLap);
+
+        // Check against all other drivers in the same race AND SAME CLASS
+        let isFastest = true;
+        championshipData.drivers.forEach(otherDriver => {
+            if (otherDriver.class !== driver.class) return; // Only compare within class
+            const otherResult = otherDriver.raceResults.find(r => String(r.raceId) === String(myResult.raceId));
+            if (otherResult && otherResult.bestLap) {
+                const otherTime = parseLap(otherResult.bestLap);
+                if (otherTime < myTime) isFastest = false;
+            }
+        });
+
+        if (isFastest) fastestLapsCount++;
+    });
+
+
     // Use points from the calculated context, which are already updated
     // Calculate Best Result (Position)
     const racedResults = driver.raceResults.filter(r => r.attendance === 'Raced');
@@ -82,21 +118,21 @@ const DriverProfile = () => {
                 </div>
 
                 {/* Stats Grid */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
                     <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
-                        <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Championship Position</h4>
-                        <p className="text-primary" style={{ fontSize: '2rem', fontWeight: 'bold' }}>P{championshipPosition}</p>
+                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Champ Pos</h4>
+                        <p className="text-primary" style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>P{championshipPosition}</p>
                     </div>
 
                     <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
-                        <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Total Points</h4>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--success)' }}>{driver.totalPoints}</p>
+                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Points</h4>
+                        <p style={{ fontSize: '1.8rem', fontWeight: 'bold', color: 'var(--success)' }}>{driver.totalPoints}</p>
                     </div>
 
                     <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
-                        <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Current Ballast</h4>
+                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Ballast</h4>
                         <p style={{
-                            fontSize: '2rem',
+                            fontSize: '1.8rem',
                             fontWeight: 'bold',
                             color: driver.currentBallast > 0 ? 'var(--warning)' : 'var(--text-main)'
                         }}>
@@ -105,18 +141,23 @@ const DriverProfile = () => {
                     </div>
 
                     <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
-                        <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Races Completed</h4>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold' }}>{racesCompleted}</p>
+                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Starts</h4>
+                        <p style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>{racesCompleted}</p>
                     </div>
 
                     <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
-                        <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Best Result</h4>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--success)' }}>{bestPosition}</p>
+                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Total Laps</h4>
+                        <p style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>{totalLaps}</p>
                     </div>
 
                     <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
-                        <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Avg Points/Race</h4>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold' }}>{avgPoints}</p>
+                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Purple Sectors</h4>
+                        <p style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#a855f7' }}>{totalPurpleSectors}</p>
+                    </div>
+
+                    <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Fastest Laps</h4>
+                        <p style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#eab308' }}>{fastestLapsCount}</p>
                     </div>
                 </div>
 
@@ -130,9 +171,9 @@ const DriverProfile = () => {
                                     <th style={{ padding: '0.75rem 0.5rem' }}>Round</th>
                                     <th style={{ padding: '0.75rem 0.5rem' }}>Race</th>
                                     <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Pos</th>
-                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Status</th>
                                     <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Points</th>
-                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Ballast Δ</th>
+                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Ballast</th>
+                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Best Lap</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -161,6 +202,21 @@ const DriverProfile = () => {
 
                                         // Update running ballast for next iteration
                                         runningBallast += effectiveChange;
+
+                                        // Formatter for Best Lap (Raw Seconds -> mm:ss.ssss)
+                                        const formatBestLap = (val) => {
+                                            if (!val || val === '-' || val === -1) return '-';
+                                            const sec = parseFloat(val);
+                                            if (isNaN(sec)) return val; // Raw string if parse fails (e.g. "1:20.1")
+
+                                            // 85.123 -> 1:25.1230
+                                            const mins = Math.floor(sec / 60);
+                                            const remSec = (sec % 60).toFixed(4);
+                                            const secStr = parseFloat(remSec) < 10 ? `0${remSec}` : remSec;
+
+                                            if (mins > 0) return `${mins}:${secStr}`;
+                                            return secStr;
+                                        };
 
                                         // Calculate Position
                                         let positionDisplay = '-';
@@ -195,14 +251,6 @@ const DriverProfile = () => {
                                                 <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', fontWeight: 'bold' }}>
                                                     {positionDisplay}
                                                 </td>
-                                                <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>
-                                                    <span style={{
-                                                        color: result.attendance === 'Raced' ? 'var(--success)' : 'var(--warning)',
-                                                        fontSize: '0.85rem'
-                                                    }}>
-                                                        {result.attendance}
-                                                    </span>
-                                                </td>
                                                 <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', fontWeight: 'bold', color: 'var(--success)' }}>
                                                     +{result.points}
                                                 </td>
@@ -212,6 +260,9 @@ const DriverProfile = () => {
                                                     color: effectiveChange > 0 ? 'var(--warning)' : effectiveChange < 0 ? 'var(--success)' : 'var(--text-muted)'
                                                 }}>
                                                     {effectiveChange > 0 ? '+' : ''}{effectiveChange}kg
+                                                </td>
+                                                <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', fontFamily: 'monospace' }}>
+                                                    {formatBestLap(result.bestLap)}
                                                 </td>
                                             </tr>
                                         );

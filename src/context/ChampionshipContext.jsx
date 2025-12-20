@@ -236,7 +236,8 @@ export const ChampionshipProvider = ({ children }) => {
                 // Don't overwrite track name from schedule with XML name unless explicitly desired. 
                 // Usually schedule names are "cleaner". Let's keep schedule name but update date.
                 date: raceDate,
-                status: 'Completed'
+                status: 'Completed',
+                dramaLog: raceInfo.dramaLog || []
             };
         } else {
             // Add new
@@ -245,7 +246,8 @@ export const ChampionshipProvider = ({ children }) => {
                 name: `Round ${raceIdToUse}`,
                 track: raceInfo.trackName || 'Unknown Track',
                 date: raceDate,
-                status: 'Completed'
+                status: 'Completed',
+                dramaLog: raceInfo.dramaLog || []
             });
         }
 
@@ -299,8 +301,12 @@ export const ChampionshipProvider = ({ children }) => {
                 attendance: 'Raced',
                 drivenClass: determinedClass, // Store the class driven in this specific race
                 points: 0,
+                points: 0,
                 ballastChange: 0, // Init explicit
-                effectiveBallastChange: 0
+                effectiveBallastChange: 0,
+                purpleSectors: Number(pResult.purpleSectors) || 0,
+                incidents: Number(pResult.incidents) || 0,
+                penaltyCount: Number(pResult.penalties) || 0
             };
 
             // Update or Add Result

@@ -150,7 +150,8 @@ const Admin = () => {
                     // Update Context
                     importRaceResults(raceIdToUse, result.results, {
                         trackName: result.trackName,
-                        raceDate: result.raceDate
+                        raceDate: result.raceDate,
+                        dramaLog: result.dramaLog || []
                     });
 
                     // Success Feedback
