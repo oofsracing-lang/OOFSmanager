@@ -159,6 +159,7 @@ export const parseRaceXml = (xmlContent) => {
             name: d.Name,
             team: d.TeamName,
             car: d.CarType,
+            carNumber: d.CarNumber,
             carClass: d.CarClass, // e.g., "GT3" or "LMP2_ELMS"
             position: parseInt(d.Position),
             classPosition: parseInt(d.ClassPosition),

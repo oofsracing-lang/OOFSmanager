@@ -278,6 +278,7 @@ export const ChampionshipProvider = ({ children }) => {
                     name: pResultName || 'Unknown Driver',
                     team: pResult.team || '',
                     car: pResult.car || '',
+                    number: pResult.carNumber || '',
                     class: determinedClass,
                     raceResults: []
                 };
@@ -286,7 +287,11 @@ export const ChampionshipProvider = ({ children }) => {
                 // Update class if needed (e.g. driver switched cars)
                 // Or keep sticky? Usually good to update if it's the latest race.
                 // Let's trust the XML for the current state.
+                // Update class, car, and number if needed (sticky latest)
                 driver.class = determinedClass;
+                if (pResult.car) driver.car = pResult.car;
+                if (pResult.carNumber) driver.number = pResult.carNumber;
+                if (pResult.team) driver.team = pResult.team;
             }
 
             // Create Result Object
