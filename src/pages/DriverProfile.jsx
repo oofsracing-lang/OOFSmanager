@@ -169,7 +169,8 @@ const DriverProfile = () => {
                             <thead>
                                 <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--primary)' }}>
                                     <th style={{ padding: '0.75rem 0.5rem' }}>Round</th>
-                                    <th style={{ padding: '0.75rem 0.5rem' }}>Race</th>
+                                    <th style={{ padding: '0.75rem 0.5rem' }}>Track</th>
+                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Start</th>
                                     <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Pos</th>
                                     <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Points</th>
                                     <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Ballast</th>
@@ -245,8 +246,11 @@ const DriverProfile = () => {
                                                 <td style={{ padding: '0.75rem 0.5rem' }}>R{result.raceId}</td>
                                                 <td style={{ padding: '0.75rem 0.5rem' }}>
                                                     <Link to={`/races/${result.raceId}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
-                                                        {race?.name || 'Unknown'}
+                                                        {race?.track || race?.name || 'Unknown'}
                                                     </Link>
+                                                </td>
+                                                <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                                                    {result.startPosition ? `P${result.startPosition}` : '-'}
                                                 </td>
                                                 <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', fontWeight: 'bold' }}>
                                                     {positionDisplay}

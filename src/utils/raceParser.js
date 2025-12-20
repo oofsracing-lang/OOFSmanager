@@ -162,6 +162,7 @@ export const parseRaceXml = (xmlContent) => {
             carClass: d.CarClass, // e.g., "GT3" or "LMP2_ELMS"
             position: parseInt(d.Position),
             classPosition: parseInt(d.ClassPosition),
+            startPosition: parseInt(d.ClassGridPos),
             laps: parseInt(d.Laps),
             bestLap: d.BestLapTime,
             totalTime: d.FinishTime,

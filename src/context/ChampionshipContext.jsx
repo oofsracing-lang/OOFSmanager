@@ -306,7 +306,8 @@ export const ChampionshipProvider = ({ children }) => {
                 effectiveBallastChange: 0,
                 purpleSectors: Number(pResult.purpleSectors) || 0,
                 incidents: Number(pResult.incidents) || 0,
-                penaltyCount: Number(pResult.penalties) || 0
+                penaltyCount: Number(pResult.penalties) || 0,
+                startPosition: Number(pResult.startPosition) || 0
             };
 
             // Update or Add Result
