@@ -114,7 +114,6 @@ const DriverProfile = () => {
                         {driver.class === 'LMP2' ? 'LMP2-UR' : 'LMGT3'}
                     </span>
                     <h2 style={{ marginBottom: '0.5rem' }}>{formatDriverName(driver.name)}</h2>
-                    <p style={{ color: 'var(--text-muted)' }}>{driver.team}</p>
                     <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.25rem' }}>
                         #{driver.number || '?'} • {driver.car || 'Unknown Car'}
                     </p>
