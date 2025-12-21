@@ -78,9 +78,7 @@ export const saveSeasonData = async (seasonId, data) => {
 export const updateSeasonFields = async (seasonId, updates) => {
     try {
         const docRef = doc(db, SEASONS_COLLECTION, String(seasonId));
-        console.log(`[DB] Updating Document: ${SEASONS_COLLECTION}/${String(seasonId)}`, updates);
         await updateDoc(docRef, updates);
-        console.log("[DB] Update Success!");
     } catch (e) {
         console.error("Error updating season fields:", e);
         throw e;

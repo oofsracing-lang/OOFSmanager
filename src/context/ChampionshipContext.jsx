@@ -50,12 +50,7 @@ export const ChampionshipProvider = ({ children }) => {
 
         // Subscribe to OUTPUT data (Calculated Standings)
         const unsubStandings = subscribeToStandings(currentSeasonId, (data) => {
-            console.log("Cloud Standings Update Recieved:", {
-                found: !!data,
-                version: data?._debugVersion || 'N/A',
-                source: data?.calculationSource || 'Unknown',
-                updated: data?.lastUpdated
-            });
+            // console.log("Cloud Standings Received:", data ? "Found" : "Empty");
             setCloudStandings(data);
         });
 
@@ -366,6 +361,8 @@ export const ChampionshipProvider = ({ children }) => {
 
         // PRIORITY 2: Local Fallback (The original huge logic)
         console.log("Calculated processedData running (LOCAL FALLBACK)...");
+
+        // Guard Clause: Prevent crash if data is missing/corrupt
         // Guard Clause: Prevent crash if data is missing/corrupt
         if (!seasonData || !seasonData.races || !seasonData.drivers) {
             // console.debug("Waiting for seasonData...");

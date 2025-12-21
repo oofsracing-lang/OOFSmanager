@@ -5,6 +5,25 @@ admin.initializeApp();
 
 const db = admin.firestore();
 
+// Helper: Recursively replace undefined with null for Firestore
+const sanitizeForFirestore = (obj) => {
+    if (obj === undefined) return null;
+    if (obj === null || typeof obj !== 'object') return obj;
+
+    if (Array.isArray(obj)) {
+        return obj.map(sanitizeForFirestore);
+    }
+
+    const newObj = {};
+    for (const key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            const val = obj[key];
+            newObj[key] = (val === undefined) ? null : sanitizeForFirestore(val);
+        }
+    }
+    return newObj;
+};
+
 // --- LOGIC START (Ported from logic_verification.js) ---
 const BALLAST_SYSTEM = {
     1: 15, 2: 10, 3: 5, 4: 0, 5: -5, 6: -10,
@@ -50,7 +69,7 @@ function calculateChampionship(seasonData) {
                 const result = d.raceResults.find(r => String(r.raceId) === String(race.id));
                 const penaltyKey = `${race.id}-${d.id}`;
                 const penaltyTime = parseFloat(penalties[penaltyKey] || 0);
-                const isExcluded = exclusions[`${race.id}-${d.id}`];
+                const isExcluded = !!exclusions[`${race.id}-${d.id}`]; // Force boolean
 
                 const finishTime = parseTime(result.finishTime) || 999999;
 
@@ -208,14 +227,12 @@ exports.calculateStandings = functions.firestore.document("seasons/{seasonId}")
 
         try {
             // Perform the heavy lifting
-            const processedData = calculateChampionship(newData);
+            const resultData = calculateChampionship(newData);
+            const processedData = sanitizeForFirestore(resultData);
 
             // Add metadata
             processedData.lastUpdated = admin.firestore.FieldValue.serverTimestamp();
             processedData.calculationSource = 'cloud-functions-v1';
-            processedData._debugVersion = 'exclusion-v2-debug';
-            processedData._debugInputExclusions = exclusions;
-
 
             // Write to SEPARATE collection to avoid infinite loops
             await db.collection('standings').doc(seasonId).set(processedData);
