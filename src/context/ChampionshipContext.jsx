@@ -330,7 +330,6 @@ export const ChampionshipProvider = ({ children }) => {
                 attendance: 'Raced',
                 drivenClass: determinedClass, // Store the class driven in this specific race
                 points: 0,
-                points: 0,
                 ballastChange: 0, // Init explicit
                 effectiveBallastChange: 0,
                 purpleSectors: Number(pResult.purpleSectors) || 0,
@@ -624,7 +623,6 @@ export const ChampionshipProvider = ({ children }) => {
         // Create an object that includes the current Race Data, Penalties, and Manual Positions
         const exportObj = {
             ...seasonData,
-            penalties: penalties,
             penalties: penalties,
             manualPositions: manualPositions,
             exclusions: exclusions

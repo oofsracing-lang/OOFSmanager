@@ -51,7 +51,6 @@ const Admin = () => {
                     name: driver.name,
                     team: driver.team,
                     car: driver.car,
-                    car: driver.car,
                     class: result.drivenClass || driver.class,
                     isExcluded: exclusions[`${raceId}-${driver.id}`]
                 });
