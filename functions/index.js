@@ -23,6 +23,7 @@ function calculateChampionship(seasonData) {
     const data = JSON.parse(JSON.stringify(seasonData));
     const penalties = data.penalties || {};
     const manualPositions = data.manualPositions || {};
+    const exclusions = data.exclusions || {};
 
     // EMERGENCY HOTFIX (Persisted)
     if (data.drivers) {
@@ -49,17 +50,24 @@ function calculateChampionship(seasonData) {
                 const result = d.raceResults.find(r => String(r.raceId) === String(race.id));
                 const penaltyKey = `${race.id}-${d.id}`;
                 const penaltyTime = parseFloat(penalties[penaltyKey] || 0);
+                const isExcluded = exclusions[`${race.id}-${d.id}`];
+
                 const finishTime = parseTime(result.finishTime) || 999999;
 
                 result.laps = Number(result.laps);
                 result.originalTime = finishTime;
                 result.totalPenalty = penaltyTime;
                 result.finalTime = finishTime + penaltyTime;
+                result.isExcluded = isExcluded;
             });
 
             participants.sort((a, b) => {
                 const rA = a.raceResults.find(r => String(r.raceId) === String(race.id));
                 const rB = b.raceResults.find(r => String(r.raceId) === String(race.id));
+
+                // Exclusions drop to bottom
+                if (rA.isExcluded && !rB.isExcluded) return 1;
+                if (!rA.isExcluded && rB.isExcluded) return -1;
 
                 if (rA.laps !== rB.laps) return rB.laps - rA.laps;
 
@@ -110,7 +118,10 @@ function calculateChampionship(seasonData) {
                     result.classPosition = i + 1;
                     result.newPosition = i + 1;
 
-                    if (result.laps && result.laps > 0) {
+                    if (result.isExcluded) {
+                        result.points = 0;
+                        result.status = "DSQ";
+                    } else if (result.laps && result.laps > 0) {
                         result.points = pointsTable[i] || 0;
                     } else {
                         result.points = 0;

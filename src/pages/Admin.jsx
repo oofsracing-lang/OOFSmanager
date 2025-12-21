@@ -5,7 +5,7 @@ import { uploadXmlBackup } from '../firebase/db';
 
 const Admin = () => {
     const [selectedRace, setSelectedRace] = useState(null);
-    const { championshipData, currentSeasonId, updatePenalty, updateManualPosition, importRaceResults, addRound, deleteRound, resetSeasonData, exportSeasonData } = useChampionship();
+    const { championshipData, currentSeasonId, updatePenalty, updateManualPosition, updateExclusion, exclusions, importRaceResults, addRound, deleteRound, resetSeasonData, exportSeasonData } = useChampionship();
 
     // Export Modal State
     const [showExport, setShowExport] = useState(false);
@@ -51,7 +51,9 @@ const Admin = () => {
                     name: driver.name,
                     team: driver.team,
                     car: driver.car,
+                    car: driver.car,
                     class: result.drivenClass || driver.class,
+                    isExcluded: exclusions[`${raceId}-${driver.id}`]
                 });
             }
         });
@@ -401,7 +403,7 @@ const Admin = () => {
                                             </thead>
                                             <tbody>
                                                 {results.filter(r => r.class === 'LMP2').map(result => (
-                                                    <tr key={result.driverId} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                                                    <tr key={result.driverId} style={{ borderBottom: '1px solid var(--border-color)', opacity: result.isExcluded ? 0.5 : 1, textDecoration: result.isExcluded ? 'line-through' : 'none' }}>
                                                         <td style={{ padding: '0.5rem' }}>
                                                             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                                                                 <span style={{ fontWeight: 'bold' }}>P{result.newPosition || result.position}</span>
@@ -435,6 +437,14 @@ const Admin = () => {
                                                         </td>
                                                         <td style={{ padding: '0.5rem' }}>
                                                             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                                                <button
+                                                                    className={`btn ${result.isExcluded ? 'btn-danger' : 'btn-outline-danger'}`}
+                                                                    style={{ fontSize: '0.7rem', padding: '0.25rem 0.5rem', minWidth: '35px' }}
+                                                                    onClick={() => updateExclusion(result.driverId, selectedRace, !result.isExcluded)}
+                                                                    title={result.isExcluded ? "Re-instate Driver" : "Exclude Driver (DSQ)"}
+                                                                >
+                                                                    {result.isExcluded ? "IN" : "DQ"}
+                                                                </button>
                                                                 <input
                                                                     type="number"
                                                                     step="0.1"
@@ -491,7 +501,7 @@ const Admin = () => {
                                             </thead>
                                             <tbody>
                                                 {results.filter(r => r.class === 'LMGT3').map(result => (
-                                                    <tr key={result.driverId} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                                                    <tr key={result.driverId} style={{ borderBottom: '1px solid var(--border-color)', opacity: result.isExcluded ? 0.5 : 1, textDecoration: result.isExcluded ? 'line-through' : 'none' }}>
                                                         <td style={{ padding: '0.5rem' }}>
                                                             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                                                                 <span style={{ fontWeight: 'bold' }}>P{result.newPosition || result.classPosition || result.position}</span>
@@ -525,6 +535,14 @@ const Admin = () => {
                                                         </td>
                                                         <td style={{ padding: '0.5rem' }}>
                                                             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                                                <button
+                                                                    className={`btn ${result.isExcluded ? 'btn-danger' : 'btn-outline-danger'}`}
+                                                                    style={{ fontSize: '0.7rem', padding: '0.25rem 0.5rem', minWidth: '35px' }}
+                                                                    onClick={() => updateExclusion(result.driverId, selectedRace, !result.isExcluded)}
+                                                                    title={result.isExcluded ? "Re-instate Driver" : "Exclude Driver (DSQ)"}
+                                                                >
+                                                                    {result.isExcluded ? "IN" : "DQ"}
+                                                                </button>
                                                                 <input
                                                                     type="number"
                                                                     step="0.1"

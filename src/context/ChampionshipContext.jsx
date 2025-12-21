@@ -10,13 +10,14 @@ export const ChampionshipProvider = ({ children }) => {
 
     // Season State
     const [currentSeasonId, setCurrentSeasonId] = useState(2);
+    const [seasonData, setSeasonData] = useState(null);
 
     const [loading, setLoading] = useState(false); // Fix: Add missing loading state
 
     // Base Data State (Persistence per season)
-    const [seasonData, setSeasonData] = useState(null);
     const [penalties, setPenalties] = useState({});
     const [manualPositions, setManualPositions] = useState({});
+    const [exclusions, setExclusions] = useState({});
 
     // Cloud Calculated Standings
     const [cloudStandings, setCloudStandings] = useState(null);
@@ -33,12 +34,14 @@ export const ChampionshipProvider = ({ children }) => {
                 setSeasonData(data);
                 setPenalties(data.penalties || {});
                 setManualPositions(data.manualPositions || {});
+                setExclusions(data.exclusions || {});
             } else {
                 // Fallback to local default
                 const defaultData = JSON.parse(JSON.stringify(seasons[currentSeasonId] || latestSeason));
                 setSeasonData(defaultData);
                 setPenalties(defaultData.penalties || {});
                 setManualPositions(defaultData.manualPositions || {});
+                setExclusions(defaultData.exclusions || {});
             }
             // Only stop loading if we are not waiting for standings? 
             // Actually loading state usually refers to Input data availability.
@@ -64,7 +67,8 @@ export const ChampionshipProvider = ({ children }) => {
         const payload = {
             ...newData,
             penalties: newPenalties || penalties,
-            manualPositions: newManualPositions || manualPositions
+            manualPositions: newManualPositions || manualPositions,
+            exclusions: exclusions
         };
 
         await saveSeasonData(currentSeasonId, payload);
@@ -117,6 +121,21 @@ export const ChampionshipProvider = ({ children }) => {
         // Optimistic
         setManualPositions(nextManualPositions);
         updateSeasonFields(currentSeasonId, { manualPositions: nextManualPositions });
+    };
+
+    const updateExclusion = (driverId, raceId, isExcluded) => {
+        if (!currentUser) return;
+        const key = `${raceId}-${driverId}`;
+        const nextExclusions = { ...exclusions };
+
+        if (!isExcluded) {
+            delete nextExclusions[key];
+        } else {
+            nextExclusions[key] = true;
+        }
+
+        setExclusions(nextExclusions);
+        updateSeasonFields(currentSeasonId, { exclusions: nextExclusions });
     };
 
     const addRound = (raceName, raceDate) => {
@@ -388,6 +407,7 @@ export const ChampionshipProvider = ({ children }) => {
                         const result = d.raceResults.find(r => String(r.raceId) === String(race.id));
                         const penaltyKey = `${race.id}-${d.id}`;
                         const penaltyTime = parseFloat(penalties[penaltyKey] || 0);
+                        const isExcluded = exclusions[`${race.id}-${d.id}`];
 
                         // Calculate total time
                         // Use parseTime to ensure we handle "MM:SS" strings OR Seconds Numbers safely
@@ -397,6 +417,7 @@ export const ChampionshipProvider = ({ children }) => {
                         result.originalTime = finishTime;
                         result.totalPenalty = penaltyTime;
                         result.finalTime = finishTime + penaltyTime;
+                        result.isExcluded = isExcluded;
                     });
 
                     // Sort by Laps (Desc) then Time (Asc), THEN apply Manual Overrides re-sort
@@ -404,6 +425,10 @@ export const ChampionshipProvider = ({ children }) => {
                     participants.sort((a, b) => {
                         const rA = a.raceResults.find(r => String(r.raceId) === String(race.id));
                         const rB = b.raceResults.find(r => String(r.raceId) === String(race.id));
+
+                        // Exclusions drop to bottom
+                        if (rA.isExcluded && !rB.isExcluded) return 1;
+                        if (!rA.isExcluded && rB.isExcluded) return -1;
 
 
 
@@ -472,7 +497,10 @@ export const ChampionshipProvider = ({ children }) => {
                             result.newPosition = i + 1;
 
                             // Points Rule: Position Based, but must complete at least 1 lap.
-                            if (result.laps && result.laps > 0) {
+                            if (result.isExcluded) {
+                                result.points = 0;
+                                result.status = "DSQ";
+                            } else if (result.laps && result.laps > 0) {
                                 result.points = pointsTable[i] || 0;
                             } else {
                                 result.points = 0;
@@ -575,7 +603,7 @@ export const ChampionshipProvider = ({ children }) => {
                 error: err.message
             };
         }
-    }, [penalties, manualPositions, seasonData, cloudStandings]);
+    }, [penalties, manualPositions, exclusions, seasonData, cloudStandings]);
 
     const resetSeasonData = () => {
         if (!currentUser) return;
@@ -592,7 +620,9 @@ export const ChampionshipProvider = ({ children }) => {
         const exportObj = {
             ...seasonData,
             penalties: penalties,
-            manualPositions: manualPositions
+            penalties: penalties,
+            manualPositions: manualPositions,
+            exclusions: exclusions
         };
 
         return JSON.stringify(exportObj, null, 2);
@@ -610,7 +640,9 @@ export const ChampionshipProvider = ({ children }) => {
         deleteRound,
         resetSeasonData,
         updateManualPosition,
+        updateExclusion,
         manualPositions,
+        exclusions,
         exportSeasonData
     };
 
