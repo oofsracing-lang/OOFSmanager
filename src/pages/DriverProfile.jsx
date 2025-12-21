@@ -48,13 +48,17 @@ const DriverProfile = () => {
 
         // Check against all other drivers in the same race AND SAME CLASS
         let isFastest = true;
+        const myClass = myResult.drivenClass || driver.class;
+
         championshipData.drivers.forEach(otherDriver => {
-            if (otherDriver.class !== driver.class) return; // Only compare within class
             const otherResult = otherDriver.raceResults.find(r => String(r.raceId) === String(myResult.raceId));
-            if (otherResult && otherResult.bestLap) {
-                const otherTime = parseLap(otherResult.bestLap);
-                if (otherTime < myTime) isFastest = false;
-            }
+            if (!otherResult || !otherResult.bestLap) return;
+
+            const otherClass = otherResult.drivenClass || otherDriver.class;
+            if (otherClass !== myClass) return; // Only compare within same class for this race
+
+            const otherTime = parseLap(otherResult.bestLap);
+            if (otherTime < myTime) isFastest = false;
         });
 
         if (isFastest) fastestLapsCount++;
