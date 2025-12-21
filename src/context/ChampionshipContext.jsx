@@ -106,9 +106,9 @@ export const ChampionshipProvider = ({ children }) => {
         // Optimistic Update
         setPenalties(nextPenalties);
 
-        // Cloud Save (Just the fields ideally, but saving full season is safer for consistency for now)
-        // Or use specific field update
-        updateSeasonFields(currentSeasonId, { penalties: nextPenalties });
+        // Cloud Save
+        updateSeasonFields(currentSeasonId, { penalties: nextPenalties })
+            .catch(err => console.error("Failed to save Penalty:", err));
     };
 
     const updateManualPosition = (driverId, raceId, position) => {
@@ -125,7 +125,8 @@ export const ChampionshipProvider = ({ children }) => {
 
         // Optimistic
         setManualPositions(nextManualPositions);
-        updateSeasonFields(currentSeasonId, { manualPositions: nextManualPositions });
+        updateSeasonFields(currentSeasonId, { manualPositions: nextManualPositions })
+            .catch(err => console.error("Failed to save Manual Position:", err));
     };
 
     const updateExclusion = (driverId, raceId, isExcluded) => {
@@ -140,7 +141,8 @@ export const ChampionshipProvider = ({ children }) => {
         }
 
         setExclusions(nextExclusions);
-        updateSeasonFields(currentSeasonId, { exclusions: nextExclusions });
+        updateSeasonFields(currentSeasonId, { exclusions: nextExclusions })
+            .catch(err => console.error("Failed to save Exclusion:", err));
     };
 
     const addRound = (raceName, raceDate) => {
