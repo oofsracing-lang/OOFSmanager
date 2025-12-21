@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useChampionship } from '../context/ChampionshipContext';
-import { formatDriverName } from '../utils/formatting';
+import { formatDriverName, formatTeamName } from '../utils/formatting';
 
 const Standings = () => {
     const [selectedClass, setSelectedClass] = useState('LMGT3');
@@ -124,7 +124,7 @@ const Standings = () => {
                                         </Link>
                                     </td>
                                     <td style={{ padding: '1rem 0.5rem', color: 'var(--text-muted)' }}>
-                                        {driver.team}
+                                        {formatTeamName(driver.team, driver.name)}
                                     </td>
                                     <td style={{
                                         padding: '1rem 0.5rem',

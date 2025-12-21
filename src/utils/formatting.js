@@ -18,3 +18,27 @@ export const formatDriverName = (name) => {
 
     return `${firstName} ${lastName.charAt(0)}.`;
 };
+
+/**
+ * Format a team name.
+ * 1. "OOFS Racing" -> "Privateer"
+ * 2. Matches Driver Name -> Format like driver name
+ * 3. Otherwise -> Return as is
+ * 
+ * @param {string} teamName 
+ * @param {string} driverName 
+ * @returns {string}
+ */
+export const formatTeamName = (teamName, driverName) => {
+    if (!teamName) return '-';
+
+    const lowerTeam = teamName.toLowerCase().trim();
+
+    // 1. Handle Team Name == Driver Name
+    if (driverName && lowerTeam === driverName.toLowerCase().trim()) {
+        return formatDriverName(teamName);
+    }
+
+    // 2. Return original for real teams (e.g. "Red Bull", "OOFS Racing")
+    return teamName;
+};

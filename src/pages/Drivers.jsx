@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useChampionship } from '../context/ChampionshipContext';
-import { formatDriverName } from '../utils/formatting';
+import { formatDriverName, formatTeamName } from '../utils/formatting';
 
 const Drivers = () => {
     const { championshipData, loading } = useChampionship();
@@ -50,7 +50,7 @@ const Drivers = () => {
                             </div>
 
                             <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                                {driver.team || 'Privateer'}
+                                {formatTeamName(driver.team, driver.name)}
                             </div>
 
                             <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', gap: '1rem' }}>
