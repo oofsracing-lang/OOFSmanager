@@ -58,6 +58,7 @@ function calculateChampionship(seasonData) {
 
     completedRaces.forEach(race => {
         const processClass = (className) => {
+            // 1. Filter Participants
             const participants = data.drivers.filter(d => {
                 const r = d.raceResults.find(res => String(res.raceId) === String(race.id));
                 if (!r) return false;
@@ -65,11 +66,12 @@ function calculateChampionship(seasonData) {
                 return raceClass === className;
             });
 
+            // 2. Prepare Data (Penalties, Times)
             participants.forEach(d => {
                 const result = d.raceResults.find(r => String(r.raceId) === String(race.id));
                 const penaltyKey = `${race.id}-${d.id}`;
                 const penaltyTime = parseFloat(penalties[penaltyKey] || 0);
-                const isExcluded = !!exclusions[`${race.id}-${d.id}`]; // Force boolean
+                const isExcluded = !!exclusions[`${race.id}-${d.id}`];
 
                 const finishTime = parseTime(result.finishTime) || 999999;
 
@@ -80,57 +82,90 @@ function calculateChampionship(seasonData) {
                 result.isExcluded = isExcluded;
             });
 
-            participants.sort((a, b) => {
-                const rA = a.raceResults.find(r => String(r.raceId) === String(race.id));
-                const rB = b.raceResults.find(r => String(r.raceId) === String(race.id));
+            // Helper: Sort Logic
+            const sortDrivers = (list, respectExclusions) => {
+                return [...list].sort((a, b) => {
+                    const rA = a.raceResults.find(r => String(r.raceId) === String(race.id));
+                    const rB = b.raceResults.find(r => String(r.raceId) === String(race.id));
 
-                // Exclusions drop to bottom
-                if (rA.isExcluded && !rB.isExcluded) return 1;
-                if (!rA.isExcluded && rB.isExcluded) return -1;
+                    if (respectExclusions) {
+                        if (rA.isExcluded && !rB.isExcluded) return 1;
+                        if (!rA.isExcluded && rB.isExcluded) return -1;
+                    }
 
-                if (rA.laps !== rB.laps) return rB.laps - rA.laps;
+                    if (rA.laps !== rB.laps) return rB.laps - rA.laps;
 
-                const hasPenaltyA = (rA.totalPenalty || 0) > 0;
-                const hasPenaltyB = (rB.totalPenalty || 0) > 0;
-                const isDnfA = rA.originalTime >= 900000;
-                const isDnfB = rB.originalTime >= 900000;
+                    const hasPenaltyA = (rA.totalPenalty || 0) > 0;
+                    const hasPenaltyB = (rB.totalPenalty || 0) > 0;
+                    const isDnfA = rA.originalTime >= 900000;
+                    const isDnfB = rB.originalTime >= 900000;
 
-                if (isDnfA && isDnfB) {
-                    const posA = rA.classPosition || rA.position || 0;
-                    const posB = rB.classPosition || rB.position || 0;
-                    return posA - posB;
+                    if (isDnfA && isDnfB) {
+                        const posA = rA.classPosition || rA.position || 0;
+                        const posB = rB.classPosition || rB.position || 0;
+                        return posA - posB;
+                    }
+
+                    if (!hasPenaltyA && !hasPenaltyB) {
+                        const posA = rA.classPosition || rA.position || 0;
+                        const posB = rB.classPosition || rB.position || 0;
+                        if (posA !== 0 && posB !== 0) return posA - posB;
+                    }
+
+                    return rA.finalTime - rB.finalTime;
+                });
+            };
+
+            // Helper: Apply Manual Positions and get Final Ordered List
+            const getOrderedEntries = (sortedParticipants) => {
+                const entries = sortedParticipants.map((p, index) => {
+                    const key = `${race.id}-${p.id}`;
+                    const manPos = manualPositions[key];
+                    return {
+                        driver: p,
+                        result: p.raceResults.find(r => String(r.raceId) === String(race.id)),
+                        naturalIndex: index,
+                        manualPos: manPos ? parseInt(manPos) : null
+                    };
+                });
+
+                return entries.sort((a, b) => {
+                    const posA = a.manualPos !== null ? a.manualPos : (a.naturalIndex + 1);
+                    const posB = b.manualPos !== null ? b.manualPos : (b.naturalIndex + 1);
+                    if (posA !== posB) return posA - posB;
+                    return a.naturalIndex - b.naturalIndex;
+                });
+            };
+
+            // PASS 1: Calculate Ballast (Respect Manual Pos, IGNORE Exclusions)
+            // This represents "On Truth Finish"
+            const ballastSorted = sortDrivers(participants, false); // <--- False = Ignore Exclusions
+            const ballastEntries = getOrderedEntries(ballastSorted);
+            const ballastMap = {}; // driverId -> ballastChange
+
+            ballastEntries.forEach((entry, i) => {
+                const pos = i + 1;
+                const { result } = entry;
+                let bChange = BALLAST_SYSTEM.default;
+
+                // Determine finish status (ignoring exclusion for a moment, trust the data)
+                const validStatuses = ['Finished', 'Finished Normally', 'Completed'];
+                const isFinished = validStatuses.includes(result.status) || (result.laps > 0 && result.originalTime < 900000);
+
+                if (isFinished && BALLAST_SYSTEM[pos] !== undefined) {
+                    bChange = BALLAST_SYSTEM[pos];
+                } else if (!isFinished) {
+                    bChange = BALLAST_SYSTEM.default;
                 }
-
-                if (!hasPenaltyA && !hasPenaltyB) {
-                    const posA = rA.classPosition || rA.position || 0;
-                    const posB = rB.classPosition || rB.position || 0;
-                    if (posA !== 0 && posB !== 0) return posA - posB;
-                }
-
-                return rA.finalTime - rB.finalTime;
+                ballastMap[entry.driver.id] = bChange;
             });
 
-            const entries = participants.map((p, index) => {
-                const r = p.raceResults.find(res => String(res.raceId) === String(race.id));
-                const key = `${race.id}-${p.id}`;
-                const manPos = manualPositions[key];
-                return {
-                    driver: p,
-                    result: r,
-                    naturalIndex: index,
-                    manualPos: manPos ? parseInt(manPos) : null
-                };
-            });
+            // PASS 2: Calculate Points (Respect Manual Pos, RESPECT Exclusions)
+            // This represents "Official Classification"
+            const pointsSorted = sortDrivers(participants, true); // <--- True = Respect Exclusions
+            const finalEntries = getOrderedEntries(pointsSorted);
 
-            entries.sort((a, b) => {
-                const posA = a.manualPos !== null ? a.manualPos : (a.naturalIndex + 1);
-                const posB = b.manualPos !== null ? b.manualPos : (b.naturalIndex + 1);
-
-                if (posA !== posB) return posA - posB;
-                return a.naturalIndex - b.naturalIndex;
-            });
-
-            entries.forEach((entry, i) => {
+            finalEntries.forEach((entry, i) => {
                 const { driver, result } = entry;
 
                 if (result) {
@@ -148,17 +183,8 @@ function calculateChampionship(seasonData) {
 
                     result.manualPosition = entry.manualPos;
 
-                    const pos = i + 1;
-                    let bChange = BALLAST_SYSTEM.default;
-                    const validStatuses = ['Finished', 'Finished Normally', 'Completed'];
-                    const isFinished = validStatuses.includes(result.status);
-
-                    if (isFinished && BALLAST_SYSTEM[pos] !== undefined) {
-                        bChange = BALLAST_SYSTEM[pos];
-                    } else if (!isFinished) {
-                        bChange = BALLAST_SYSTEM.default;
-                    }
-                    result.ballastChange = bChange;
+                    // APPLY FROZEN BALLAST FROM PASS 1
+                    result.ballastChange = ballastMap[driver.id] || 0;
                 }
             });
         };
