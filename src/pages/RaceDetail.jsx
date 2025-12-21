@@ -20,12 +20,6 @@ const RaceDetail = () => {
 
     // Helper to calculate effective ballast change for a specific race
     const getEffectiveBallastChange = (driver, targetRaceId) => {
-        if (Number(targetRaceId) === 7) console.log(`Trace R7 ${driver.name}`, driver.raceResults);
-        // Debug first driver only to reduce spam
-        const debug = driver.id === 1; // Assuming P1 driver
-        if (debug && Number(targetRaceId) === 6) {
-            console.log(`Ballast Trace ${driver.name}:`, driver.raceResults.map(r => ({ id: r.raceId, bChange: r.ballastChange })));
-        }
         let currentBallast = 0;
         let effectiveChange = 0;
         const targetIdNum = Number(targetRaceId);
