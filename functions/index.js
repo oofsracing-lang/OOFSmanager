@@ -213,6 +213,7 @@ exports.calculateStandings = functions.firestore.document("seasons/{seasonId}")
             // Add metadata
             processedData.lastUpdated = admin.firestore.FieldValue.serverTimestamp();
             processedData.calculationSource = 'cloud-functions-v1';
+            processedData._debugVersion = 'exclusion-v1';
 
             // Write to SEPARATE collection to avoid infinite loops
             await db.collection('standings').doc(seasonId).set(processedData);

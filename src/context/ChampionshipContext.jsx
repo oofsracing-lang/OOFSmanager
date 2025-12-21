@@ -50,7 +50,12 @@ export const ChampionshipProvider = ({ children }) => {
 
         // Subscribe to OUTPUT data (Calculated Standings)
         const unsubStandings = subscribeToStandings(currentSeasonId, (data) => {
-            console.log("Cloud Standings Update Recieved:", data ? "Found" : "Not Found");
+            console.log("Cloud Standings Update Recieved:", {
+                found: !!data,
+                version: data?._debugVersion || 'N/A',
+                source: data?.calculationSource || 'Unknown',
+                updated: data?.lastUpdated
+            });
             setCloudStandings(data);
         });
 
