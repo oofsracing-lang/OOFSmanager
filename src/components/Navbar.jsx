@@ -40,6 +40,12 @@ const Navbar = () => {
                 Races
             </NavLink>
             <NavLink
+                to="/qualifying"
+                className={({ isActive }) => isActive ? 'btn btn-primary' : 'btn btn-ghost'}
+            >
+                Qualifying
+            </NavLink>
+            <NavLink
                 to="/admin"
                 className={({ isActive }) => isActive ? 'btn btn-primary' : 'btn btn-ghost'}
             >

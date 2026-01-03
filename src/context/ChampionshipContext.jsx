@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { seasons, latestSeason } from '../data';
 import { parseTime, BALLAST_SYSTEM } from '../utils/raceLogic';
-import { subscribeToSeason, subscribeToStandings, saveSeasonData, updateSeasonFields } from '../firebase/db';
+import { subscribeToSeason, subscribeToStandings, saveSeasonData, updateSeasonFields, saveQualifyingSubmission, deleteQualifyingSubmission, subscribeToQualifying } from '../firebase/db';
 import { useAuth } from './AuthContext';
 
 const ChampionshipContext = createContext(null);
@@ -9,7 +9,7 @@ const ChampionshipContext = createContext(null);
 export const ChampionshipProvider = ({ children }) => {
 
     // Season State
-    const [currentSeasonId, setCurrentSeasonId] = useState(2);
+    const [currentSeasonId, setCurrentSeasonId] = useState(3);
     const [seasonData, setSeasonData] = useState(null);
 
     const [loading, setLoading] = useState(false); // Fix: Add missing loading state
@@ -18,6 +18,12 @@ export const ChampionshipProvider = ({ children }) => {
     const [penalties, setPenalties] = useState({});
     const [manualPositions, setManualPositions] = useState({});
     const [exclusions, setExclusions] = useState({});
+    const [qualifyingSettings, setQualifyingSettings] = useState({
+        'LMP2-UR': { consecutiveLaps: 5, maxAvgTime: 120.0 },
+        'LMGT3': { consecutiveLaps: 5, maxAvgTime: 140.0 }
+    });
+    // Store submissions in state for Admin view
+    const [qualifyingSubmissions, setQualifyingSubmissions] = useState([]);
 
     // Cloud Calculated Standings
     const [cloudStandings, setCloudStandings] = useState(null);
@@ -34,21 +40,38 @@ export const ChampionshipProvider = ({ children }) => {
                 setSeasonData(data);
                 setPenalties(data.penalties || {});
                 setManualPositions(data.manualPositions || {});
+                setManualPositions(data.manualPositions || {});
                 setExclusions(data.exclusions || {});
+                if (data.qualifyingSettings) {
+                    setQualifyingSettings(data.qualifyingSettings);
+                }
             } else {
+                // Legacy: Do NOT load qualifyingSubmissions from seasonData anymore (ghost data)
                 // Fallback to local default
                 const defaultData = JSON.parse(JSON.stringify(seasons[currentSeasonId] || latestSeason));
                 setSeasonData(defaultData);
                 setPenalties(defaultData.penalties || {});
                 setManualPositions(defaultData.manualPositions || {});
                 setExclusions(defaultData.exclusions || {});
+                setQualifyingSettings(defaultData.qualifyingSettings || {
+                    'LMP2-UR': { consecutiveLaps: 5, maxAvgTime: 120.0 },
+                    'LMGT3': { consecutiveLaps: 5, maxAvgTime: 140.0 }
+                });
             }
             // Only stop loading if we are not waiting for standings? 
             // Actually loading state usually refers to Input data availability.
             setLoading(isLoading);
         });
 
-        // Subscribe to OUTPUT data (Calculated Standings)
+        // Subscribe to QUALIFYING Data (New Collection)
+        const unsubQualifying = subscribeToQualifying(currentSeasonId, (data) => {
+            if (data) {
+                setQualifyingSubmissions(data);
+            }
+        });
+
+        // Debug: Log when legacy data would have been loaded
+        // const unsubSeason = subscribeToSeason... (existing code)
         const unsubStandings = subscribeToStandings(currentSeasonId, (data) => {
             // console.log("Cloud Standings Received:", data ? "Found" : "Empty");
             setCloudStandings(data);
@@ -57,6 +80,7 @@ export const ChampionshipProvider = ({ children }) => {
         return () => {
             unsubSeason();
             unsubStandings();
+            unsubQualifying();
         };
     }, [currentSeasonId]);
 
@@ -68,7 +92,11 @@ export const ChampionshipProvider = ({ children }) => {
             ...newData,
             penalties: newPenalties || penalties,
             manualPositions: newManualPositions || manualPositions,
-            exclusions: exclusions
+            manualPositions: newManualPositions || manualPositions,
+            manualPositions: newManualPositions || manualPositions,
+            exclusions: exclusions,
+            qualifyingSettings: qualifyingSettings,
+            qualifyingSubmissions: qualifyingSubmissions
         };
 
         await saveSeasonData(currentSeasonId, payload);
@@ -138,6 +166,37 @@ export const ChampionshipProvider = ({ children }) => {
         setExclusions(nextExclusions);
         updateSeasonFields(currentSeasonId, { exclusions: nextExclusions })
             .catch(err => console.error("Failed to save Exclusion:", err));
+    };
+
+    const updateQualifyingSettings = (cls, settings) => {
+        if (!currentUser) return;
+        const nextSettings = { ...qualifyingSettings, [cls]: settings };
+        setQualifyingSettings(nextSettings);
+        updateSeasonFields(currentSeasonId, { qualifyingSettings: nextSettings })
+            .catch(err => console.error("Failed to save Qual Settings:", err));
+    };
+
+    const submitQualifyingResult = async (submission) => {
+        // submission: { driverName, discordUser, carClass, passed, details, timestamp... }
+        try {
+            await saveQualifyingSubmission(submission);
+            // State update will happen via subscription
+        } catch (err) {
+            console.error("Failed to save submission:", err);
+            throw err;
+        }
+    };
+
+    const deleteSubmission = async (submissionId) => {
+        try {
+            // Optimistic update
+            setQualifyingSubmissions(prev => prev.filter(s => s.id !== submissionId));
+            await deleteQualifyingSubmission(submissionId);
+        } catch (err) {
+            console.error("Failed to delete submission:", err);
+            alert("Failed to delete. Check permissions?");
+            // Revert might be needed here if valid, but subscription usually handles sync
+        }
     };
 
     const addRound = (raceName, raceDate) => {
@@ -352,7 +411,6 @@ export const ChampionshipProvider = ({ children }) => {
     const processedData = useMemo(() => {
         // PRIORITY 1: Use Cloud Calculated Standings if available and fresh
         if (cloudStandings && cloudStandings.season === (seasonData?.season)) {
-            console.log("Using Cloud Calculated Standings");
             return {
                 ...cloudStandings,
                 calculationSource: 'Cloud Backend'
@@ -360,14 +418,13 @@ export const ChampionshipProvider = ({ children }) => {
         }
 
         // PRIORITY 2: Local Fallback (The original huge logic)
-        console.log("Calculated processedData running (LOCAL FALLBACK)...");
 
         // Guard Clause: Prevent crash if data is missing/corrupt
         // Guard Clause: Prevent crash if data is missing/corrupt
         if (!seasonData || !seasonData.races || !seasonData.drivers) {
             // console.debug("Waiting for seasonData...");
             return {
-                season: 'Error',
+                season: seasonData?.season || `Season ${currentSeasonId}`,
                 races: [],
                 drivers: [],
                 currentRound: 0,
@@ -376,7 +433,6 @@ export const ChampionshipProvider = ({ children }) => {
         }
 
         try {
-            console.log("Processing championship data for season:", seasonData.season);
             const data = JSON.parse(JSON.stringify(seasonData));
 
             // EMERGENCY HOTFIX: Filter out known duplicate/ghost driver IDs
@@ -562,10 +618,8 @@ export const ChampionshipProvider = ({ children }) => {
                             if (firstRaceInCurrentClass > 2) {
                                 // Only count points from the current class results
                                 validResults = currentClassResults;
-                                console.log(`Driver ${driver.name} swapped class > Race 2. Counting only ${driver.class} points.`);
                             } else {
                                 // Swap was early (Race 1 or 2), keep all points.
-                                console.log(`Driver ${driver.name} swapped class early (<= Race 2). Keeping all points.`);
                             }
                         }
 
@@ -599,24 +653,40 @@ export const ChampionshipProvider = ({ children }) => {
         } catch (err) {
             console.error("Critical Error processing championship data:", err);
             return {
-                season: 'Data Corruption Error',
+                season: seasonData?.season || `Season ${currentSeasonId}`,
                 races: [],
                 drivers: [],
                 currentRound: 0,
                 error: err.message
             };
         }
-    }, [penalties, manualPositions, exclusions, seasonData, cloudStandings]);
+    }, [penalties, manualPositions, exclusions, seasonData, cloudStandings, qualifyingSettings, qualifyingSubmissions]);
 
     const resetSeasonData = () => {
         if (!currentUser) return;
-        console.log("executing resetSeasonData - CLOUD WIPE");
+
 
         // Overwrite cloud with default
         const defaultData = JSON.parse(JSON.stringify(seasons[currentSeasonId] || latestSeason));
         saveSeasonData(currentSeasonId, defaultData);
         // Note: We don't need to reload window anymore, the subscription will update the UI
     };
+
+    // Auto-Sync/Repair for Season 3 if empty in Cloud OR contains dummy data OR missing rounds
+    useEffect(() => {
+        if (currentUser && currentSeasonId === 3 && seasonData) {
+            // Check if races are missing/empty in the cloud data OR if dummy drivers exist
+            // (e.g. check for the first dummy driver "Joseph Tippen")
+            const hasDummyDrivers = seasonData.drivers && seasonData.drivers.some(d => d.name === "Joseph Tippen");
+            // Standard check: Season 3 should have 8 races. If less, something was deleted (accidentally)
+            const expectedRaceCount = 8;
+
+            if (!seasonData.races || seasonData.races.length < expectedRaceCount || hasDummyDrivers) {
+
+                resetSeasonData();
+            }
+        }
+    }, [currentUser, currentSeasonId, seasonData]);
 
     const exportSeasonData = () => {
         // Create an object that includes the current Race Data, Penalties, and Manual Positions
@@ -643,8 +713,13 @@ export const ChampionshipProvider = ({ children }) => {
         resetSeasonData,
         updateManualPosition,
         updateExclusion,
+        updateQualifyingSettings,
+        submitQualifyingResult,
+        deleteSubmission,
         manualPositions,
         exclusions,
+        qualifyingSettings,
+        qualifyingSubmissions,
         exportSeasonData
     };
 

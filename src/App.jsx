@@ -9,6 +9,7 @@ import Drivers from './pages/Drivers';
 import DriverProfile from './pages/DriverProfile';
 import Admin from './pages/Admin';
 import Login from './pages/Login';
+import Qualifying from './pages/Qualifying';
 import { ChampionshipProvider } from './context/ChampionshipContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -39,6 +40,7 @@ function App() {
                   </ProtectedRoute>
                 } />
                 <Route path="login" element={<Login />} />
+                <Route path="qualifying" element={<Qualifying />} />
               </Route>
             </Routes>
           </HashRouter>

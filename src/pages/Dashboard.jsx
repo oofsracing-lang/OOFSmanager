@@ -7,7 +7,8 @@ const Dashboard = () => {
     // 1. Upcoming Schedule
     const upcomingRaces = championshipData.races
         .filter(r => r.id > championshipData.currentRound)
-        .sort((a, b) => a.id - b.id);
+        .sort((a, b) => a.id - b.id)
+        .slice(0, 3);
 
     // 2. Standings Helper
     const getTop5 = (className) => {
@@ -46,17 +47,6 @@ const Dashboard = () => {
 
     const recentLMP2 = getRecentPodium('LMP2');
     const recentLMGT3 = getRecentPodium('LMGT3');
-
-    if (!championshipData.drivers || championshipData.drivers.length === 0) {
-        return (
-            <div>
-                <h2 style={{ marginBottom: '2rem' }}>Dashboard for {championshipData.season}</h2>
-                <div className="glass-panel" style={{ padding: '2rem', textAlign: 'center' }}>
-                    <p style={{ color: 'var(--text-muted)' }}>No data available for this season yet.</p>
-                </div>
-            </div>
-        )
-    }
 
     return (
         <div>

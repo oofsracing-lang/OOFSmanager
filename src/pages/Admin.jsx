@@ -1,15 +1,33 @@
-import { useState, useRef } from 'react';
+
+
+import { useState, useRef, useEffect } from 'react';
 import { useChampionship } from '../context/ChampionshipContext';
+import { formatTime, parseTimeInput } from '../utils/timeHelpers';
 import { parseRaceXml } from '../utils/raceParser';
 import { uploadXmlBackup } from '../firebase/db';
 
 const Admin = () => {
     const [selectedRace, setSelectedRace] = useState(null);
-    const { championshipData, currentSeasonId, updatePenalty, updateManualPosition, updateExclusion, exclusions, importRaceResults, addRound, deleteRound, resetSeasonData, exportSeasonData } = useChampionship();
+    const { championshipData, currentSeasonId, updatePenalty, updateManualPosition, updateExclusion, exclusions, importRaceResults, addRound, deleteRound, resetSeasonData, exportSeasonData, qualifyingSettings, updateQualifyingSettings, qualifyingSubmissions, deleteSubmission } = useChampionship();
 
     // Export Modal State
     const [showExport, setShowExport] = useState(false);
     const [exportText, setExportText] = useState('');
+    const [filterPassedOnly, setFilterPassedOnly] = useState(false);
+
+    // Local state for qualifying criteria inputs to prevent race condition
+    const [lmp2Laps, setLmp2Laps] = useState(qualifyingSettings?.['LMP2-UR']?.consecutiveLaps || 5);
+    const [lmgt3Laps, setLmgt3Laps] = useState(qualifyingSettings?.LMGT3?.consecutiveLaps || 5);
+
+    // Sync local state when Firestore updates
+    useEffect(() => {
+        if (qualifyingSettings?.['LMP2-UR']?.consecutiveLaps !== undefined) {
+            setLmp2Laps(qualifyingSettings['LMP2-UR'].consecutiveLaps);
+        }
+        if (qualifyingSettings?.LMGT3?.consecutiveLaps !== undefined) {
+            setLmgt3Laps(qualifyingSettings.LMGT3.consecutiveLaps);
+        }
+    }, [qualifyingSettings?.['LMP2-UR']?.consecutiveLaps, qualifyingSettings?.LMGT3?.consecutiveLaps]);
 
     // Safety Check
     if (!championshipData || !championshipData.races) {
@@ -52,7 +70,7 @@ const Admin = () => {
                     team: driver.team,
                     car: driver.car,
                     class: result.drivenClass || driver.class,
-                    isExcluded: exclusions[`${raceId}-${driver.id}`]
+                    isExcluded: exclusions[`${raceId} -${driver.id} `]
                 });
             }
         });
@@ -186,12 +204,12 @@ const Admin = () => {
         const sStr = seconds.toFixed(3).padStart(6, '0');
 
         if (hours > 0) {
-            return `${hours}:${mStr}:${sStr}`;
+            return `${hours}:${mStr}:${sStr} `;
         }
-        return `${mStr}:${sStr}`;
+        return `${mStr}:${sStr} `;
     };
 
-    const selectedRaceName = completedRaces.find(r => r.id === selectedRace)?.track || `Round ${selectedRace}`;
+    const selectedRaceName = completedRaces.find(r => r.id === selectedRace)?.track || `Round ${selectedRace} `;
 
     return (
         <div>
@@ -258,6 +276,7 @@ const Admin = () => {
             )}
 
             {/* Standard XML Ingestion */}
+            {/* Standard XML Ingestion */}
             <div className="glass-panel" style={{ padding: '2rem', marginBottom: '2rem', textAlign: 'center' }}>
                 <h3 style={{ marginBottom: '1rem', color: 'var(--text-main)' }}>Upload Race Results</h3>
                 <input
@@ -281,6 +300,8 @@ const Admin = () => {
             </div>
             {/* End XML Zone */}
 
+
+
             <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: '2rem' }}>
                 {/* Race Selection & Management */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -291,7 +312,7 @@ const Admin = () => {
                                 {completedRaces.map(race => (
                                     <div
                                         key={race.id}
-                                        className={`glass-panel ${selectedRace === race.id ? 'selected' : ''}`}
+                                        className={`glass - panel ${selectedRace === race.id ? 'selected' : ''} `}
                                         style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -437,7 +458,7 @@ const Admin = () => {
                                                         <td style={{ padding: '0.5rem' }}>
                                                             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                                                                 <button
-                                                                    className={`btn ${result.isExcluded ? 'btn-danger' : 'btn-outline-danger'}`}
+                                                                    className={`btn ${result.isExcluded ? 'btn-danger' : 'btn-outline-danger'} `}
                                                                     style={{ fontSize: '0.7rem', padding: '0.25rem 0.5rem', minWidth: '35px' }}
                                                                     onClick={() => updateExclusion(result.driverId, selectedRace, !result.isExcluded)}
                                                                     title={result.isExcluded ? "Re-instate Driver" : "Exclude Driver (DSQ)"}
@@ -449,7 +470,7 @@ const Admin = () => {
                                                                     step="0.1"
                                                                     placeholder="0"
                                                                     defaultValue={result.additionalPenalty || ''}
-                                                                    id={`penalty-p2-${result.driverId}`}
+                                                                    id={`penalty - p2 - ${result.driverId} `}
                                                                     style={{
                                                                         width: '60px',
                                                                         padding: '0.25rem',
@@ -464,7 +485,7 @@ const Admin = () => {
                                                                     className="btn btn-primary"
                                                                     style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
                                                                     onClick={() => {
-                                                                        const input = document.getElementById(`penalty-p2-${result.driverId}`);
+                                                                        const input = document.getElementById(`penalty - p2 - ${result.driverId} `);
                                                                         const penalty = parseFloat(input.value);
                                                                         updatePenalty(result.driverId, selectedRace, isNaN(penalty) ? 0 : penalty);
                                                                     }}
@@ -535,7 +556,7 @@ const Admin = () => {
                                                         <td style={{ padding: '0.5rem' }}>
                                                             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                                                                 <button
-                                                                    className={`btn ${result.isExcluded ? 'btn-danger' : 'btn-outline-danger'}`}
+                                                                    className={`btn ${result.isExcluded ? 'btn-danger' : 'btn-outline-danger'} `}
                                                                     style={{ fontSize: '0.7rem', padding: '0.25rem 0.5rem', minWidth: '35px' }}
                                                                     onClick={() => updateExclusion(result.driverId, selectedRace, !result.isExcluded)}
                                                                     title={result.isExcluded ? "Re-instate Driver" : "Exclude Driver (DSQ)"}
@@ -547,7 +568,7 @@ const Admin = () => {
                                                                     step="0.1"
                                                                     placeholder="0"
                                                                     defaultValue={result.additionalPenalty || ''}
-                                                                    id={`penalty-gt3-${result.driverId}`}
+                                                                    id={`penalty - gt3 - ${result.driverId} `}
                                                                     style={{
                                                                         width: '60px',
                                                                         padding: '0.25rem',
@@ -562,7 +583,7 @@ const Admin = () => {
                                                                     className="btn btn-primary"
                                                                     style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
                                                                     onClick={() => {
-                                                                        const input = document.getElementById(`penalty-gt3-${result.driverId}`);
+                                                                        const input = document.getElementById(`penalty - gt3 - ${result.driverId} `);
                                                                         const penalty = parseFloat(input.value);
                                                                         updatePenalty(result.driverId, selectedRace, isNaN(penalty) ? 0 : penalty);
                                                                     }}
@@ -584,6 +605,204 @@ const Admin = () => {
                     )}
                 </div>
             </div >
+
+            {/* Qualifying Criteria Settings (Moved) */}
+            <div className="glass-panel" style={{ padding: '1.5rem', marginBottom: '2rem', marginTop: '2rem' }}>
+                <h3 style={{ marginBottom: '1rem', color: 'var(--text-main)' }}>Qualifying Criteria</h3>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+                    {/* LMP2-UR Settings */}
+                    <div style={{ padding: '1rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
+                        <h4 style={{ color: 'var(--info)', marginBottom: '1rem' }}>LMP2-UR Criteria</h4>
+                        <div style={{ marginBottom: '1rem' }}>
+                            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem' }}>Consecutive Laps Required</label>
+                            <input
+                                type="number"
+                                className="form-control"
+                                value={lmp2Laps}
+                                onChange={(e) => setLmp2Laps(parseInt(e.target.value) || 5)}
+                                onBlur={() => updateQualifyingSettings('LMP2-UR', { ...(qualifyingSettings?.['LMP2-UR'] || {}), consecutiveLaps: lmp2Laps })}
+                            />
+                        </div>
+                        <div>
+                            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem' }}>Max Average Time (MM:ss.sss)</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="1:45.000"
+                                onBlur={(e) => {
+                                    const sec = parseTimeInput(e.target.value);
+                                    if (sec > 0) updateQualifyingSettings('LMP2-UR', { ...qualifyingSettings['LMP2-UR'], maxAvgTime: sec });
+                                }}
+                                defaultValue={qualifyingSettings?.['LMP2-UR']?.maxAvgTime ? formatTime(qualifyingSettings['LMP2-UR'].maxAvgTime) : ''}
+                                key={qualifyingSettings?.['LMP2-UR']?.maxAvgTime} // Force re-render on external update
+                            />
+                            <small style={{ color: 'var(--text-muted)' }}>
+                                Saved: {qualifyingSettings?.['LMP2-UR']?.maxAvgTime ? formatTime(qualifyingSettings['LMP2-UR'].maxAvgTime) : '-'} ({qualifyingSettings?.['LMP2-UR']?.maxAvgTime}s)
+                            </small>
+                        </div>
+                    </div>
+
+                    {/* LMGT3 Settings */}
+                    <div style={{ padding: '1rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
+                        <h4 style={{ color: 'var(--warning)', marginBottom: '1rem' }}>LMGT3 Criteria</h4>
+                        <div style={{ marginBottom: '1rem' }}>
+                            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem' }}>Consecutive Laps Required</label>
+                            <input
+                                type="number"
+                                className="form-control"
+                                value={lmgt3Laps}
+                                onChange={(e) => setLmgt3Laps(parseInt(e.target.value) || 5)}
+                                onBlur={() => updateQualifyingSettings('LMGT3', { ...(qualifyingSettings?.LMGT3 || {}), consecutiveLaps: lmgt3Laps })}
+                            />
+                        </div>
+                        <div>
+                            <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem' }}>Max Average Time (MM:ss.sss)</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="2:05.000"
+                                onBlur={(e) => {
+                                    const sec = parseTimeInput(e.target.value);
+                                    if (sec > 0) updateQualifyingSettings('LMGT3', { ...qualifyingSettings.LMGT3, maxAvgTime: sec });
+                                }}
+                                defaultValue={qualifyingSettings?.LMGT3?.maxAvgTime ? formatTime(qualifyingSettings.LMGT3.maxAvgTime) : ''}
+                                key={qualifyingSettings?.LMGT3?.maxAvgTime}
+                            />
+                            <small style={{ color: 'var(--text-muted)' }}>
+                                Saved: {qualifyingSettings?.LMGT3?.maxAvgTime ? formatTime(qualifyingSettings.LMGT3.maxAvgTime) : '-'} ({qualifyingSettings?.LMGT3?.maxAvgTime}s)
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Qualifying Results Table */}
+            <div className="glass-panel" style={{ padding: '1.5rem', marginBottom: '2rem', marginTop: '2rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                    <h3 style={{ margin: 0, color: 'var(--text-main)' }}>Qualifying Submissions History</h3>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem' }}>
+                        <input
+                            type="checkbox"
+                            checked={filterPassedOnly}
+                            onChange={(e) => setFilterPassedOnly(e.target.checked)}
+                        />
+                        Show Passed Only
+                    </label>
+                </div>
+                <div style={{ overflowX: 'auto' }}>
+                    <table className="table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead>
+                            <tr style={{ background: 'rgba(255,255,255,0.05)' }}>
+                                <th style={{ padding: '1rem', textAlign: 'left' }}>Event Date (XML)</th>
+                                <th style={{ padding: '1rem', textAlign: 'left' }}>Driver</th>
+                                <th style={{ padding: '1rem', textAlign: 'left' }}>Track</th>
+                                <th style={{ padding: '1rem', textAlign: 'left' }}>Class</th>
+                                <th style={{ padding: '1rem', textAlign: 'left' }}>Result</th>
+                                <th style={{ padding: '1rem', textAlign: 'left' }}>Best Avg</th>
+                                <th style={{ padding: '1rem', textAlign: 'left' }}>Splits</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {(!qualifyingSubmissions || qualifyingSubmissions.length === 0) ? (
+                                <tr>
+                                    <td colSpan="8" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                                        No submissions yet.
+                                    </td>
+                                </tr>
+                            ) : (
+                                [...qualifyingSubmissions]
+                                    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                                    .filter(sub => !filterPassedOnly || sub.passed)
+                                    .map((sub) => {
+                                        // Handle XML Date
+                                        let dateDisplay = new Date(sub.timestamp).toLocaleString();
+                                        if (sub.xmlDate) {
+                                            const ts = sub.xmlDate > 10000000000 ? sub.xmlDate : sub.xmlDate * 1000;
+                                            dateDisplay = new Date(ts).toLocaleString();
+                                        }
+
+                                        return (
+                                            <tr key={sub.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                                                <td style={{ padding: '1rem' }}>
+                                                    <div style={{ fontSize: '0.9rem' }}>{dateDisplay}</div>
+                                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Sub: {new Date(sub.timestamp).toLocaleString()}</div>
+                                                </td>
+                                                <td style={{ padding: '1rem', fontWeight: 'bold' }}>{sub.driverName}</td>
+                                                <td style={{ padding: '1rem' }}>{sub.track || "Unknown"}</td>
+                                                <td style={{ padding: '1rem' }}>{sub.carClass}</td>
+                                                <td style={{ padding: '1rem' }}>
+                                                    <span style={{
+                                                        padding: '0.2rem 0.5rem',
+                                                        borderRadius: '4px',
+                                                        background: sub.passed ? 'rgba(46, 213, 115, 0.2)' : 'rgba(255, 71, 87, 0.2)',
+                                                        color: sub.passed ? 'var(--success)' : 'var(--danger)',
+                                                        fontWeight: 'bold'
+                                                    }}>
+                                                        {sub.passed ? 'PASSED' : 'FAILED'}
+                                                    </span>
+                                                </td>
+                                                <td style={{ padding: '1rem', fontFamily: 'monospace' }}>
+                                                    {sub.passed ? formatTime(sub.bestAverage) : '-'}
+                                                </td>
+                                                <td style={{ padding: '1rem', fontSize: '0.85rem', fontFamily: 'monospace', maxWidth: '300px' }}>
+                                                    {sub.note && !sub.passed ? (
+                                                        <span style={{ color: 'var(--danger)' }}>{sub.note}</span>
+                                                    ) : sub.bestLaps && sub.bestLaps.length > 0 ? (
+                                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                                            {sub.bestLaps.map((lap, i) => (
+                                                                <span key={i} title={`Lap ${lap.lap}`} style={{ background: 'rgba(255,255,255,0.1)', padding: '2px 4px', borderRadius: '3px' }}>
+                                                                    {formatTime(lap.time)}
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                    ) : (
+                                                        <span style={{ color: 'var(--text-muted)' }}>-</span>
+                                                    )}
+                                                </td>
+                                                <td style={{ padding: '1rem' }}>
+                                                    <button
+                                                        type="button"
+                                                        className="btn"
+                                                        style={{
+                                                            padding: '0.5rem 1rem', // Bigger hit box
+                                                            background: 'transparent',
+                                                            border: 'none',
+                                                            color: 'var(--text-muted)',
+                                                            fontSize: '1.5rem',
+                                                            cursor: 'pointer',
+                                                            lineHeight: 1,
+                                                            transition: 'all 0.2s',
+                                                            position: 'relative',
+                                                            zIndex: 9999 // Max Z-index
+                                                        }}
+                                                        onMouseEnter={(e) => {
+                                                            e.target.style.color = 'var(--danger)';
+                                                            e.target.style.transform = 'scale(1.2)';
+                                                        }}
+                                                        onMouseLeave={(e) => {
+                                                            e.target.style.color = 'var(--text-muted)';
+                                                            e.target.style.transform = 'scale(1)';
+                                                        }}
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            e.stopPropagation();
+                                                            // Instant Delete
+                                                            deleteSubmission(sub.id);
+                                                        }}
+                                                        title="Delete Submission (Instant)"
+                                                    >
+                                                        ×
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div >
     );
 };

@@ -7,4 +7,4 @@ export const seasons = {
 };
 
 // Default expert for backward compatibility if needed, though we will switch to using the map
-export const latestSeason = season2;
+export const latestSeason = season3;

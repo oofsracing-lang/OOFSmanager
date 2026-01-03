@@ -2,241 +2,65 @@
   "season": "Season 3",
   "currentRound": 0,
   "totalRounds": 0,
-  "drivers": [
+  "drivers": [],
+  "races": [
     {
       "id": 1,
-      "name": "Joseph Tippen",
-      "team": "Joseph Tippen",
-      "car": "Oreca 07",
-      "class": "LMP2",
-      "raceResults": []
+      "name": "Round 1",
+      "track": "Algarve International Circuit",
+      "date": "2026-01-29",
+      "status": "Scheduled"
     },
     {
       "id": 2,
-      "name": "Donovan Bailey",
-      "team": "Donovan Bailey",
-      "car": "Oreca 07",
-      "class": "LMP2",
-      "raceResults": []
+      "name": "Round 2",
+      "track": "Circuit de la Sarthe",
+      "date": "2026-02-05",
+      "status": "Scheduled"
     },
     {
       "id": 3,
-      "name": "Jeremy Wade",
-      "team": "Jeremy Wade",
-      "car": "Oreca 07",
-      "class": "LMP2",
-      "raceResults": []
+      "name": "Round 3",
+      "track": "Autodromo José Carlos Pace (Interlagos)",
+      "date": "2026-02-12",
+      "status": "Scheduled"
     },
     {
       "id": 4,
-      "name": "Brian Crane",
-      "team": "Brian Crane",
-      "car": "Oreca 07",
-      "class": "LMP2",
-      "raceResults": []
+      "name": "Round 4",
+      "track": "Autodromo Nazionale Monza",
+      "date": "2026-02-19",
+      "status": "Scheduled"
     },
     {
       "id": 5,
-      "name": "Nick Johnson",
-      "team": "Nick Johnson",
-      "car": "Oreca 07",
-      "class": "LMP2",
-      "raceResults": []
+      "name": "Round 5",
+      "track": "Sebring International Raceway",
+      "date": "2026-02-26",
+      "status": "Scheduled"
     },
     {
       "id": 6,
-      "name": "p thomas",
-      "team": "p thomas",
-      "car": "Oreca 07",
-      "class": "LMP2",
-      "raceResults": []
+      "name": "Round 6",
+      "track": "Circuit Paul Ricard",
+      "date": "2026-03-05",
+      "status": "Scheduled"
     },
     {
       "id": 7,
-      "name": "Chris MacLennan",
-      "team": "Chris MacLennan",
-      "car": "Oreca 07",
-      "class": "LMP2",
-      "raceResults": []
+      "name": "Round 7",
+      "track": "Circuit of the Americas",
+      "date": "2026-03-12",
+      "status": "Scheduled"
     },
     {
       "id": 8,
-      "name": "James Rubio",
-      "team": "James Rubio",
-      "car": "Oreca 07",
-      "class": "LMP2",
-      "raceResults": []
-    },
-    {
-      "id": 9,
-      "name": "Gage Galvin",
-      "team": "Gage Galvin",
-      "car": "Oreca 07",
-      "class": "LMP2",
-      "raceResults": []
-    },
-    {
-      "id": 10,
-      "name": "Andrew Canelli",
-      "team": "Andrew Canelli",
-      "car": "McLaren 720S LMGT3 Evo",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 11,
-      "name": "Nathan Sides",
-      "team": "Nathan Sides",
-      "car": "Lexus RCF LMGT3",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 12,
-      "name": "Grayson Head",
-      "team": "Grayson Head",
-      "car": "Mercedes-AMG LMGT3",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 13,
-      "name": "Jesse Olsen",
-      "team": "Jesse Olsen",
-      "car": "McLaren 720S LMGT3 Evo",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 14,
-      "name": "J P#2423",
-      "team": "J P#2423",
-      "car": "BMW M4 LMGT3",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 15,
-      "name": "Donnie Greathouse",
-      "team": "Donnie Greathouse",
-      "car": "BMW M4 LMGT3",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 16,
-      "name": "Justin Fortuna",
-      "team": "Justin Fortuna",
-      "car": "Ford Mustang LMGT3",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 17,
-      "name": "Rich Spoon",
-      "team": "Rich Spoon",
-      "car": "Ford Mustang LMGT3",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 18,
-      "name": "Macaronie Tout Garni",
-      "team": "Macaronie Tout Garni",
-      "car": "BMW M4 LMGT3",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 19,
-      "name": "Abe Wozniak",
-      "team": "Abe Wozniak",
-      "car": "Aston Martin Vantage AMR LMGT3",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 20,
-      "name": "Honest Kirby",
-      "team": "Honest Kirby",
-      "car": "Ferrari 296 LMGT3",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 21,
-      "name": "Ayrton Torres",
-      "team": "Ayrton Torres",
-      "car": "Lexus RCF LMGT3",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 22,
-      "name": "Matthew Canelli",
-      "team": "Matthew Canelli",
-      "car": "BMW M4 LMGT3",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 23,
-      "name": "Dustin Rand",
-      "team": "Dustin Rand",
-      "car": "Aston Martin Vantage AMR LMGT3",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 24,
-      "name": "Dave Harris",
-      "team": "Dave Harris",
-      "car": "Ford Mustang LMGT3",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 25,
-      "name": "David Carter#5529",
-      "team": "David Carter#5529",
-      "car": "McLaren 720S LMGT3 Evo",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 26,
-      "name": "Ross McLean",
-      "team": "Ross McLean",
-      "car": "Porsche 911 GT3 R LMGT3",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 27,
-      "name": "Alexandre Rivard",
-      "team": "Alexandre Rivard",
-      "car": "McLaren 720S LMGT3 Evo",
-      "class": "LMGT3",
-      "raceResults": []
-    },
-    {
-      "id": 28,
-      "name": "Patches U",
-      "team": "Patches U",
-      "car": "Oreca 07",
-      "class": "LMP2",
-      "raceResults": []
-    },
-    {
-      "id": 29,
-      "name": "Santhosh Kumarasamy",
-      "team": "Santhosh Kumarasamy",
-      "car": "Oreca 07",
-      "class": "LMP2",
-      "raceResults": []
+      "name": "Round 8",
+      "track": "Circuit de Spa-Francorchamps",
+      "date": "2026-03-26",
+      "status": "Scheduled"
     }
   ],
-  "races": [],
   "penalties": {},
   "manualPositions": {}
 }

@@ -239,6 +239,13 @@ function calculateChampionship(seasonData) {
  * 
  * USING V1 API FOR STABILITY
  */
+/**
+ * Trigger: On write to seasons/{seasonId}
+ * Action: Recalculate standings
+ * Output: Write to standings/{seasonId}
+ * 
+ * USING V1 API FOR STABILITY
+ */
 exports.calculateStandings = functions.firestore.document("seasons/{seasonId}")
     .onWrite(async (change, context) => {
         const seasonId = context.params.seasonId;
@@ -272,3 +279,281 @@ exports.calculateStandings = functions.firestore.document("seasons/{seasonId}")
             return null;
         }
     });
+
+
+// --- QUALIFYING SUBMISSION LOGIC ---
+const { XMLParser } = require("fast-xml-parser");
+
+// Helper: Parse and Analyze XML (Moved from Frontend)
+// Helper: Time Formatter
+const formatTime = (seconds) => {
+    if (!seconds || seconds === Infinity) return "N/A";
+    const m = Math.floor(seconds / 60);
+    const s = (seconds % 60).toFixed(4); // 4 decimals
+    return `${m}:${s.padStart(7, '0')}`;
+};
+
+// Helper: Parse and Analyze XML (Moved from Frontend)
+const analyzeQualifyingXml = (xmlContent, criteriaSettings, targetDriverName = null) => {
+    const parser = new XMLParser({
+        ignoreAttributes: false,
+        attributeNamePrefix: "@_"
+    });
+    const parsed = parser.parse(xmlContent);
+
+    if (!parsed.rFactorXML || !parsed.rFactorXML.RaceResults) {
+        throw new functions.https.HttpsError('invalid-argument', "Invalid XML structure: Missing rFactorXML or RaceResults");
+    }
+
+    const raceResults = parsed.rFactorXML.RaceResults;
+    const trackName = raceResults.TrackVenue;
+    const raceDate = raceResults.DateTime;
+
+    // 1. Extract Drivers
+    let driversData = raceResults.Driver;
+    let targetSession = raceResults.Race;
+
+    if (!driversData) {
+        const potentialSessions = Object.keys(raceResults).filter(key =>
+            key !== 'Setting' && key !== 'ServerName' && key !== 'TrackVenue' && typeof raceResults[key] === 'object'
+        );
+        for (const key of potentialSessions) {
+            if (raceResults[key] && raceResults[key].Driver) {
+                driversData = raceResults[key].Driver;
+                targetSession = raceResults[key];
+                break;
+            }
+        }
+    }
+
+    if (!driversData) throw new functions.https.HttpsError('invalid-argument', "No drivers found in XML.");
+    if (!Array.isArray(driversData)) driversData = [driversData];
+
+    // Filter for Player or Target
+    let driver;
+
+    if (targetDriverName) {
+        // user selected a specific driver
+        driver = driversData.find(d => d.Name === targetDriverName);
+        if (!driver) throw new functions.https.HttpsError('not-found', `Driver '${targetDriverName}' not found in XML.`);
+    } else {
+        // Automatic Detection Logic
+        if (driversData.length > 1) {
+            // STRICT: If multiple drivers, always ask user
+            return {
+                status: 'MULTIPLE_DRIVERS',
+                drivers: driversData.map(d => {
+                    const laps = Array.isArray(d.Lap) ? d.Lap : (d.Lap ? [d.Lap] : []);
+                    return {
+                        driverName: d.Name,
+                        carClass: d.CarClass,
+                        carType: d.CarType,
+                        teamName: d.TeamName,
+                        lapCount: laps.length
+                    };
+                })
+            };
+        }
+        // Only one driver found
+        driver = driversData[0];
+    }
+
+    if (!driver) {
+        throw new functions.https.HttpsError('failed-precondition', "No valid driver found.");
+    }
+
+    // Class Determination
+    let criteriaClass = 'LMGT3';
+    const rawClass = (driver.CarClass || '').toUpperCase();
+    if (rawClass.includes('LMP2') || rawClass.includes('P2') || rawClass.includes('ORECA')) {
+        criteriaClass = 'LMP2-UR';
+    }
+
+    const criteria = criteriaSettings[criteriaClass] || { consecutiveLaps: 5, maxAvgTime: 999 };
+
+    // 2. Extract Laps from Driver.Lap (qualifying/practice format)
+    const validLaps = [];
+
+    if (driver.Lap) {
+        const laps = Array.isArray(driver.Lap) ? driver.Lap : [driver.Lap];
+        laps.forEach(lap => {
+            const lapNum = parseInt(lap['@_num']);
+            const s1 = parseFloat(lap['@_s1']);
+            const s2 = parseFloat(lap['@_s2']);
+            const s3 = parseFloat(lap['@_s3']);
+            const et = parseFloat(lap['@_et'] || 0);
+
+            // Only include laps with valid sector times (all positive)
+            if (!isNaN(s1) && !isNaN(s2) && !isNaN(s3) && s1 > 0 && s2 > 0 && s3 > 0) {
+                const total = s1 + s2 + s3;
+                validLaps.push({
+                    lap: lapNum,
+                    time: total,
+                    timestamp: et
+                });
+            }
+        });
+    }
+
+    validLaps.sort((a, b) => a.lap - b.lap);
+
+    // 3. Analyze Logic
+    const requiredConsecutive = criteria.consecutiveLaps;
+    const maxAvgTime = criteria.maxAvgTime;
+
+    let maxConsecutiveCount = 0;
+    let currentStreak = 0;
+
+    // Calculate Stats
+    if (validLaps.length > 0) {
+        currentStreak = 1;
+        maxConsecutiveCount = 1;
+        for (let i = 0; i < validLaps.length - 1; i++) {
+            if (validLaps[i + 1].lap === validLaps[i].lap + 1) {
+                currentStreak++;
+            } else {
+                currentStreak = 1;
+            }
+            if (currentStreak > maxConsecutiveCount) maxConsecutiveCount = currentStreak;
+        }
+    }
+
+    if (validLaps.length === 0) {
+        return {
+            passed: false,
+            msg: `FAILED: No valid laps found.`,
+            driver,
+            trackName,
+            raceDate,
+            criteriaClass,
+            criteria,
+            stats: { bestAverage: 0, maxConsecutiveCount: 0 }
+        };
+    }
+
+    if (validLaps.length < requiredConsecutive) {
+        return {
+            passed: false,
+            msg: `FAILED: Insufficient valid laps (${validLaps.length}/${requiredConsecutive}).`,
+            driver,
+            trackName,
+            raceDate,
+            criteriaClass,
+            criteria,
+            stats: { bestAverage: 0, maxConsecutiveCount }
+        };
+    }
+
+    let bestAverage = Infinity;
+    let bestSequence = [];
+
+    for (let i = 0; i <= validLaps.length - requiredConsecutive; i++) {
+        const sequence = validLaps.slice(i, i + requiredConsecutive);
+        // Continuous check
+        let isContinuous = true;
+        for (let j = 0; j < sequence.length - 1; j++) {
+            if (sequence[j + 1].lap !== sequence[j].lap + 1) { isContinuous = false; break; }
+        }
+        if (!isContinuous) continue;
+
+        const totalTime = sequence.reduce((sum, l) => sum + l.time, 0);
+        const avg = totalTime / requiredConsecutive;
+        if (avg < bestAverage) {
+            bestAverage = avg;
+            bestSequence = sequence;
+        }
+    }
+
+    const passed = (bestAverage <= maxAvgTime);
+    let msg = 'PASSED';
+    if (!passed) {
+        if (bestAverage === Infinity) {
+            msg = `FAILED: No consecutive sequence of ${requiredConsecutive} valid laps found.`;
+        } else {
+            msg = `FAILED: Average Time ${formatTime(bestAverage)} (Limit: ${formatTime(maxAvgTime)})`;
+        }
+    }
+
+    return {
+        passed,
+        msg,
+        driver,
+        trackName,
+        raceDate,
+        criteriaClass,
+        criteria,
+        stats: { bestAverage: bestAverage === Infinity ? 0 : bestAverage, bestSequence, maxConsecutiveCount }
+    };
+
+};
+
+exports.submitQualifying = functions.https.onCall(async (data, context) => {
+    // data: { xmlContent: string, seasonId: string, driverName?: string }
+    const { xmlContent, seasonId, driverName } = data;
+
+    if (!xmlContent) throw new functions.https.HttpsError('invalid-argument', "Missing XML Content");
+
+    const targetSeasonId = String(seasonId || '3');
+
+    // 1. Fetch Settings
+    const seasonDoc = await db.collection('seasons').doc(targetSeasonId).get();
+    let settings = {
+        'LMP2-UR': { consecutiveLaps: 5, maxAvgTime: 120.0 }, // fallback
+        'LMGT3': { consecutiveLaps: 5, maxAvgTime: 140.0 }
+    };
+
+    if (seasonDoc.exists && seasonDoc.data().qualifyingSettings) {
+        settings = seasonDoc.data().qualifyingSettings;
+        console.log('[submitQualifying] Using custom settings from Firestore:', JSON.stringify(settings));
+    } else {
+        console.log('[submitQualifying] Using default settings (no custom settings found)');
+    }
+
+    // 2. Analyze
+    try {
+        const result = analyzeQualifyingXml(xmlContent, settings, driverName);
+
+        // Handle Multiple Drivers Interruption
+        if (result.status === 'MULTIPLE_DRIVERS') {
+            return {
+                success: false,
+                status: 'MULTIPLE_DRIVERS',
+                drivers: result.drivers,
+                message: "Multiple drivers found. Please select one."
+            };
+        }
+
+        // 3. Save to Firestore
+        const submission = {
+            id: db.collection('qualifying').doc().id, // Generate ID
+            timestamp: new Date().toISOString(),
+            xmlDate: result.raceDate,
+            driverName: result.driver.Name,
+            carClass: result.criteriaClass,
+            carType: result.driver.CarType || 'Unknown',
+            track: result.trackName || 'Unknown',
+            passed: result.passed,
+            bestAverage: result.stats.bestAverage === Infinity ? 0 : result.stats.bestAverage,
+            bestLaps: result.stats.bestSequence || [],
+            criteriaUsed: result.criteria,
+            validLapCount: result.stats.validLapCount || 0, // Need to pass this through
+            maxConsecutiveCount: result.stats.maxConsecutiveCount,
+            note: result.msg,
+            seasonId: targetSeasonId,
+            calculationSource: 'cloud-function-v1'
+        };
+
+        // Use custom ID or auto? UI logic used random string. Let's use auto-generated ID from line above.
+        await db.collection('qualifying').doc(submission.id).set(submission);
+
+        return {
+            success: true,
+            submission: submission,
+            message: result.msg
+        };
+
+    } catch (err) {
+        console.error("Qualifying Analysis Error:", err);
+        throw new functions.https.HttpsError('internal', err.message);
+    }
+});
