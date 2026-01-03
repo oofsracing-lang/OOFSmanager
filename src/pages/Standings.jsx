@@ -94,7 +94,7 @@ const Standings = () => {
                             }}>
                                 <th style={{ padding: '1rem 0.5rem' }}>Pos</th>
                                 <th style={{ padding: '1rem 0.5rem' }}>Driver</th>
-                                <th style={{ padding: '1rem 0.5rem' }}>Team</th>
+                                <th style={{ padding: '1rem 0.5rem' }}>Car</th>
                                 <th style={{ padding: '1rem 0.5rem', textAlign: 'center' }}>Points</th>
                                 <th style={{ padding: '1rem 0.5rem', textAlign: 'center' }}>Ballast</th>
                             </tr>
@@ -124,7 +124,7 @@ const Standings = () => {
                                         </Link>
                                     </td>
                                     <td style={{ padding: '1rem 0.5rem', color: 'var(--text-muted)' }}>
-                                        {formatTeamName(driver.team, driver.name)}
+                                        {driver.car || driver.carType || '-'}
                                     </td>
                                     <td style={{
                                         padding: '1rem 0.5rem',
