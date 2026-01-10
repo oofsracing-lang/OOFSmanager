@@ -60,7 +60,7 @@
       "status": "Scheduled"
     },
     {
-      "id": "s3-mc",
+      "id": 3,
       "name": "Round 3",
       "track": "Autodromo José Carlos Pace (Interlagos)",
       "date": "2026-02-12",
