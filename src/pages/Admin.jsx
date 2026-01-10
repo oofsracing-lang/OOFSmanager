@@ -19,7 +19,7 @@ const Admin = () => {
 
 
 
-    // Local state for qualifying criteria inputs to prevent race condition
+    // Local state ...
     const [lmp2Laps, setLmp2Laps] = useState(qualifyingSettings?.['LMP2-UR']?.consecutiveLaps || 5);
     const [lmgt3Laps, setLmgt3Laps] = useState(qualifyingSettings?.LMGT3?.consecutiveLaps || 5);
 

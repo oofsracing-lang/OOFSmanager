@@ -4,7 +4,7 @@ import season3_sprint from './seasons/season3_sprint.json';
 
 export const seasons = {
     "2": season2,
-    "s3-mc": season3_multiclass,
+    "3": season3_multiclass,
     "s3-sprint": season3_sprint
 };
 

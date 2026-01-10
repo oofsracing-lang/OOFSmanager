@@ -9,7 +9,7 @@ const ChampionshipContext = createContext(null);
 export const ChampionshipProvider = ({ children }) => {
 
     // Season State
-    const [currentSeasonId, setCurrentSeasonId] = useState("s3-mc");
+    const [currentSeasonId, setCurrentSeasonId] = useState("3");
     const [seasonData, setSeasonData] = useState(null);
 
     const [loading, setLoading] = useState(false); // Fix: Add missing loading state
