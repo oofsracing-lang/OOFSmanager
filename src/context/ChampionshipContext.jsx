@@ -220,7 +220,6 @@ export const ChampionshipProvider = ({ children }) => {
 
     const deleteRound = (raceId) => {
         if (!currentUser) return;
-        console.log("Deleting Round ID:", raceId);
 
         try {
             const next = JSON.parse(JSON.stringify(seasonData));
@@ -228,7 +227,6 @@ export const ChampionshipProvider = ({ children }) => {
             // Remove Race
             const initialCount = next.races.length;
             next.races = next.races.filter(r => String(r.id) !== String(raceId));
-            console.log(`Races: ${initialCount} -> ${next.races.length}`);
 
             next.totalRounds = next.races.length;
 
@@ -258,10 +256,12 @@ export const ChampionshipProvider = ({ children }) => {
         }
     };
 
-    const importRaceResults = (raceId, parsedResults, raceInfo = {}) => {
-        if (!currentUser) return; // Secure
-
-        console.log("Importing Results:", { raceId, count: parsedResults.length, raceInfo });
+    const importRaceResults = async (raceId, parsedResults, raceInfo = {}) => {
+        if (!currentUser) {
+            console.error("Import failed: No User Logged In");
+            alert("Error: You must be logged in to import results.");
+            return;
+        }
 
         // Deep clone to avoid mutation
         const newData = JSON.parse(JSON.stringify(seasonData));
@@ -270,14 +270,15 @@ export const ChampionshipProvider = ({ children }) => {
         let raceIdToUse = raceId;
         let existingRaceIndex = -1;
 
-        // Smart Match: Try to find an existing race with minimal name matching
+        // Smart Match Logic - DISABLED
+        // Reason: Admin.jsx already handles matching/new ID calculation. 
+        // Re-running it here causes conflicts (e.g. overriding 'New Round 9' back to 'Existing Round 8' because track names match).
+        /*
         if (raceInfo && raceInfo.trackName) {
             const normalizedImportTrack = raceInfo.trackName.toLowerCase().replace(/[^a-z0-9]/g, '');
 
             existingRaceIndex = newData.races.findIndex(r => {
                 const normalizedScheduleTrack = r.track.toLowerCase().replace(/[^a-z0-9]/g, '');
-                // Check if one contains the other (e.g., "Silverstone" in "Silverstone Circuit" or vice versa)
-                // Also check strict date match if available? No, dates often shift.
                 return normalizedScheduleTrack.includes(normalizedImportTrack) || normalizedImportTrack.includes(normalizedScheduleTrack);
             });
 
@@ -286,16 +287,10 @@ export const ChampionshipProvider = ({ children }) => {
                 console.log(`Matched import ${raceInfo.trackName} to existing Round ${raceIdToUse} (${newData.races[existingRaceIndex].track})`);
             }
         }
+        */
 
-        // Fallback: If passed raceId was just "next available" but we found a match, use the match.
-        // If we didn't find a match, we use the passed raceId (which Admin.jsx calculated as max+1).
-        if (existingRaceIndex === -1 && raceId === newData.races.length + 1) {
-            // Confirm we are appending
-            existingRaceIndex = -1;
-        } else if (existingRaceIndex !== -1) {
-            // If we matched, ensure we update THAT race, not append a new one
-            // But wait, key logic is: if we matched, we use matched ID.
-        }
+        // Explicitly Find index based on the PASSED raceId
+        existingRaceIndex = newData.races.findIndex(r => String(r.id) === String(raceIdToUse));
 
         let raceDate = new Date().toISOString().split('T')[0];
         try {
@@ -331,9 +326,11 @@ export const ChampionshipProvider = ({ children }) => {
             });
         }
 
-        // Update Current Round
         if (raceIdToUse > newData.currentRound) {
             newData.currentRound = raceIdToUse;
+        }
+        if (newData.races.length > (newData.totalRounds || 0)) {
+            newData.totalRounds = newData.races.length;
         }
 
         // 1. Process parsed results
@@ -348,7 +345,7 @@ export const ChampionshipProvider = ({ children }) => {
             const rawClass = (pResult.carClass || '').toUpperCase();
             // Check for generic LMP2 indicators
             if (rawClass.includes('LMP2') || rawClass.includes('P2') || rawClass.includes('ORECA')) {
-                determinedClass = 'LMP2';
+                determinedClass = 'LMP2-UR';
             }
 
             if (!driver) {
@@ -380,7 +377,7 @@ export const ChampionshipProvider = ({ children }) => {
                 position: Number(pResult.position) || 0,
                 classPosition: Number(pResult.classPosition) || 0,
                 laps: Number(pResult.laps) || 0,
-                finishTime: parseTime(String(pResult.totalTime)) || null,
+                finishTime: parseTime(pResult.finishTime || pResult.totalTime) || null,
                 bestLap: pResult.bestLap || null,
                 status: pResult.status || 'Finished',
                 attendance: 'Raced',
@@ -403,14 +400,18 @@ export const ChampionshipProvider = ({ children }) => {
             }
         });
 
+        // Enforce Correct Season ID
+        newData.id = String(currentSeasonId);
+
         // Save to Cloud
-        saveSeasonData(currentSeasonId, newData);
+        return await saveSeasonData(currentSeasonId, newData);
     };
 
     // Derived State (Calculations)
     const processedData = useMemo(() => {
         // PRIORITY 1: Use Cloud Calculated Standings if available and fresh
-        if (cloudStandings && cloudStandings.season === (seasonData?.season)) {
+        if (cloudStandings && cloudStandings.season === (seasonData?.season) &&
+            (cloudStandings.races || []).length >= (seasonData?.races || []).length) {
             return {
                 ...cloudStandings,
                 calculationSource: 'Cloud Backend'
@@ -450,7 +451,9 @@ export const ChampionshipProvider = ({ children }) => {
             ];
 
             // 1. Calculate Points for Completed Races
-            const completedRaces = data.races.filter(r => r.id <= data.currentRound);
+            // 1. Calculate Points for Completed Races
+            // Fix: Don't rely on currentRound index. Just process everything marked 'Completed'.
+            const completedRaces = data.races.filter(r => r.status === 'Completed' || r.id <= data.currentRound);
             completedRaces.forEach(race => {
                 const processClass = (className) => {
                     // Filter drivers who actually raced in this class for this round
@@ -472,7 +475,7 @@ export const ChampionshipProvider = ({ children }) => {
 
                         // Calculate total time
                         // Use parseTime to ensure we handle "MM:SS" strings OR Seconds Numbers safely
-                        const finishTime = parseTime(result.finishTime) || 999999;
+                        const finishTime = parseTime(result.finishTime || result.totalTime) || 999999;
 
                         result.laps = Number(result.laps); // Ensure Number
                         result.originalTime = finishTime;
@@ -678,21 +681,8 @@ export const ChampionshipProvider = ({ children }) => {
         // Note: We don't need to reload window anymore, the subscription will update the UI
     };
 
-    // Auto-Sync/Repair for Season 3 if empty in Cloud OR contains dummy data OR missing rounds
-    useEffect(() => {
-        if (currentUser && currentSeasonId === 3 && seasonData) {
-            // Check if races are missing/empty in the cloud data OR if dummy drivers exist
-            // (e.g. check for the first dummy driver "Joseph Tippen")
-            const hasDummyDrivers = seasonData.drivers && seasonData.drivers.some(d => d.name === "Joseph Tippen");
-            // Standard check: Season 3 should have 8 races. If less, something was deleted (accidentally)
-            const expectedRaceCount = 8;
-
-            if (!seasonData.races || seasonData.races.length < expectedRaceCount || hasDummyDrivers) {
-
-                resetSeasonData();
-            }
-        }
-    }, [currentUser, currentSeasonId, seasonData]);
+    // Auto-Sync removed to prevent overwriting user data
+    // useEffect(() => { ... }, []);
 
     const exportSeasonData = () => {
         // Create an object that includes the current Race Data, Penalties, and Manual Positions
@@ -727,6 +717,7 @@ export const ChampionshipProvider = ({ children }) => {
         qualifyingSettings,
         qualifyingSubmissions,
         qualifyingSubmissions,
+        seasonData, // Expose raw data for Admin (Schedule Management)
         exportSeasonData,
         seasonConfig: (seasons[currentSeasonId]?.config)
             ? { ...(seasonData?.config || {}), ...seasons[currentSeasonId].config }

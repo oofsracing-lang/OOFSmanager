@@ -8,7 +8,7 @@ import { uploadXmlBackup } from '../firebase/db';
 
 const Admin = () => {
     const [selectedRace, setSelectedRace] = useState(null);
-    const { championshipData, currentSeasonId, updatePenalty, updateManualPosition, updateExclusion, exclusions, importRaceResults, addRound, deleteRound, resetSeasonData, exportSeasonData, qualifyingSettings, updateQualifyingSettings, qualifyingSubmissions, deleteSubmission } = useChampionship();
+    const { championshipData, seasonData, currentSeasonId, updatePenalty, updateManualPosition, updateExclusion, exclusions, importRaceResults, addRound, deleteRound, resetSeasonData, exportSeasonData, qualifyingSettings, updateQualifyingSettings, qualifyingSubmissions, deleteSubmission } = useChampionship();
 
     // Export Modal State
     const [showExport, setShowExport] = useState(false);
@@ -57,8 +57,8 @@ const Admin = () => {
         );
     }
 
-    // Get completed races
-    const completedRaces = championshipData.races;
+    // Get ALL races (Scheduled + Completed)
+    const completedRaces = (seasonData && seasonData.races) ? seasonData.races : [];
 
     const getRaceResults = (raceId) => {
         if (!raceId) return [];
@@ -84,6 +84,11 @@ const Admin = () => {
 
     const results = selectedRace ? getRaceResults(selectedRace) : [];
 
+    // DEBUG: Inspect Data state
+    useEffect(() => {
+        if (!selectedRace) return;
+    }, [selectedRace, championshipData]);
+
     // New Race Form State
     const [newRaceTrack, setNewRaceTrack] = useState('');
     const [newRaceDate, setNewRaceDate] = useState('');
@@ -100,7 +105,6 @@ const Admin = () => {
 
     const handleDeleteRound = async (raceId) => {
         try {
-            console.log("Admin requesting delete for:", raceId);
             await deleteRound(Number(raceId));
             alert("Round Deleted Successfully!");
 
@@ -117,17 +121,13 @@ const Admin = () => {
     const handleFiles = async (files) => {
         if (files && files[0]) {
             const file = files[0];
-            console.log("File selected:", file.name);
 
             if (file.name.toLowerCase().endsWith('.xml')) {
-                // 1. Upload Backup first (if it fails, we warn but probably proceed?)
-                // Actually, let's try upload, if fails, just log it.
+                // 1. Upload Backup first
                 try {
-                    console.log("Attempting backup upload for Season:", currentSeasonId);
                     await uploadXmlBackup(file, currentSeasonId);
                 } catch (uploadErr) {
                     console.error("Backup Upload Failed:", uploadErr);
-                    // Non-blocking warning?
                     alert("Warning: Automatic cloud backup failed (check console). Importing data locally anyway.");
                 }
 
@@ -150,7 +150,9 @@ const Admin = () => {
                     const normalize = (str) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
 
                     // Look for a scheduled race (incomplete) that matches the XML track name
-                    const matchingRace = championshipData.races.find(r => {
+                    // FIX: Use seasonData.races (Raw) to ensure we find ALL existing matches
+                    // Use fallback to empty array if undefined
+                    const matchingRace = (seasonData?.races || []).find(r => {
                         // Only look at future/current races, or races deemed "Scheduled"
                         // Simple check: Is the name similar?
                         const dbTrack = normalize(r.track);
@@ -160,18 +162,16 @@ const Admin = () => {
 
                     let raceIdToUse;
                     if (matchingRace) {
-                        console.log("Smart Match Found! Latching to:", matchingRace.track, "(ID:", matchingRace.id, ")");
                         raceIdToUse = matchingRace.id;
                     } else {
-                        const maxId = championshipData.races.length > 0 ? Math.max(...championshipData.races.map(r => r.id)) : 0;
+                        const maxId = (seasonData && seasonData.races && seasonData.races.length > 0)
+                            ? Math.max(...seasonData.races.map(r => r.id))
+                            : 0;
                         raceIdToUse = maxId + 1;
-                        console.log("No match found. Creating new Round:", raceIdToUse);
                     }
 
-                    console.log("Final Import Target ID:", raceIdToUse);
-
                     // Update Context
-                    importRaceResults(raceIdToUse, result.results, {
+                    await importRaceResults(raceIdToUse, result.results, {
                         trackName: result.trackName,
                         raceDate: result.raceDate,
                         dramaLog: result.dramaLog || []
@@ -226,9 +226,7 @@ const Admin = () => {
                         className="btn btn-outline-danger"
                         style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
                         onClick={() => {
-                            console.log("Reset Button Clicked");
                             if (window.confirm("WARNING: This will perform a HARD RESET. All data will be cleared and the page will reload. Continue?")) {
-                                console.log("Reset Confirmed - Triggering Reload");
                                 resetSeasonData();
                             }
                         }}
@@ -346,7 +344,6 @@ const Admin = () => {
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     e.preventDefault();
-                                                    console.log('White X Clicked - INSTANT DELETE');
 
                                                     // INSTANT DELETE - NO CONFIRMATION
                                                     deleteRound(Number(race.id));
@@ -409,7 +406,7 @@ const Admin = () => {
                     {selectedRace ? (
                         <>
                             <h3 style={{ marginBottom: '1.5rem' }}>
-                                {selectedRaceName} - Results
+                                {selectedRaceName} (ID: {selectedRace}) - Results: {results.length}
                             </h3>
 
                             {/* LMP2 Results */}
@@ -430,7 +427,7 @@ const Admin = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {results.filter(r => r.class === 'LMP2').map(result => (
+                                                {results.filter(r => r.class === 'LMP2-UR').map(result => (
                                                     <tr key={result.driverId} style={{ borderBottom: '1px solid var(--border-color)', opacity: result.isExcluded ? 0.5 : 1, textDecoration: result.isExcluded ? 'line-through' : 'none' }}>
                                                         <td style={{ padding: '0.5rem' }}>
                                                             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>

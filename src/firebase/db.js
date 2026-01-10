@@ -1,4 +1,5 @@
-import { db } from './index';
+import { db, storage } from './index';
+import { ref, uploadBytes } from 'firebase/storage';
 import { doc, onSnapshot, setDoc, updateDoc, collection, addDoc, deleteDoc, query, where, orderBy } from 'firebase/firestore';
 
 // Collection Name
@@ -18,7 +19,6 @@ export const subscribeToSeason = (seasonId, onDataChange) => {
         if (docSnap.exists()) {
             onDataChange(docSnap.data(), false);
         } else {
-            console.log("No such document! Waiting for creation...");
             onDataChange(null, false);
         }
     }, (error) => {
@@ -178,8 +178,7 @@ export const subscribeToQualifying = (seasonId, onDataChange) => {
  * @param {File} file 
  * @param {string} seasonId 
  */
-import { ref, uploadBytes } from "firebase/storage";
-import { storage } from "./index";
+// Imports moved to top
 
 export const uploadXmlBackup = async (file, seasonId) => {
     try {
@@ -187,7 +186,6 @@ export const uploadXmlBackup = async (file, seasonId) => {
         // Path: season_DATA/uploads/YYYY-MM-DD_HH-MM-SS_filename.xml
         const storageRef = ref(storage, `season_${seasonId}/uploads/${timestamp}_${file.name}`);
         const snapshot = await uploadBytes(storageRef, file);
-        console.log('XML Backup uploaded successfully:', snapshot.metadata.fullPath);
         return snapshot.metadata.fullPath;
     } catch (error) {
         console.error("Error uploading XML backup:", error);

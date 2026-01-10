@@ -1,7 +1,7 @@
 
 // Convert seconds to "MM:ss.sss" (e.g. 85.5 -> "1:25.500")
 export const formatTime = (seconds) => {
-    if (seconds === null || seconds === undefined || isNaN(seconds)) return '-';
+    if (seconds === null || seconds === undefined || isNaN(seconds) || seconds === Infinity) return '-';
 
     const m = Math.floor(seconds / 60);
     const s = Math.floor(seconds % 60);
@@ -31,6 +31,12 @@ export const parseTimeInput = (inputStr) => {
         const m = parseInt(parts[0], 10);
         const s = parseFloat(parts[1]);
         return (m * 60) + s;
+    } else if (parts.length === 3) {
+        // H:MM:SS.mmm
+        const h = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10);
+        const s = parseFloat(parts[2]);
+        return (h * 3600) + (m * 60) + s;
     } else if (parts.length === 1) {
         // Just Seconds?
         return parseFloat(parts[0]);

@@ -104,7 +104,6 @@ export const parseRaceXml = (xmlContent) => {
             if (holder) {
                 if (!driverStats[holder]) driverStats[holder] = { purpleSectors: 0, incidents: 0, penalties: 0 };
                 driverStats[holder].purpleSectors++;
-                console.log(`Awarded Purple Sector ${sectNum} (${cls}) to ${holder}`);
             }
         });
     });
@@ -166,7 +165,8 @@ export const parseRaceXml = (xmlContent) => {
             startPosition: parseInt(d.ClassGridPos),
             laps: parseInt(d.Laps),
             bestLap: d.BestLapTime,
-            totalTime: d.FinishTime,
+            totalTime: d.FinishTime || d.Time || d['@_FinishTime'] || d['@_Time'],
+            finishTime: d.FinishTime || d.Time || d['@_FinishTime'] || d['@_Time'],
             status: d.FinishStatus,
             isPlayer: d.isPlayer === 1 || d.isPlayer === "1",
             // New Stats
