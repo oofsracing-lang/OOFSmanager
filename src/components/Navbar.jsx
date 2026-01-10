@@ -3,7 +3,8 @@ import { useChampionship } from '../context/ChampionshipContext';
 import logo from '../assets/logo.png';
 
 const Navbar = () => {
-    const { currentSeasonId, changeSeason, seasonList } = useChampionship();
+    const { currentSeasonId, changeSeason, seasonList, seasonConfig } = useChampionship();
+    const showQualifying = seasonConfig?.ui?.showQualifying !== false;
 
     return (
         <nav style={{
@@ -39,12 +40,14 @@ const Navbar = () => {
             >
                 Races
             </NavLink>
-            <NavLink
-                to="/qualifying"
-                className={({ isActive }) => isActive ? 'btn btn-primary' : 'btn btn-ghost'}
-            >
-                Qualifying
-            </NavLink>
+            {showQualifying && (
+                <NavLink
+                    to="/qualifying"
+                    className={({ isActive }) => isActive ? 'btn btn-primary' : 'btn btn-ghost'}
+                >
+                    Qualifying
+                </NavLink>
+            )}
             <NavLink
                 to="/admin"
                 className={({ isActive }) => isActive ? 'btn btn-primary' : 'btn btn-ghost'}
@@ -57,7 +60,7 @@ const Navbar = () => {
                 <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Season:</span>
                 <select
                     value={currentSeasonId}
-                    onChange={(e) => changeSeason(parseInt(e.target.value))}
+                    onChange={(e) => changeSeason(e.target.value)}
                     style={{
                         background: 'var(--bg-card)',
                         color: 'var(--text-main)',

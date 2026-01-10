@@ -15,6 +15,10 @@ const Admin = () => {
     const [exportText, setExportText] = useState('');
     const [filterPassedOnly, setFilterPassedOnly] = useState(false);
 
+
+
+
+
     // Local state for qualifying criteria inputs to prevent race condition
     const [lmp2Laps, setLmp2Laps] = useState(qualifyingSettings?.['LMP2-UR']?.consecutiveLaps || 5);
     const [lmgt3Laps, setLmgt3Laps] = useState(qualifyingSettings?.LMGT3?.consecutiveLaps || 5);
@@ -70,7 +74,7 @@ const Admin = () => {
                     team: driver.team,
                     car: driver.car,
                     class: result.drivenClass || driver.class,
-                    isExcluded: exclusions[`${raceId} -${driver.id} `]
+                    isExcluded: exclusions[`${raceId}-${driver.id}`]
                 });
             }
         });
@@ -204,12 +208,12 @@ const Admin = () => {
         const sStr = seconds.toFixed(3).padStart(6, '0');
 
         if (hours > 0) {
-            return `${hours}:${mStr}:${sStr} `;
+            return `${hours}:${mStr}:${sStr}`;
         }
-        return `${mStr}:${sStr} `;
+        return `${mStr}:${sStr}`;
     };
 
-    const selectedRaceName = completedRaces.find(r => r.id === selectedRace)?.track || `Round ${selectedRace} `;
+    const selectedRaceName = completedRaces.find(r => r.id === selectedRace)?.track || `Round ${selectedRace}`;
 
     return (
         <div>
@@ -217,63 +221,67 @@ const Admin = () => {
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <h2>Admin - Schedule & Penalties</h2>
-                <button
-                    className="btn btn-outline-danger"
-                    style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
-                    onClick={() => {
-                        console.log("Reset Button Clicked");
-                        if (window.confirm("WARNING: This will perform a HARD RESET. All data will be cleared and the page will reload. Continue?")) {
-                            console.log("Reset Confirmed - Triggering Reload");
-                            resetSeasonData();
-                        }
-                    }}
-                >
-                    Reset All Data
-                </button>
-                <button
-                    className="btn btn-primary"
-                    style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
-                    onClick={() => {
-                        const data = exportSeasonData();
-                        setExportText(data);
-                        setShowExport(true);
-                    }}
-                >
-                    Export Season Data
-                </button>
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                    <button
+                        className="btn btn-outline-danger"
+                        style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
+                        onClick={() => {
+                            console.log("Reset Button Clicked");
+                            if (window.confirm("WARNING: This will perform a HARD RESET. All data will be cleared and the page will reload. Continue?")) {
+                                console.log("Reset Confirmed - Triggering Reload");
+                                resetSeasonData();
+                            }
+                        }}
+                    >
+                        Reset All Data
+                    </button>
+                    <button
+                        className="btn btn-primary"
+                        style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
+                        onClick={() => {
+                            const data = exportSeasonData();
+                            setExportText(data);
+                            setShowExport(true);
+                        }}
+                    >
+                        Export Season Data
+                    </button>
+                </div>
             </div>
 
             {/* Export Modal Overlay */}
-            {showExport && (
-                <div style={{
-                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-                    backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 1000,
-                    display: 'flex', justifyContent: 'center', alignItems: 'center'
-                }}>
-                    <div className="glass-panel" style={{ width: '80%', maxWidth: '600px', padding: '2rem', display: 'flex', flexDirection: 'column' }}>
-                        <h3>Export Data</h3>
-                        <p>Copy the text below and paste it into <strong>src/data/seasons/season2.json</strong> in VS Code.</p>
-                        <textarea
-                            readOnly
-                            value={exportText}
-                            style={{
-                                width: '100%', height: '300px',
-                                backgroundColor: '#1a1a1a', color: '#fff',
-                                border: '1px solid #333', padding: '1rem',
-                                marginBottom: '1rem'
-                            }}
-                            onClick={(e) => e.target.select()}
-                        />
-                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                            <button className="btn btn-primary" onClick={() => {
-                                navigator.clipboard.writeText(exportText);
-                                alert("Copied to Clipboard!");
-                            }}>Copy to Clipboard</button>
-                            <button className="btn btn-outline-danger" onClick={() => setShowExport(false)}>Close</button>
+            {
+                showExport && (
+                    <div style={{
+                        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                        backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 1000,
+                        display: 'flex', justifyContent: 'center', alignItems: 'center'
+                    }}>
+                        <div className="glass-panel" style={{ width: '80%', maxWidth: '600px', padding: '2rem', display: 'flex', flexDirection: 'column' }}>
+                            <h3>Export Data</h3>
+                            <p>Copy the text below and paste it into <strong>src/data/seasons/season2.json</strong> in VS Code.</p>
+                            <textarea
+                                readOnly
+                                value={exportText}
+                                style={{
+                                    width: '100%', height: '300px',
+                                    backgroundColor: '#1a1a1a', color: '#fff',
+                                    border: '1px solid #333', padding: '1rem',
+                                    marginBottom: '1rem'
+                                }}
+                                onClick={(e) => e.target.select()}
+                            />
+                            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+                                <button className="btn btn-primary" onClick={() => {
+                                    navigator.clipboard.writeText(exportText);
+                                    alert("Copied to Clipboard!");
+                                }}>Copy to Clipboard</button>
+                                <button className="btn btn-outline-danger" onClick={() => setShowExport(false)}>Close</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             {/* Standard XML Ingestion */}
             {/* Standard XML Ingestion */}

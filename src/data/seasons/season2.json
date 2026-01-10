@@ -1,5 +1,24 @@
 {
   "season": "Season 2",
+  "id": "2",
+  "config": {
+    "seriesName": "Season 2",
+    "classes": [
+      "LMP2",
+      "LMGT3"
+    ],
+    "ui": {
+      "theme": "standard",
+      "showTeamColumn": false,
+      "showCarColumn": true,
+      "showQualifying": false
+    },
+    "rules": {
+      "ballastType": "standard",
+      "dropRounds": true,
+      "participationRequirement": "must_complete_lap"
+    }
+  },
   "currentRound": 7,
   "totalRounds": 8,
   "drivers": [

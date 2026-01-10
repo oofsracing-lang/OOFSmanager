@@ -4,7 +4,7 @@ import { formatDriverName } from '../utils/formatting';
 
 const DriverProfile = () => {
     const { id: driverId } = useParams();
-    const { championshipData, loading } = useChampionship();
+    const { championshipData, loading, seasonConfig } = useChampionship();
     const driver = championshipData.drivers.find(d => String(d.id) === String(driverId));
 
     if (loading) {
@@ -195,15 +195,29 @@ const DriverProfile = () => {
                                         // Calculate effective ballast change
                                         let effectiveChange = result.ballastChange;
 
+                                        // Determine Max Ballast for this driver's class
+                                        let maxWeight = 45;
+                                        const rules = seasonConfig?.rules || {};
+                                        // Use driver.class or historical logic if needed
+                                        const driverClass = driver.class; // In profile we assume current class mostly
+
+                                        if (rules.ballastType === 'custom_class' && rules.ballastRules && rules.ballastRules[driverClass]) {
+                                            if (typeof rules.ballastRules[driverClass].max === 'number') {
+                                                maxWeight = rules.ballastRules[driverClass].max;
+                                            }
+                                        } else if (typeof rules.maxBallast === 'number') {
+                                            maxWeight = rules.maxBallast;
+                                        }
+
                                         if (effectiveChange < 0) {
                                             // If trying to reduce ballast, can't go below 0
                                             if (runningBallast + effectiveChange < 0) {
                                                 effectiveChange = -runningBallast;
                                             }
                                         } else if (effectiveChange > 0) {
-                                            // If trying to add ballast, can't go above 45
-                                            if (runningBallast + effectiveChange > 45) {
-                                                effectiveChange = 45 - runningBallast;
+                                            // If trying to add ballast, can't go above maxWeight
+                                            if (runningBallast + effectiveChange > maxWeight) {
+                                                effectiveChange = maxWeight - runningBallast;
                                             }
                                         }
 

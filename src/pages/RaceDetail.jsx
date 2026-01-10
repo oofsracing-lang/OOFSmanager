@@ -5,7 +5,7 @@ import { formatDriverName } from '../utils/formatting';
 
 const RaceDetail = () => {
     const { id: raceId } = useParams();
-    const { championshipData, loading } = useChampionship();
+    const { championshipData, loading, seasonConfig } = useChampionship();
     const race = championshipData.races.find(r => String(r.id) === String(raceId));
 
     if (loading) {
@@ -34,8 +34,18 @@ const RaceDetail = () => {
             const theoreticalChange = result.ballastChange || 0;
             let change = theoreticalChange;
 
-            // Simple clamping logic (Max 45, Min 0 implicit via change?)
-            // Assuming cumulative ballast is 0-45kg.
+            // Determine Max Ballast for this driver's class
+            let maxWeight = 45;
+            const rules = seasonConfig?.rules || {};
+            const driverClass = driver.class || result.drivenClass;
+
+            if (rules.ballastType === 'custom_class' && rules.ballastRules && rules.ballastRules[driverClass]) {
+                if (typeof rules.ballastRules[driverClass].max === 'number') {
+                    maxWeight = rules.ballastRules[driverClass].max;
+                }
+            } else if (typeof rules.maxBallast === 'number') {
+                maxWeight = rules.maxBallast;
+            }
 
             if (theoreticalChange < 0) {
                 // If removing weight, can't go below 0 total
@@ -43,9 +53,9 @@ const RaceDetail = () => {
                     change = -currentBallast;
                 }
             } else if (theoreticalChange > 0) {
-                // If adding weight, can't go above 45 total
-                if (currentBallast + theoreticalChange > 45) {
-                    change = 45 - currentBallast;
+                // If adding weight, can't go above maxWeight total
+                if (currentBallast + theoreticalChange > maxWeight) {
+                    change = maxWeight - currentBallast;
                 }
             }
 

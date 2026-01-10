@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { seasons, latestSeason } from '../data';
-import { parseTime, BALLAST_SYSTEM } from '../utils/raceLogic';
+import { parseTime, BALLAST_SYSTEM, getBallastAdjustment } from '../utils/raceLogic';
 import { subscribeToSeason, subscribeToStandings, saveSeasonData, updateSeasonFields, saveQualifyingSubmission, deleteQualifyingSubmission, subscribeToQualifying } from '../firebase/db';
 import { useAuth } from './AuthContext';
 
@@ -9,7 +9,7 @@ const ChampionshipContext = createContext(null);
 export const ChampionshipProvider = ({ children }) => {
 
     // Season State
-    const [currentSeasonId, setCurrentSeasonId] = useState(3);
+    const [currentSeasonId, setCurrentSeasonId] = useState("s3-mc");
     const [seasonData, setSeasonData] = useState(null);
 
     const [loading, setLoading] = useState(false); // Fix: Add missing loading state
@@ -106,12 +106,12 @@ export const ChampionshipProvider = ({ children }) => {
     // Season Switching
     const changeSeason = (id) => {
         if (seasons[id]) {
-            setCurrentSeasonId(Number(id));
+            setCurrentSeasonId(id);
         }
     };
 
     const seasonList = Object.keys(seasons).map(id => ({
-        id: Number(id),
+        id: id,
         name: seasons[id].season
     }));
 
@@ -435,6 +435,8 @@ export const ChampionshipProvider = ({ children }) => {
         try {
             const data = JSON.parse(JSON.stringify(seasonData));
 
+
+
             // EMERGENCY HOTFIX: Filter out known duplicate/ghost driver IDs
             // IDs 40 and 41 identified as duplicates for Dave Paccagnini and Abe Wozniak
             if (data.drivers) {
@@ -570,26 +572,30 @@ export const ChampionshipProvider = ({ children }) => {
 
                             // Calculate Ballast Change
                             const pos = i + 1;
-                            let bChange = BALLAST_SYSTEM.default;
 
                             // Check valid finish statuses
                             const validStatuses = ['Finished', 'Finished Normally', 'Completed'];
                             const isFinished = validStatuses.includes(result.status);
 
-                            if (isFinished && BALLAST_SYSTEM[pos] !== undefined) {
-                                bChange = BALLAST_SYSTEM[pos];
-                            } else if (!isFinished) {
-                                // DNF/DNS/DQ
-                                bChange = BALLAST_SYSTEM.default;
-                            }
+                            // Use Helper with Config
+                            const rules = data.config && data.config.rules ? data.config.rules : {};
 
+                            // Derive class from result or driver
+                            const className = result.drivenClass || driver.class || 'LMGT3';
+
+                            const bChange = getBallastAdjustment(pos, !isFinished, rules, className);
                             result.ballastChange = bChange;
                         }
                     });
                 };
 
-                processClass('LMP2');
-                processClass('LMGT3');
+
+
+                // DYNAMIC CLASS PROCESSING
+                // Use config or Fallback to Season 2 Standard
+                const classesToProcess = (data.config && data.config.classes) ? data.config.classes : ['LMP2', 'LMGT3'];
+
+                classesToProcess.forEach(cls => processClass(cls));
             });
 
             // 2. Recalculate Driver Totals
@@ -720,7 +726,11 @@ export const ChampionshipProvider = ({ children }) => {
         exclusions,
         qualifyingSettings,
         qualifyingSubmissions,
-        exportSeasonData
+        qualifyingSubmissions,
+        exportSeasonData,
+        seasonConfig: (seasons[currentSeasonId]?.config)
+            ? { ...(seasonData?.config || {}), ...seasons[currentSeasonId].config }
+            : (seasonData?.config || {})
     };
 
     return (

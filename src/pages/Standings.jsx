@@ -4,9 +4,23 @@ import { useChampionship } from '../context/ChampionshipContext';
 import { formatDriverName, formatTeamName } from '../utils/formatting';
 
 const Standings = () => {
-    const [selectedClass, setSelectedClass] = useState('LMGT3');
+    const { championshipData, seasonConfig } = useChampionship();
+    const classesToShow = seasonConfig.classes || ['LMP2', 'LMGT3'];
+
+    const [selectedClass, setSelectedClass] = useState(classesToShow[0] || 'LMGT3');
     const [useDropRound, setUseDropRound] = useState(false);
-    const { championshipData } = useChampionship();
+
+    const showBallast = seasonConfig.rules?.ballastType !== 'none';
+    const showCar = seasonConfig.ui?.showCarColumn !== false; // Default true
+    const showTeam = seasonConfig.ui?.showTeamColumn === true; // Default false/undefined usually? Check legacy. 
+    // Legacy S2 had Team. Config says showTeamColumn: true.
+
+    // Effect: Validate Selected Class
+    useState(() => {
+        if (!classesToShow.includes(selectedClass)) {
+            setSelectedClass(classesToShow[0]);
+        }
+    }, [seasonConfig, selectedClass]);
 
     // Filter and sort drivers by class and points
     const getClassStandings = (className) => {
@@ -53,18 +67,15 @@ const Standings = () => {
                 {/* Class Selector */}
                 <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', alignItems: 'center', flexWrap: 'wrap' }}>
                     <div style={{ display: 'flex', gap: '1rem' }}>
-                        <button
-                            className={selectedClass === 'LMGT3' ? 'btn btn-primary' : 'btn btn-ghost'}
-                            onClick={() => setSelectedClass('LMGT3')}
-                        >
-                            LMGT3
-                        </button>
-                        <button
-                            className={selectedClass === 'LMP2' ? 'btn btn-primary' : 'btn btn-ghost'}
-                            onClick={() => setSelectedClass('LMP2')}
-                        >
-                            LMP2-UR
-                        </button>
+                        {classesToShow.length > 1 && classesToShow.map(cls => (
+                            <button
+                                key={cls}
+                                className={selectedClass === cls ? 'btn btn-primary' : 'btn btn-ghost'}
+                                onClick={() => setSelectedClass(cls)}
+                            >
+                                {cls}
+                            </button>
+                        ))}
                     </div>
 
                     <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -94,9 +105,10 @@ const Standings = () => {
                             }}>
                                 <th style={{ padding: '1rem 0.5rem' }}>Pos</th>
                                 <th style={{ padding: '1rem 0.5rem' }}>Driver</th>
-                                <th style={{ padding: '1rem 0.5rem' }}>Car</th>
+                                {showCar && <th style={{ padding: '1rem 0.5rem' }}>Car</th>}
+                                {showTeam && <th style={{ padding: '1rem 0.5rem' }}>Team</th>}
                                 <th style={{ padding: '1rem 0.5rem', textAlign: 'center' }}>Points</th>
-                                <th style={{ padding: '1rem 0.5rem', textAlign: 'center' }}>Ballast</th>
+                                {showBallast && <th style={{ padding: '1rem 0.5rem', textAlign: 'center' }}>Ballast</th>}
                             </tr>
                         </thead>
                         <tbody>
@@ -123,9 +135,16 @@ const Standings = () => {
                                             {formatDriverName(driver.name)}
                                         </Link>
                                     </td>
-                                    <td style={{ padding: '1rem 0.5rem', color: 'var(--text-muted)' }}>
-                                        {driver.car || driver.carType || '-'}
-                                    </td>
+                                    {showCar && (
+                                        <td style={{ padding: '1rem 0.5rem', color: 'var(--text-muted)' }}>
+                                            {driver.car || driver.carType || '-'}
+                                        </td>
+                                    )}
+                                    {showTeam && (
+                                        <td style={{ padding: '1rem 0.5rem', color: 'var(--text-muted)' }}>
+                                            {formatTeamName(driver.team, driver.name)}
+                                        </td>
+                                    )}
                                     <td style={{
                                         padding: '1rem 0.5rem',
                                         textAlign: 'center',
@@ -144,13 +163,15 @@ const Standings = () => {
                                             </span>
                                         )}
                                     </td>
-                                    <td style={{
-                                        padding: '1rem 0.5rem',
-                                        textAlign: 'center',
-                                        color: driver.currentBallast > 0 ? 'var(--warning)' : 'var(--text-muted)'
-                                    }}>
-                                        {driver.currentBallast}kg
-                                    </td>
+                                    {showBallast && (
+                                        <td style={{
+                                            padding: '1rem 0.5rem',
+                                            textAlign: 'center',
+                                            color: driver.currentBallast > 0 ? 'var(--warning)' : 'var(--text-muted)'
+                                        }}>
+                                            {driver.currentBallast}kg
+                                        </td>
+                                    )}
                                 </tr>
                             ))}
                         </tbody>

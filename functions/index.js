@@ -37,6 +37,30 @@ function parseTime(timeStr) {
     return parseFloat(timeStr);
 }
 
+// Helper: Get Ballast Adjustment (Delta)
+function getBallastAdjustment(position, isDnf, rules = {}, className = "LMGT3") {
+    // 1. None Check
+    if (rules.ballastType === 'none') return 0;
+
+    // 2. Determine System
+    let adjustments = {
+        1: 15, 2: 10, 3: 5, 4: 0, 5: -5, 6: -10,
+        default: -15
+    };
+
+    if (rules.ballastType === 'custom_class' && rules.ballastRules) {
+        if (rules.ballastRules[className]) {
+            adjustments = rules.ballastRules[className];
+        }
+    }
+
+    // 3. Return Adjustment
+    if (!isDnf && adjustments[position] !== undefined) {
+        return adjustments[position];
+    }
+    return adjustments.default || -15;
+}
+
 function calculateChampionship(seasonData) {
     // console.log("Processing championship data for season:", seasonData.season);
 
@@ -147,17 +171,9 @@ function calculateChampionship(seasonData) {
             ballastEntries.forEach((entry, i) => {
                 const pos = i + 1;
                 const { result } = entry;
-                let bChange = BALLAST_SYSTEM.default;
-
-                // Determine finish status (ignoring exclusion for a moment, trust the data)
-                const validStatuses = ['Finished', 'Finished Normally', 'Completed'];
-                const isFinished = validStatuses.includes(result.status) || (result.laps > 0 && result.originalTime < 900000);
-
-                if (isFinished && BALLAST_SYSTEM[pos] !== undefined) {
-                    bChange = BALLAST_SYSTEM[pos];
-                } else if (!isFinished) {
-                    bChange = BALLAST_SYSTEM.default;
-                }
+                // Use Helper with Config
+                const rules = data.config && data.config.rules ? data.config.rules : {};
+                bChange = getBallastAdjustment(pos, !isFinished, rules, className);
                 ballastMap[entry.driver.id] = bChange;
             });
 
@@ -190,8 +206,10 @@ function calculateChampionship(seasonData) {
             });
         };
 
-        processClass('LMP2');
-        processClass('LMGT3');
+
+        // DYNAMIC CLASS PROCESSING
+        const classesToProcess = (data.config && data.config.classes) ? data.config.classes : ['LMP2', 'LMGT3'];
+        classesToProcess.forEach(cls => processClass(cls));
     });
 
     if (data.drivers) {
@@ -216,10 +234,42 @@ function calculateChampionship(seasonData) {
 
                 let runningBallast = 0;
                 const sortedResults = [...driver.raceResults].sort((a, b) => a.raceId - b.raceId);
+
+                const rules = data.config && data.config.rules ? data.config.rules : {};
+
+                // Determine Max for this driver's class
+                let maxBallast = 45; // Default
+                if (rules.ballastType === 'custom_class' && rules.ballastRules && rules.ballastRules[driver.class]) {
+                    if (typeof rules.ballastRules[driver.class].max === 'number') {
+                        maxBallast = rules.ballastRules[driver.class].max;
+                    }
+                } else if (typeof rules.maxBallast === 'number') {
+                    maxBallast = rules.maxBallast;
+                }
+
                 sortedResults.forEach(r => {
-                    runningBallast += (r.ballastChange || 0);
-                    if (runningBallast < 0) runningBallast = 0;
-                    if (runningBallast > 45) runningBallast = 45;
+                    r.startBallast = runningBallast;
+
+                    // Logic: Use the stored ballastChange from the race processing step
+                    // OR recalculate if needed? 
+                    // Better to rely on the change we calculated properly above (which respects class rules)
+                    // But we didn't store it on 'r' permanently in step 1, we stored it on result object 'result.ballastChange'
+
+                    const change = r.ballastChange || 0; // The logic above saved it to result object
+                    runningBallast = Math.max(0, Math.min(maxBallast, runningBallast + change));
+                    // Note: Max cap might differ per class! 
+                    // To be safe, re-clamp using helper if we want strictness, or trust the change.
+                    // Let's just accumulate. The helper above already clamped the change? No, helper returns NEW ballast. 
+                    // If we pass 0, it returns 0 + adjustment. 
+                    // So bChange above is actually "The adjustment relative to 0". 
+                    // E.g. P1 -> returns 15. P7 -> returns -15 (clamped to 0). 
+                    // Wait, Math.max(0, ...) clamps the result. 
+                    // If we pass 0, and adjustment is -15, it returns 0. That's WRONG for calculating "Change".
+
+                    // FIX: We need just the ADJUSTMENT from the rules, not the final clamped value.
+                    // Use a simpler lookup for the loop above or accept that we need to calc cumulative here.
+
+                    r.endBallast = runningBallast;
                 });
                 driver.currentBallast = runningBallast;
             } else {

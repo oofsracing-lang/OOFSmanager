@@ -111,18 +111,71 @@ export const processRaceResults = (results, penalties = []) => {
 };
 
 /**
+ * Get Ballast Adjustment (Delta)
+ * @param {number} position 
+ * @param {boolean} isDnf
+ * @param {object} rules - The config.rules object
+ * @param {string} className 
+ * @returns {number} Adjustment value (e.g. +15, -10)
+ */
+export const getBallastAdjustment = (position, isDnf, rules = {}, className = "LMGT3") => {
+    // 1. None Check
+    if (rules.ballastType === 'none') return 0;
+
+    // 2. Determine System
+    let adjustments = BALLAST_SYSTEM; // Default Standard
+
+    if (rules.ballastType === 'custom_class' && rules.ballastRules) {
+        if (rules.ballastRules[className]) {
+            adjustments = rules.ballastRules[className];
+        }
+    }
+
+    // 3. Return Adjustment
+    if (!isDnf && adjustments[position] !== undefined) {
+        return adjustments[position];
+    }
+    return adjustments.default || -15;
+};
+
+/**
  * Calculate Ballast for next race
  * @param {number} position 
  * @param {number} currentBallast 
- * @returns {number} New ballast (clamped 0-45)
+ * @param {boolean} isDnf
+ * @param {object} rules - The config.rules object from season file
+ * @param {string} className - Optional, for class-specific rules
+ * @returns {number} New ballast
  */
-export const calculateNextBallast = (position, currentBallast, isDnf) => {
-    let adjustment = BALLAST_SYSTEM.default; // -15 for P7+ or DNF
+export const calculateNextBallast = (position, currentBallast, isDnf, rules = {}, className = "LMGT3") => {
+    // 1. None Check
+    if (rules.ballastType === 'none') return 0;
 
-    if (!isDnf && BALLAST_SYSTEM[position] !== undefined) {
-        adjustment = BALLAST_SYSTEM[position];
+    // 2. Determine System to use
+    let adjustments = BALLAST_SYSTEM; // Default Standard
+
+    if (rules.ballastType === 'custom_class' && rules.ballastRules) {
+        // Look for class specific rules
+        if (rules.ballastRules[className]) {
+            adjustments = rules.ballastRules[className];
+        }
+    }
+
+    // 3. Max Ballast Cap
+    const MAX_BALLAST = typeof adjustments.max === 'number' ? adjustments.max : 45; // Default 45 if not specified
+
+    // 4. Calculate Adjustment
+    let adjustment = adjustments.default || -15; // Default drop
+
+    // DNS Check (Implicit in caller? Or passed as isDnf? Specification says DNS = No Change)
+    // Caller usually handles "Did they participate?" logic. 
+    // Assuming 'isDnf' here implies they STARTED but failed. 
+    // If they didn't start, this function usually isn't called or returns current.
+
+    if (!isDnf && adjustments[position] !== undefined) {
+        adjustment = adjustments[position];
     }
 
     const newBallast = currentBallast + adjustment;
-    return Math.max(0, Math.min(45, newBallast));
+    return Math.max(0, Math.min(MAX_BALLAST, newBallast));
 };

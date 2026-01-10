@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import { useChampionship } from '../context/ChampionshipContext';
 import { formatDriverName } from '../utils/formatting';
 const Dashboard = () => {
-    const { championshipData } = useChampionship();
+    const { championshipData, seasonConfig } = useChampionship();
+    const classesToShow = seasonConfig.classes || ['LMP2', 'LMGT3'];
 
     // 1. Upcoming Schedule
     const upcomingRaces = championshipData.races
@@ -17,9 +18,6 @@ const Dashboard = () => {
             .sort((a, b) => b.totalPoints - a.totalPoints)
             .slice(0, 5);
     };
-
-    const top5LMP2 = getTop5('LMP2');
-    const top5LMGT3 = getTop5('LMGT3');
 
     // 3. Recent Race Results
     const recentRace = championshipData.races.find(r => r.id === championshipData.currentRound);
@@ -44,9 +42,6 @@ const Dashboard = () => {
             })
             .slice(0, 3);
     };
-
-    const recentLMP2 = getRecentPodium('LMP2');
-    const recentLMGT3 = getRecentPodium('LMGT3');
 
     return (
         <div>
@@ -98,25 +93,21 @@ const Dashboard = () => {
 
                     {recentRace ? (
                         <>
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>LMP2-UR Podium</h4>
-                                {recentLMP2.map((d, i) => (
-                                    <div key={d.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                                        <span>{i + 1}. {formatDriverName(d.name)}</span>
-                                        <span style={{ color: 'var(--success)', fontWeight: 'bold' }}>+{d.result.points}</span>
+                            {classesToShow.map(className => {
+                                const podium = getRecentPodium(className);
+                                if (podium.length === 0) return null;
+                                return (
+                                    <div key={className} style={{ marginBottom: '1.5rem' }}>
+                                        <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>{className} Podium</h4>
+                                        {podium.map((d, i) => (
+                                            <div key={d.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                                                <span>{i + 1}. {formatDriverName(d.name)}</span>
+                                                <span style={{ color: 'var(--success)', fontWeight: 'bold' }}>+{d.result.points}</span>
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
-
-                            <div>
-                                <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>LMGT3 Podium</h4>
-                                {recentLMGT3.map((d, i) => (
-                                    <div key={d.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                                        <span>{i + 1}. {formatDriverName(d.name)}</span>
-                                        <span style={{ color: 'var(--success)', fontWeight: 'bold' }}>+{d.result.points}</span>
-                                    </div>
-                                ))}
-                            </div>
+                                );
+                            })}
 
                             <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
                                 <Link to={`/races/${recentRace?.id}`} className="btn btn-ghost" style={{ fontSize: '0.9rem' }}>View Full Results →</Link>
@@ -127,58 +118,42 @@ const Dashboard = () => {
                     )}
                 </div>
 
-                {/* LMP2 Standings Top 5 */}
-                <div className="glass-panel" style={{ padding: '1.5rem' }}>
-                    <h3 style={{ marginBottom: '1rem', color: 'var(--info)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
-                        LMP2-UR Top 5
-                    </h3>
-                    <div style={{ overflowX: 'auto' }}>
-                        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '300px' }}>
-                            <tbody>
-                                {top5LMP2.map((d, i) => (
-                                    <tr key={d.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                                        <td style={{ padding: '0.5rem 0', fontWeight: 'bold', width: '30px' }}>{i + 1}</td>
-                                        <td style={{ padding: '0.5rem 0' }}>
-                                            <Link to={`/driver/${d.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
-                                                {formatDriverName(d.name)}
-                                            </Link>
-                                        </td>
-                                        <td style={{ padding: '0.5rem 0', textAlign: 'right', fontWeight: 'bold', color: 'var(--primary)' }}>
-                                            {d.totalPoints}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                {/* Dynamic Standings Top 5 */}
+                {classesToShow.map(className => {
+                    const top5 = getTop5(className);
+                    // Skip if no drivers in this class? Or show empty table. 
+                    // Showing empty is fine or checking length.
 
-                {/* LMGT3 Standings Top 5 */}
-                <div className="glass-panel" style={{ padding: '1.5rem' }}>
-                    <h3 style={{ marginBottom: '1rem', color: 'var(--warning)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
-                        LMGT3 Top 5
-                    </h3>
-                    <div style={{ overflowX: 'auto' }}>
-                        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '300px' }}>
-                            <tbody>
-                                {top5LMGT3.map((d, i) => (
-                                    <tr key={d.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                                        <td style={{ padding: '0.5rem 0', fontWeight: 'bold', width: '30px' }}>{i + 1}</td>
-                                        <td style={{ padding: '0.5rem 0' }}>
-                                            <Link to={`/driver/${d.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
-                                                {formatDriverName(d.name)}
-                                            </Link>
-                                        </td>
-                                        <td style={{ padding: '0.5rem 0', textAlign: 'right', fontWeight: 'bold', color: 'var(--primary)' }}>
-                                            {d.totalPoints}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                    // Determine Color based on class?
+                    const headerColor = className.includes('LMP2') ? 'var(--info)' : 'var(--warning)';
 
-                </div>
+                    return (
+                        <div key={className} className="glass-panel" style={{ padding: '1.5rem' }}>
+                            <h3 style={{ marginBottom: '1rem', color: headerColor, borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+                                {className} Top 5
+                            </h3>
+                            <div style={{ overflowX: 'auto' }}>
+                                <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '300px' }}>
+                                    <tbody>
+                                        {top5.map((d, i) => (
+                                            <tr key={d.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                                                <td style={{ padding: '0.5rem 0', fontWeight: 'bold', width: '30px' }}>{i + 1}</td>
+                                                <td style={{ padding: '0.5rem 0' }}>
+                                                    <Link to={`/driver/${d.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
+                                                        {formatDriverName(d.name)}
+                                                    </Link>
+                                                </td>
+                                                <td style={{ padding: '0.5rem 0', textAlign: 'right', fontWeight: 'bold', color: 'var(--primary)' }}>
+                                                    {d.totalPoints}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
