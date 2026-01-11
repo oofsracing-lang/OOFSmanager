@@ -1,6 +1,6 @@
-import { useRef } from 'react';
+
 import { Routes, Route, HashRouter, Navigate } from 'react-router-dom';
-import Layout from './components/Layout';
+import SeasonLayout from './components/SeasonLayout';
 import Dashboard from './pages/Dashboard';
 import Standings from './pages/Standings';
 import Races from './pages/Races';
@@ -10,10 +10,10 @@ import DriverProfile from './pages/DriverProfile';
 import Admin from './pages/Admin';
 import Login from './pages/Login';
 import Qualifying from './pages/Qualifying';
+import Home from './pages/Home';
 import { ChampionshipProvider } from './context/ChampionshipContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import ErrorBoundary from './components/ErrorBoundary';
-import ConceptHome from './pages/ConceptHome';
 
 const ProtectedRoute = ({ children }) => {
   const { currentUser } = useAuth();
@@ -28,22 +28,27 @@ function App() {
         <ChampionshipProvider>
           <HashRouter>
             <Routes>
-              <Route path="/" element={<Layout />}>
+              {/* Landing Page */}
+              <Route path="/" element={<Home />} />
+
+              {/* Login Page */}
+              <Route path="/login" element={<Login />} />
+
+              {/* Season Routes */}
+              <Route path="/season/:seasonId" element={<SeasonLayout />}>
                 <Route index element={<Dashboard />} />
                 <Route path="standings" element={<Standings />} />
                 <Route path="races" element={<Races />} />
                 <Route path="races/:id" element={<RaceDetail />} />
                 <Route path="drivers" element={<Drivers />} />
                 <Route path="driver/:id" element={<DriverProfile />} />
+                <Route path="qualifying" element={<Qualifying />} />
                 <Route path="admin" element={
                   <ProtectedRoute>
                     <Admin />
                   </ProtectedRoute>
                 } />
-                <Route path="login" element={<Login />} />
-                <Route path="qualifying" element={<Qualifying />} />
               </Route>
-              <Route path="concept" element={<ConceptHome />} />
             </Routes>
           </HashRouter>
         </ChampionshipProvider>

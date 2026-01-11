@@ -61,7 +61,7 @@ const Standings = () => {
             <div className="glass-panel" style={{ padding: '2rem', marginBottom: '2rem' }}>
                 <h2>Championship Standings</h2>
                 <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
-                    Season 1 - Round {championshipData.currentRound} of {championshipData.totalRounds}
+                    {championshipData.season} - Round {championshipData.currentRound} of {championshipData.totalRounds}
                 </p>
 
                 {/* Class Selector */}
@@ -131,7 +131,7 @@ const Standings = () => {
                                         </span>
                                     </td>
                                     <td style={{ padding: '1rem 0.5rem', fontWeight: '600' }}>
-                                        <Link to={`/driver/${driver.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
+                                        <Link to={`../driver/${driver.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
                                             {formatDriverName(driver.name)}
                                         </Link>
                                     </td>

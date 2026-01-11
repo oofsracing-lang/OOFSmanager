@@ -21,7 +21,7 @@ const Races = () => {
                         return (
                             <Link
                                 key={race.id}
-                                to={`/races/${race.id}`}
+                                to={`${race.id}`}
                                 style={{ textDecoration: 'none' }}
                             >
                                 <div

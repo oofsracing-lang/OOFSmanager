@@ -81,7 +81,7 @@ const Dashboard = () => {
                         <p style={{ color: 'var(--text-muted)' }}>No upcoming races.</p>
                     )}
                     <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-                        <Link to="/races" className="btn btn-ghost" style={{ fontSize: '0.9rem' }}>View Full Schedule →</Link>
+                        <Link to="races" className="btn btn-ghost" style={{ fontSize: '0.9rem' }}>View Full Schedule →</Link>
                     </div>
                 </div>
 

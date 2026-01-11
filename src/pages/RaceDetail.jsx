@@ -105,7 +105,8 @@ const RaceDetail = () => {
 
     return (
         <div>
-            <Link to="/races" style={{ color: 'var(--primary)', textDecoration: 'none', marginBottom: '1rem', display: 'inline-block' }}>
+            {/* Navigation fix: use relative path to go back to races list */}
+            <Link to=".." relative="path" style={{ color: 'var(--primary)', textDecoration: 'none', marginBottom: '1rem', display: 'inline-block' }}>
                 ← Back to Races
             </Link>
 

@@ -98,7 +98,7 @@ const DriverProfile = () => {
 
     return (
         <div>
-            <Link to="/standings" style={{ color: 'var(--primary)', textDecoration: 'none', marginBottom: '1rem', display: 'inline-block' }}>
+            <Link to="../../standings" relative="path" style={{ color: 'var(--primary)', textDecoration: 'none', marginBottom: '1rem', display: 'inline-block' }}>
                 ← Back to Standings
             </Link>
 
