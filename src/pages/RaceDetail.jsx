@@ -4,7 +4,7 @@ import { formatDriverName } from '../utils/formatting';
 
 
 const RaceDetail = () => {
-    const { id: raceId } = useParams();
+    const { id: raceId, seasonId } = useParams();
     const { championshipData, loading, seasonConfig } = useChampionship();
     const race = championshipData.races.find(r => String(r.id) === String(raceId));
 
@@ -168,7 +168,7 @@ const RaceDetail = () => {
                                             <tr key={driver.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                                                 <td style={{ padding: '0.75rem 0.5rem', fontWeight: 'bold' }}>P{driver.raceResult.classPosition || index + 1}</td>
                                                 <td style={{ padding: '0.75rem 0.5rem' }}>
-                                                    <Link to={`/driver/${driver.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
+                                                    <Link to={`/season/${seasonId}/driver/${driver.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
                                                         {formatDriverName(driver.name)}
                                                     </Link>
                                                 </td>
@@ -222,7 +222,7 @@ const RaceDetail = () => {
                                             <tr key={driver.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                                                 <td style={{ padding: '0.75rem 0.5rem', fontWeight: 'bold' }}>P{driver.raceResult.classPosition || index + 1}</td>
                                                 <td style={{ padding: '0.75rem 0.5rem' }}>
-                                                    <Link to={`/driver/${driver.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
+                                                    <Link to={`/season/${seasonId}/driver/${driver.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
                                                         {formatDriverName(driver.name)}
                                                     </Link>
                                                 </td>

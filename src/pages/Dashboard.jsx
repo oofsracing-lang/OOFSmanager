@@ -110,7 +110,7 @@ const Dashboard = () => {
                             })}
 
                             <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-                                <Link to={`/races/${recentRace?.id}`} className="btn btn-ghost" style={{ fontSize: '0.9rem' }}>View Full Results →</Link>
+                                <Link to={`races/${recentRace?.id}`} className="btn btn-ghost" style={{ fontSize: '0.9rem' }}>View Full Results →</Link>
                             </div>
                         </>
                     ) : (
@@ -139,7 +139,7 @@ const Dashboard = () => {
                                             <tr key={d.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                                                 <td style={{ padding: '0.5rem 0', fontWeight: 'bold', width: '30px' }}>{i + 1}</td>
                                                 <td style={{ padding: '0.5rem 0' }}>
-                                                    <Link to={`/driver/${d.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
+                                                    <Link to={`driver/${d.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
                                                         {formatDriverName(d.name)}
                                                     </Link>
                                                 </td>

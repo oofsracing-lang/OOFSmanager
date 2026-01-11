@@ -1,205 +1,39 @@
 
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useChampionship } from '../context/ChampionshipContext';
 import logo from '../assets/oofs_logo.png';
 
 const Home = () => {
     const navigate = useNavigate();
-    const [hoveredCard, setHoveredCard] = useState(null);
-    const [hoveredSocial, setHoveredSocial] = useState(null);
 
     const handleSeasonSelect = (seasonId) => {
         // Navigation drives the state now via SeasonLayout
         navigate(`/season/${seasonId}`);
     };
 
-    // Style Constants
-    const styles = {
-        // Wrapper that allows scrolling
-        wrapper: {
-            minHeight: '100vh',
-            width: '100%',
-            position: 'relative',
-            overflowX: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
-            fontFamily: "'Outfit', sans-serif"
-        },
-        // Fixed Background Layer
-        bgLayer: {
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundImage: 'url("/assets/home_bg_mustache.png")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            zIndex: -1
-        },
-        // Overlay (also fixed to cover bg)
-        overlay: {
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.9))',
-            zIndex: 0
-        },
-        // Content Container (Scrollable)
-        content: {
-            position: 'relative',
-            zIndex: 2,
-            width: '100%',
-            maxWidth: '1200px',
-            margin: '0 auto', // Center horizontally
-            padding: '4rem 2rem', // Increased top padding
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center', // Center vertically if content is short
-            minHeight: '100vh' // Ensure full height centering
-        },
-        title: {
-            fontSize: '4.5rem',
-            fontWeight: 800,
-            marginBottom: '0.5rem',
-            background: 'linear-gradient(45deg, #fff, #e0e0e0)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            letterSpacing: '-2px',
-            textShadow: '0 10px 30px rgba(0,0,0,0.5)',
-            textTransform: 'uppercase'
-        },
-        subtitle: {
-            fontSize: '1.1rem',
-            color: '#aaa',
-            marginBottom: '4rem',
-            letterSpacing: '3px',
-            textTransform: 'uppercase',
-            fontWeight: 500
-        },
-        grid: {
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '2.5rem',
-            flexWrap: 'wrap',
-            marginBottom: '4rem'
-        },
-        // ... (rest of styles remain similar, card functions below)
-        card: (id) => ({
-            background: hoveredCard === id
-                ? 'rgba(255, 255, 255, 0.12)'
-                : 'rgba(255, 255, 255, 0.04)',
-            backdropFilter: 'blur(15px)',
-            border: hoveredCard === id
-                ? '1px solid rgba(255, 255, 255, 0.4)'
-                : '1px solid rgba(255, 255, 255, 0.08)',
-            padding: '3rem 2rem',
-            borderRadius: '20px',
-            width: '320px',
-            cursor: 'pointer',
-            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-            transform: hoveredCard === id ? 'translateY(-10px) scale(1.02)' : 'translateY(0)',
-            boxShadow: hoveredCard === id
-                ? '0 25px 50px rgba(0,0,0,0.5), 0 0 30px rgba(255, 255, 255, 0.1)'
-                : '0 4px 6px rgba(0,0,0,0.1)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            position: 'relative',
-            overflow: 'hidden'
-        }),
-        // Gradient line at top of card
-        cardLine: (color) => ({
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '4px',
-            background: color
-        }),
-        cardTitle: {
-            fontSize: '1.8rem',
-            fontWeight: 700,
-            marginBottom: '0.5rem',
-            marginTop: '1rem'
-        },
-        cardType: {
-            fontSize: '0.8rem',
-            textTransform: 'uppercase',
-            letterSpacing: '2px',
-            opacity: 0.7,
-            marginBottom: '1.5rem'
-        },
-        cardDesc: {
-            fontSize: '0.9rem',
-            color: '#ccc',
-            lineHeight: 1.6
-        },
-        socialContainer: {
-            display: 'flex',
-            gap: '2rem',
-            marginTop: '2rem'
-        },
-        socialBtn: (id) => ({
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.75rem',
-            padding: '0.75rem 1.5rem',
-            borderRadius: '50px',
-            background: hoveredSocial === id ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.1)',
-            color: hoveredSocial === id ? 'black' : 'white',
-            backdropFilter: 'blur(5px)',
-            border: '1px solid rgba(255,255,255,0.2)',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            textDecoration: 'none',
-            fontSize: '0.9rem',
-            fontWeight: 600
-        }),
-        archiveBtn: {
-            marginTop: '3rem',
-            fontSize: '0.9rem',
-            color: '#888',
-            cursor: 'pointer',
-            border: hoveredSocial === 'archive' ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(255,255,255,0.1)',
-            padding: '0.75rem 2rem',
-            borderRadius: '30px',
-            transition: 'all 0.3s ease',
-            background: hoveredSocial === 'archive' ? 'rgba(255,255,255,0.1)' : 'transparent',
-            letterSpacing: '1px',
-            textTransform: 'uppercase',
-            backdropFilter: 'blur(5px)'
-        }
-    };
-
     return (
-        <div style={styles.wrapper}>
+        <div className="home-wrapper">
             {/* Fixed Background Layers */}
-            <div style={styles.bgLayer} />
-            <div style={styles.overlay} />
+            <div className="home-bg-layer" />
+            <div className="home-overlay" />
 
             {/* Scrollable Content */}
-            <div style={styles.content}>
-                <h1 style={styles.title} className="home-title">OOFS RACING</h1>
-                <p style={styles.subtitle} className="home-subtitle">Championship Portal</p>
+            <div className="home-content">
+                <h1 className="home-title">OOFS RACING</h1>
+                <p className="home-subtitle">Championship Portal</p>
 
-                <div style={styles.grid} className="home-grid">
+                <div className="home-grid">
                     {/* Season 3 Multiclass */}
                     <div
-                        style={styles.card('s3-multi')}
                         className="home-card"
-                        onMouseEnter={() => setHoveredCard('s3-multi')}
-                        onMouseLeave={() => setHoveredCard(null)}
                         onClick={() => handleSeasonSelect('3')}
                     >
-                        <div style={styles.cardLine('linear-gradient(90deg, #ff4d4d, #f9cb28)')}></div>
-                        <span style={styles.cardType}>Season 3</span>
-                        <h2 style={styles.cardTitle}>Multiclass</h2>
-                        <p style={styles.cardDesc}>
+                        <div
+                            className="home-card-line"
+                            style={{ background: 'linear-gradient(90deg, #ff4d4d, #f9cb28)' }}
+                        ></div>
+                        <span className="home-card-type">Season 3</span>
+                        <h2 className="home-card-title">Multiclass</h2>
+                        <p className="home-card-desc">
                             The main event.
                             <br />
                             <strong>LMP2-UR • LMGT3</strong>
@@ -208,16 +42,16 @@ const Home = () => {
 
                     {/* Season 3 Sprint */}
                     <div
-                        style={styles.card('s3-sprint')}
                         className="home-card"
-                        onMouseEnter={() => setHoveredCard('s3-sprint')}
-                        onMouseLeave={() => setHoveredCard(null)}
                         onClick={() => handleSeasonSelect('s3-sprint')}
                     >
-                        <div style={styles.cardLine('linear-gradient(90deg, #4d79ff, #00d2ff)')}></div>
-                        <span style={styles.cardType}>Season 3</span>
-                        <h2 style={styles.cardTitle}>Sprint Series</h2>
-                        <p style={styles.cardDesc}>
+                        <div
+                            className="home-card-line"
+                            style={{ background: 'linear-gradient(90deg, #4d79ff, #00d2ff)' }}
+                        ></div>
+                        <span className="home-card-type">Season 3</span>
+                        <h2 className="home-card-title">Sprint Series</h2>
+                        <p className="home-card-desc">
                             High intensity, short format.
                             <br />
                             <strong>LMGT3</strong>
@@ -226,14 +60,12 @@ const Home = () => {
                 </div>
 
                 {/* Social Links */}
-                <div style={styles.socialContainer}>
+                <div className="social-container">
                     <a
                         href="https://discord.gg/ANWSZAURJT"
                         target="_blank"
                         rel="noreferrer"
-                        style={styles.socialBtn('discord')}
-                        onMouseEnter={() => setHoveredSocial('discord')}
-                        onMouseLeave={() => setHoveredSocial(null)}
+                        className="social-btn"
                     >
                         {/* Simple Discord Icon SVG */}
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -246,9 +78,7 @@ const Home = () => {
                         href="https://www.thesimgrid.com/communities/out-of-fuel-sim-racing-oofs-racing"
                         target="_blank"
                         rel="noreferrer"
-                        style={styles.socialBtn('simgrid')}
-                        onMouseEnter={() => setHoveredSocial('simgrid')}
-                        onMouseLeave={() => setHoveredSocial(null)}
+                        className="social-btn"
                     >
                         {/* Simple Grid/Flag Icon SVG */}
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -259,9 +89,7 @@ const Home = () => {
                 </div>
 
                 <button
-                    style={styles.archiveBtn}
-                    onMouseEnter={() => setHoveredSocial('archive')}
-                    onMouseLeave={() => setHoveredSocial(null)}
+                    className="archive-btn"
                     onClick={() => handleSeasonSelect('2')} // Simulating going to archived season 2
                 >
                     View Archived Seasons

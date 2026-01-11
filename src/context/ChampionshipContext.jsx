@@ -796,7 +796,6 @@ export const ChampionshipProvider = ({ children }) => {
         exclusions,
         qualifyingSettings,
         qualifyingSubmissions,
-        qualifyingSubmissions,
         seasonData, // Expose raw data for Admin (Schedule Management)
         exportSeasonData,
         seasonConfig: (seasons[currentSeasonId]?.config)

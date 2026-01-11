@@ -132,7 +132,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <Link to="/" style={styles.backHome} onClick={handleNavClick}>
                     ← Back to Home
                 </Link>
-                <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center', opacity: 0.5 }}>
+                <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center', opacity: 1 }}>
                     <img src={logo} alt="OOFS Racing" style={{ width: '80px', height: 'auto' }} />
                 </div>
             </div>
