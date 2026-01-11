@@ -3,7 +3,7 @@ import { useChampionship } from '../context/ChampionshipContext';
 import { formatDriverName } from '../utils/formatting';
 
 const DriverProfile = () => {
-    const { id: driverId } = useParams();
+    const { id: driverId, seasonId } = useParams();
     const { championshipData, loading, seasonConfig } = useChampionship();
     const driver = championshipData.drivers.find(d => String(d.id) === String(driverId));
 
@@ -98,7 +98,7 @@ const DriverProfile = () => {
 
     return (
         <div>
-            <Link to="../../standings" relative="path" style={{ color: 'var(--primary)', textDecoration: 'none', marginBottom: '1rem', display: 'inline-block' }}>
+            <Link to={`/season/${seasonId}/standings`} style={{ color: 'var(--primary)', textDecoration: 'none', marginBottom: '1rem', display: 'inline-block' }}>
                 ← Back to Standings
             </Link>
 
@@ -265,7 +265,7 @@ const DriverProfile = () => {
                                             <tr key={result.raceId} style={{ borderBottom: '1px solid var(--border-color)' }}>
                                                 <td style={{ padding: '0.75rem 0.5rem' }}>R{result.raceId}</td>
                                                 <td style={{ padding: '0.75rem 0.5rem' }}>
-                                                    <Link to={`/races/${result.raceId}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
+                                                    <Link to={`/season/${seasonId}/races/${result.raceId}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
                                                         {race?.track || race?.name || 'Unknown'}
                                                     </Link>
                                                 </td>
