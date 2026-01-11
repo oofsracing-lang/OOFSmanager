@@ -4,7 +4,7 @@ import { useChampionship } from '../context/ChampionshipContext';
 import { useParams } from 'react-router-dom';
 import logo from '../assets/oofs_logo.png';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
     const { seasonConfig, championshipData } = useChampionship();
     const { seasonId } = useParams();
     const showQualifying = seasonConfig?.ui?.showQualifying !== false;
@@ -12,21 +12,12 @@ const Sidebar = () => {
     // Helper for generating season-specific paths
     const getPath = (subPath) => `/season/${seasonId}${subPath}`;
 
+    // Close sidebar on navigation (mobile ux)
+    const handleNavClick = () => {
+        if (onClose) onClose();
+    };
+
     const styles = {
-        sidebar: {
-            width: '250px',
-            height: '100vh',
-            position: 'fixed',
-            left: 0,
-            top: 0,
-            background: 'rgba(20, 22, 31, 0.95)',
-            backdropFilter: 'blur(10px)',
-            borderRight: '1px solid var(--border-color)',
-            display: 'flex',
-            flexDirection: 'column',
-            padding: '2rem 1.5rem',
-            zIndex: 1000
-        },
         logoArea: {
             marginBottom: '3rem',
             fontSize: '1.5rem',
@@ -72,8 +63,8 @@ const Sidebar = () => {
     };
 
     return (
-        <aside style={styles.sidebar}>
-            <Link to="/" style={styles.logoArea}>
+        <aside className={`layout-sidebar ${isOpen ? 'open' : ''}`}>
+            <Link to="/" style={styles.logoArea} onClick={handleNavClick}>
                 OOFS RACING
             </Link>
 
@@ -97,6 +88,7 @@ const Sidebar = () => {
                     to={getPath('')}
                     end
                     style={({ isActive }) => styles.link(isActive)}
+                    onClick={handleNavClick}
                 >
                     Dashboard
                 </NavLink>
@@ -104,6 +96,7 @@ const Sidebar = () => {
                 <NavLink
                     to={getPath('/standings')}
                     style={({ isActive }) => styles.link(isActive)}
+                    onClick={handleNavClick}
                 >
                     Standings
                 </NavLink>
@@ -111,16 +104,16 @@ const Sidebar = () => {
                 <NavLink
                     to={getPath('/races')}
                     style={({ isActive }) => styles.link(isActive)}
+                    onClick={handleNavClick}
                 >
                     Races
                 </NavLink>
-
-
 
                 {showQualifying && (
                     <NavLink
                         to={getPath('/qualifying')}
                         style={({ isActive }) => styles.link(isActive)}
+                        onClick={handleNavClick}
                     >
                         Qualifying
                     </NavLink>
@@ -129,13 +122,14 @@ const Sidebar = () => {
                 <NavLink
                     to={getPath('/admin')}
                     style={({ isActive }) => styles.link(isActive)}
+                    onClick={handleNavClick}
                 >
                     Admin
                 </NavLink>
             </nav>
 
             <div style={styles.footer}>
-                <Link to="/" style={styles.backHome}>
+                <Link to="/" style={styles.backHome} onClick={handleNavClick}>
                     ← Back to Home
                 </Link>
                 <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center', opacity: 0.5 }}>

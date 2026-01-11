@@ -212,3 +212,110 @@ h1 {
     /* Ensure table keeps shape and scrolls */
   }
 }
+
+/* --- Responsive Layout Utilities --- */
+
+/* Sidebar & Main Layout */
+.layout-sidebar {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(20, 22, 31, 0.95);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid var(--border-color);
+  z-index: 1000;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+}
+
+.layout-main {
+  flex: 1;
+  margin-left: 250px;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  transition: margin-left 0.3s ease;
+}
+
+.mobile-menu-btn {
+  display: none;
+  /* Hidden on desktop */
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1100;
+  /* Above sidebar z-index if needed, or just high */
+  background: rgba(20, 22, 31, 0.9);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.mobile-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  z-index: 900;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Mobile Overrides */
+@media (max-width: 768px) {
+  .layout-sidebar {
+    transform: translateX(-100%);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  }
+
+  .layout-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .layout-main {
+    margin-left: 0;
+    padding: 1rem;
+    padding-top: 5rem;
+    /* Space for hamburger */
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+  }
+}
+
+/* Home Page Responsive Tweaks */
+@media (max-width: 768px) {
+  .home-title {
+    font-size: 2.5rem !important;
+  }
+
+  .home-subtitle {
+    margin-bottom: 2rem !important;
+  }
+
+  .home-grid {
+    gap: 1.5rem !important;
+  }
+
+  .home-card {
+    width: 100% !important;
+    max-width: 340px;
+  }
+}

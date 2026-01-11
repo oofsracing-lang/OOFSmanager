@@ -170,13 +170,14 @@ const Home = () => {
             <div style={styles.overlay}></div>
 
             <div style={styles.content}>
-                <h1 style={styles.title}>OOFS RACING</h1>
-                <p style={styles.subtitle}>Championship Portal</p>
+                <h1 style={styles.title} className="home-title">OOFS RACING</h1>
+                <p style={styles.subtitle} className="home-subtitle">Championship Portal</p>
 
-                <div style={styles.grid}>
+                <div style={styles.grid} className="home-grid">
                     {/* Season 3 Multiclass */}
                     <div
                         style={styles.card('s3-multi')}
+                        className="home-card"
                         onMouseEnter={() => setHoveredCard('s3-multi')}
                         onMouseLeave={() => setHoveredCard(null)}
                         onClick={() => handleSeasonSelect('3')}
@@ -194,6 +195,7 @@ const Home = () => {
                     {/* Season 3 Sprint */}
                     <div
                         style={styles.card('s3-sprint')}
+                        className="home-card"
                         onMouseEnter={() => setHoveredCard('s3-sprint')}
                         onMouseLeave={() => setHoveredCard(null)}
                         onClick={() => handleSeasonSelect('s3-sprint')}
