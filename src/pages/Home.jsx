@@ -16,41 +16,51 @@ const Home = () => {
 
     // Style Constants
     const styles = {
-        container: {
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            backgroundImage: 'url("/assets/home_bg_mustache.png")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+        // Wrapper that allows scrolling
+        wrapper: {
+            minHeight: '100vh',
+            width: '100%',
+            position: 'relative',
+            overflowX: 'hidden',
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'white',
-            overflow: 'hidden',
             fontFamily: "'Outfit', sans-serif"
         },
-        overlay: {
-            position: 'absolute',
+        // Fixed Background Layer
+        bgLayer: {
+            position: 'fixed',
             top: 0,
             left: 0,
             width: '100%',
             height: '100%',
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.9))', // Darker bottom for socials
-            zIndex: 1
+            backgroundImage: 'url("/assets/home_bg_mustache.png")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            zIndex: -1
         },
+        // Overlay (also fixed to cover bg)
+        overlay: {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.9))',
+            zIndex: 0
+        },
+        // Content Container (Scrollable)
         content: {
+            position: 'relative',
             zIndex: 2,
-            textAlign: 'center',
             width: '100%',
             maxWidth: '1200px',
-            padding: '2rem',
+            margin: '0 auto', // Center horizontally
+            padding: '4rem 2rem', // Increased top padding
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center'
+            alignItems: 'center',
+            justifyContent: 'center', // Center vertically if content is short
+            minHeight: '100vh' // Ensure full height centering
         },
         title: {
             fontSize: '4.5rem',
@@ -78,6 +88,7 @@ const Home = () => {
             flexWrap: 'wrap',
             marginBottom: '4rem'
         },
+        // ... (rest of styles remain similar, card functions below)
         card: (id) => ({
             background: hoveredCard === id
                 ? 'rgba(255, 255, 255, 0.12)'
@@ -166,9 +177,12 @@ const Home = () => {
     };
 
     return (
-        <div style={styles.container}>
-            <div style={styles.overlay}></div>
+        <div style={styles.wrapper}>
+            {/* Fixed Background Layers */}
+            <div style={styles.bgLayer} />
+            <div style={styles.overlay} />
 
+            {/* Scrollable Content */}
             <div style={styles.content}>
                 <h1 style={styles.title} className="home-title">OOFS RACING</h1>
                 <p style={styles.subtitle} className="home-subtitle">Championship Portal</p>

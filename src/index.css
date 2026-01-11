@@ -312,10 +312,13 @@ h1 {
 
   .home-grid {
     gap: 1.5rem !important;
+    flex-direction: column !important;
+    align-items: center;
   }
 
   .home-card {
     width: 100% !important;
     max-width: 340px;
+    margin-bottom: 0.5rem;
   }
 }
