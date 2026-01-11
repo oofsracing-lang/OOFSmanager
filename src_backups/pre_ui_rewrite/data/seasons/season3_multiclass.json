@@ -1,0 +1,349 @@
+{
+  "season": "Season 3 - Multiclass",
+  "id": "3",
+  "config": {
+    "seriesName": "Season 3 Multiclass",
+    "classes": [
+      "LMP2-UR",
+      "LMGT3"
+    ],
+    "ui": {
+      "theme": "modern",
+      "showTeamColumn": false,
+      "showQualifying": true,
+      "showCarColumn": true
+    },
+    "rules": {
+      "ballastType": "custom_class",
+      "ballastRules": {
+        "LMGT3": {
+          "1": 15,
+          "2": 10,
+          "3": 5,
+          "4": 0,
+          "5": -5,
+          "6": -10,
+          "default": -15,
+          "max": 45
+        },
+        "LMP2-UR": {
+          "1": 10,
+          "2": 5,
+          "3": 2,
+          "4": 0,
+          "5": -2,
+          "6": -5,
+          "default": -10,
+          "max": 30
+        }
+      },
+      "dropRounds": true,
+      "participationRequirement": "must_complete_lap"
+    },
+    "driverRoster": [
+      {
+        "name": "Brian Crane",
+        "class": "LMP2-UR",
+        "reserve": false
+      },
+      {
+        "name": "Greg Kachadurian",
+        "class": "LMP2-UR",
+        "reserve": false
+      },
+      {
+        "name": "James Rubio",
+        "class": "LMP2-UR",
+        "reserve": false
+      },
+      {
+        "name": "Hans Montes",
+        "class": "LMP2-UR",
+        "reserve": false
+      },
+      {
+        "name": "Abe Wozniak",
+        "class": "LMP2-UR",
+        "reserve": false
+      },
+      {
+        "name": "Christopher MacLennan",
+        "class": "LMP2-UR",
+        "reserve": false
+      },
+      {
+        "name": "Ryan Bellune",
+        "class": "LMP2-UR",
+        "reserve": false
+      },
+      {
+        "name": "Dick Garcia",
+        "class": "LMP2-UR",
+        "reserve": false
+      },
+      {
+        "name": "Nate Sides",
+        "class": "LMP2-UR",
+        "reserve": false
+      },
+      {
+        "name": "Josh Popov",
+        "class": "LMP2-UR",
+        "reserve": false
+      },
+      {
+        "name": "Michael Landry",
+        "class": "LMP2-UR",
+        "reserve": false
+      },
+      {
+        "name": "Jacob Lozano",
+        "class": "LMP2-UR",
+        "reserve": false
+      },
+      {
+        "name": "Abe Duarte",
+        "class": "LMP2-UR",
+        "reserve": true
+      },
+      {
+        "name": "Michael Quandt",
+        "class": "LMP2-UR",
+        "reserve": true
+      },
+      {
+        "name": "Donovan Bailey",
+        "class": "LMP2-UR",
+        "reserve": true
+      },
+      {
+        "name": "Andrew Canelli",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "David Paccagnini",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Nick Johnson",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Parker Thomas",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Gage Galvin",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Ron Heslop",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Macaroni ToutGarni",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Richie Wood",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Grayson Head",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "David Carter",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Kasi Jackman",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Javier Tellez",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Justin Fortunato",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Willie Mangram",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Dustin Rand",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Matthew Canelli",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Guillermo Paret",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Joel Ristau",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Edriel Lugo-Ortiz",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Jesse Olsen",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Drew Eisenman",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Patricio Fernandez",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Alexandre Urie",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "David St-Germain",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Harrison Miller",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Rich Spoon",
+        "class": "LMGT3",
+        "reserve": false
+      },
+      {
+        "name": "Ross McLean",
+        "class": "LMGT3",
+        "reserve": true
+      },
+      {
+        "name": "Dakota Botello",
+        "class": "LMGT3",
+        "reserve": true
+      },
+      {
+        "name": "Nitin Murthy",
+        "class": "LMGT3",
+        "reserve": true
+      },
+      {
+        "name": "Ayrton Senna",
+        "class": "LMGT3",
+        "reserve": true
+      },
+      {
+        "name": "Alessandro Guevara",
+        "class": "LMGT3",
+        "reserve": true
+      },
+      {
+        "name": "Dave Harris",
+        "class": "LMGT3",
+        "reserve": true
+      },
+      {
+        "name": "Nelson Villalobos",
+        "class": "LMGT3",
+        "reserve": true
+      }
+    ]
+  },
+  "currentRound": 0,
+  "totalRounds": 0,
+  "drivers": [],
+  "races": [
+    {
+      "id": 1,
+      "name": "Round 1",
+      "track": "Algarve International Circuit",
+      "date": "2026-01-29",
+      "status": "Scheduled"
+    },
+    {
+      "id": 2,
+      "name": "Round 2",
+      "track": "Circuit de la Sarthe",
+      "date": "2026-02-05",
+      "status": "Scheduled"
+    },
+    {
+      "id": 3,
+      "name": "Round 3",
+      "track": "Autodromo José Carlos Pace (Interlagos)",
+      "date": "2026-02-12",
+      "status": "Scheduled"
+    },
+    {
+      "id": 4,
+      "name": "Round 4",
+      "track": "Autodromo Nazionale Monza",
+      "date": "2026-02-19",
+      "status": "Scheduled"
+    },
+    {
+      "id": 5,
+      "name": "Round 5",
+      "track": "Sebring International Raceway",
+      "date": "2026-02-26",
+      "status": "Scheduled"
+    },
+    {
+      "id": 6,
+      "name": "Round 6",
+      "track": "Circuit Paul Ricard",
+      "date": "2026-03-05",
+      "status": "Scheduled"
+    },
+    {
+      "id": 7,
+      "name": "Round 7",
+      "track": "Circuit of the Americas",
+      "date": "2026-03-12",
+      "status": "Scheduled"
+    },
+    {
+      "id": 8,
+      "name": "Round 8",
+      "track": "Circuit de Spa-Francorchamps",
+      "date": "2026-03-19",
+      "status": "Scheduled"
+    }
+  ],
+  "penalties": {},
+  "manualPositions": {}
+}

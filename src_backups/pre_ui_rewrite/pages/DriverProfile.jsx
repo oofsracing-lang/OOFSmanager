@@ -1,0 +1,304 @@
+import { useParams, Link } from 'react-router-dom';
+import { useChampionship } from '../context/ChampionshipContext';
+import { formatDriverName } from '../utils/formatting';
+
+const DriverProfile = () => {
+    const { id: driverId } = useParams();
+    const { championshipData, loading, seasonConfig } = useChampionship();
+    const driver = championshipData.drivers.find(d => String(d.id) === String(driverId));
+
+    if (loading) {
+        return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading Driver Profile...</div>;
+    }
+
+    if (!driver) {
+        return <div style={{ padding: '2rem', textAlign: 'center' }}>Driver not found (ID: {driverId})</div>;
+    }
+
+    // Calculate championship position
+    const classDrivers = championshipData.drivers
+        .filter(d => d.class === driver.class)
+        .sort((a, b) => b.totalPoints - a.totalPoints);
+
+    const championshipPosition = classDrivers.findIndex(d => d.id === driver.id) + 1;
+
+    // Calculate statistics
+    const racesCompleted = driver.raceResults.filter(r => r.attendance === 'Raced').length;
+
+    // New Stats Calculations
+    const totalLaps = driver.raceResults.reduce((acc, r) => acc + (r.laps || 0), 0);
+    const totalPurpleSectors = driver.raceResults.reduce((acc, r) => acc + (r.purpleSectors || 0), 0);
+    const totalIncidents = driver.raceResults.reduce((acc, r) => acc + (r.incidents || 0), 0);
+    const totalPenalties = driver.raceResults.reduce((acc, r) => acc + (r.penaltyCount || 0), 0);
+
+    // Calculate "Fastest Lap" awards
+    let fastestLapsCount = 0;
+    driver.raceResults.forEach(myResult => {
+        if (!myResult.bestLap || myResult.attendance !== 'Raced') return; // No lap time
+
+        // Convert my lap to seconds for comparison
+        const parseLap = (input) => {
+            if (!input) return 999999;
+            const str = String(input);
+            const parts = str.split(':');
+            if (parts.length === 2) return parseFloat(parts[0]) * 60 + parseFloat(parts[1]);
+            return parseFloat(str);
+        };
+        const myTime = parseLap(myResult.bestLap);
+
+        // Check against all other drivers in the same race AND SAME CLASS
+        let isFastest = true;
+        const myClass = myResult.drivenClass || driver.class;
+
+        championshipData.drivers.forEach(otherDriver => {
+            const otherResult = otherDriver.raceResults.find(r => String(r.raceId) === String(myResult.raceId));
+            if (!otherResult || !otherResult.bestLap) return;
+
+            const otherClass = otherResult.drivenClass || otherDriver.class;
+            if (otherClass !== myClass) return; // Only compare within same class for this race
+
+            const otherTime = parseLap(otherResult.bestLap);
+            if (otherTime < myTime) isFastest = false;
+        });
+
+        if (isFastest) fastestLapsCount++;
+    });
+
+
+    // Use points from the calculated context, which are already updated
+    // Calculate Best Result (Position)
+    const racedResults = driver.raceResults.filter(r => r.attendance === 'Raced');
+    let bestPosition = '-';
+
+    if (racedResults.length > 0) {
+        const positions = racedResults.map(result => {
+            // Use calculated newPosition if available (from context calculation), otherwise classPosition, then raw position
+            if (result.newPosition) return result.newPosition;
+            if (result.classPosition) return result.classPosition;
+            if (result.position) return result.position;
+
+            // Fallback calculation if position is missing
+            const raceStandings = championshipData.drivers
+                .filter(d => d.class === driver.class)
+                .map(d => ({
+                    id: d.id,
+                    points: d.raceResults.find(r => r.raceId === result.raceId)?.points || 0
+                }))
+                .sort((a, b) => b.points - a.points);
+            return raceStandings.findIndex(d => d.id === driver.id) + 1;
+        });
+
+        const minPos = Math.min(...positions);
+        bestPosition = `P${minPos}`;
+    }
+
+    const avgPoints = racesCompleted > 0
+        ? (driver.totalPoints / racesCompleted).toFixed(1)
+        : 0;
+
+    return (
+        <div>
+            <Link to="/standings" style={{ color: 'var(--primary)', textDecoration: 'none', marginBottom: '1rem', display: 'inline-block' }}>
+                ← Back to Standings
+            </Link>
+
+            <div className="glass-panel" style={{ padding: '2rem', marginBottom: '2rem' }}>
+                {/* Driver Header */}
+                <div style={{ marginBottom: '2rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '2rem' }}>
+                    <span style={{
+                        background: driver.class === 'LMP2' ? 'var(--primary)' : 'var(--info)',
+                        color: 'white',
+                        padding: '0.25rem 0.75rem',
+                        borderRadius: 'var(--radius-sm)',
+                        fontSize: '0.8rem',
+                        fontWeight: 'bold',
+                        marginBottom: '1rem',
+                        display: 'inline-block'
+                    }}>
+                        {driver.class === 'LMP2' ? 'LMP2-UR' : 'LMGT3'}
+                    </span>
+                    <h2 style={{ marginBottom: '0.5rem' }}>{formatDriverName(driver.name)}</h2>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.25rem' }}>
+                        #{driver.number || '?'} • {driver.car || 'Unknown Car'}
+                    </p>
+                </div>
+
+                {/* Stats Grid */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
+                    <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Champ Pos</h4>
+                        <p className="text-primary" style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>P{championshipPosition}</p>
+                    </div>
+
+                    <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Points</h4>
+                        <p style={{ fontSize: '1.8rem', fontWeight: 'bold', color: 'var(--success)' }}>{driver.totalPoints}</p>
+                    </div>
+
+                    <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Ballast</h4>
+                        <p style={{
+                            fontSize: '1.8rem',
+                            fontWeight: 'bold',
+                            color: driver.currentBallast > 0 ? 'var(--warning)' : 'var(--text-main)'
+                        }}>
+                            {driver.currentBallast}kg
+                        </p>
+                    </div>
+
+                    <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Starts</h4>
+                        <p style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>{racesCompleted}</p>
+                    </div>
+
+                    <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Total Laps</h4>
+                        <p style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>{totalLaps}</p>
+                    </div>
+
+                    <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Purple Sectors</h4>
+                        <p style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#a855f7' }}>{totalPurpleSectors}</p>
+                    </div>
+
+                    <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Fastest Laps</h4>
+                        <p style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#eab308' }}>{fastestLapsCount}</p>
+                    </div>
+                </div>
+
+                {/* Race History */}
+                <div>
+                    <h3 style={{ marginBottom: '1.5rem' }}>Race History</h3>
+                    <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <thead>
+                                <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--primary)' }}>
+                                    <th style={{ padding: '0.75rem 0.5rem' }}>Round</th>
+                                    <th style={{ padding: '0.75rem 0.5rem' }}>Track</th>
+                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Start</th>
+                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Pos</th>
+                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Points</th>
+                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Ballast</th>
+                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Best Lap</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {(() => {
+                                    let runningBallast = 0;
+                                    // Sort results by race ID to ensure correct history calculation
+                                    const sortedResults = [...driver.raceResults].sort((a, b) => a.raceId - b.raceId);
+
+                                    return sortedResults.map((result) => {
+                                        const race = championshipData.races.find(r => r.id === result.raceId);
+
+                                        // Calculate effective ballast change
+                                        let effectiveChange = result.ballastChange;
+
+                                        // Determine Max Ballast for this driver's class
+                                        let maxWeight = 45;
+                                        const rules = seasonConfig?.rules || {};
+                                        // Use driver.class or historical logic if needed
+                                        const driverClass = driver.class; // In profile we assume current class mostly
+
+                                        if (rules.ballastType === 'custom_class' && rules.ballastRules && rules.ballastRules[driverClass]) {
+                                            if (typeof rules.ballastRules[driverClass].max === 'number') {
+                                                maxWeight = rules.ballastRules[driverClass].max;
+                                            }
+                                        } else if (typeof rules.maxBallast === 'number') {
+                                            maxWeight = rules.maxBallast;
+                                        }
+
+                                        if (effectiveChange < 0) {
+                                            // If trying to reduce ballast, can't go below 0
+                                            if (runningBallast + effectiveChange < 0) {
+                                                effectiveChange = -runningBallast;
+                                            }
+                                        } else if (effectiveChange > 0) {
+                                            // If trying to add ballast, can't go above maxWeight
+                                            if (runningBallast + effectiveChange > maxWeight) {
+                                                effectiveChange = maxWeight - runningBallast;
+                                            }
+                                        }
+
+                                        // Update running ballast for next iteration
+                                        runningBallast += effectiveChange;
+
+                                        // Formatter for Best Lap (Raw Seconds -> mm:ss.ssss)
+                                        const formatBestLap = (val) => {
+                                            if (!val || val === '-' || val === -1) return '-';
+                                            const sec = parseFloat(val);
+                                            if (isNaN(sec)) return val; // Raw string if parse fails (e.g. "1:20.1")
+
+                                            // 85.123 -> 1:25.1230
+                                            const mins = Math.floor(sec / 60);
+                                            const remSec = (sec % 60).toFixed(4);
+                                            const secStr = parseFloat(remSec) < 10 ? `0${remSec}` : remSec;
+
+                                            if (mins > 0) return `${mins}:${secStr}`;
+                                            return secStr;
+                                        };
+
+                                        // Calculate Position
+                                        let positionDisplay = '-';
+                                        if (result.attendance === 'Raced') {
+                                            // Prioritize recalculated positions (newPosition > classPosition > raw position)
+                                            const finalPos = result.newPosition || result.classPosition || result.position;
+
+                                            if (finalPos) {
+                                                positionDisplay = `P${finalPos}`;
+                                            } else {
+                                                // Fallback if not available for some reason (should be available from context)
+                                                const raceStandings = championshipData.drivers
+                                                    .filter(d => d.class === driver.class)
+                                                    .map(d => ({
+                                                        id: d.id,
+                                                        points: d.raceResults.find(r => r.raceId === result.raceId)?.points || 0
+                                                    }))
+                                                    .sort((a, b) => b.points - a.points);
+                                                const pos = raceStandings.findIndex(d => d.id === driver.id) + 1;
+                                                positionDisplay = `P${pos}`;
+                                            }
+                                        }
+
+                                        return (
+                                            <tr key={result.raceId} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                                                <td style={{ padding: '0.75rem 0.5rem' }}>R{result.raceId}</td>
+                                                <td style={{ padding: '0.75rem 0.5rem' }}>
+                                                    <Link to={`/races/${result.raceId}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
+                                                        {race?.track || race?.name || 'Unknown'}
+                                                    </Link>
+                                                </td>
+                                                <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                                                    {result.startPosition ? `P${result.startPosition}` : '-'}
+                                                </td>
+                                                <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', fontWeight: 'bold' }}>
+                                                    {positionDisplay}
+                                                </td>
+                                                <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', fontWeight: 'bold', color: 'var(--success)' }}>
+                                                    +{result.points}
+                                                </td>
+                                                <td style={{
+                                                    padding: '0.75rem 0.5rem',
+                                                    textAlign: 'center',
+                                                    color: effectiveChange > 0 ? 'var(--warning)' : effectiveChange < 0 ? 'var(--success)' : 'var(--text-muted)'
+                                                }}>
+                                                    {effectiveChange > 0 ? '+' : ''}{effectiveChange}kg
+                                                </td>
+                                                <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', fontFamily: 'monospace' }}>
+                                                    {formatBestLap(result.bestLap)}
+                                                </td>
+                                            </tr>
+                                        );
+                                    });
+                                })()}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default DriverProfile;
