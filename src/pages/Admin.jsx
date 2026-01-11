@@ -482,7 +482,7 @@ const Admin = () => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {results.filter(r => r.class === 'LMP2-UR').map(result => (
+                                                        {results.filter(r => r.class === 'LMP2-UR' || r.class === 'LMP2').map(result => (
                                                             <tr key={result.driverId} style={{ borderBottom: '1px solid var(--border-color)', opacity: result.isExcluded ? 0.5 : 1, textDecoration: result.isExcluded ? 'line-through' : 'none' }}>
                                                                 <td style={{ padding: '0.5rem' }}>
                                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
