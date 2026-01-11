@@ -1,6 +1,74 @@
 import { db, storage } from './index';
-import { ref, uploadBytes } from 'firebase/storage';
-import { doc, onSnapshot, setDoc, updateDoc, collection, addDoc, deleteDoc, query, where, orderBy } from 'firebase/firestore';
+import { ref, uploadBytes, listAll, getDownloadURL } from 'firebase/storage';
+import { doc, onSnapshot, setDoc, updateDoc, collection, addDoc, deleteDoc, query, where, orderBy, getDocs, writeBatch } from 'firebase/firestore';
+
+// ... (existing content) ...
+
+/**
+ * Upload Raw XML file to Firebase Storage for backup
+ * @param {File} file 
+ * @param {string} seasonId 
+ */
+export const uploadXmlBackup = async (file, seasonId) => {
+    try {
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const storageRef = ref(storage, `season_${seasonId}/uploads/${timestamp}_${file.name}`);
+        const snapshot = await uploadBytes(storageRef, file);
+        return snapshot.metadata.fullPath;
+    } catch (error) {
+        console.error("Error uploading XML backup:", error);
+        throw error;
+    }
+};
+
+/**
+ * List all uploaded XML backups for a season
+ * @param {string} seasonId
+ * @returns {Promise<Array<{name: string, url: string}>>}
+ */
+export const listSeasonUploads = async (seasonId) => {
+    try {
+        const listRef = ref(storage, `season_${seasonId}/uploads/`);
+        const res = await listAll(listRef);
+
+        const files = await Promise.all(res.items.map(async (itemRef) => {
+            const url = await getDownloadURL(itemRef);
+            return {
+                name: itemRef.name,
+                url: url
+            };
+        }));
+
+        return files;
+    } catch (error) {
+        console.error("Error listing uploads:", error);
+        return [];
+    }
+};
+
+/**
+ * Delete ALL qualifying submissions for a specific season
+ * Use with caution!
+ * @param {string} seasonId
+ */
+export const deleteAllQualifying = async (seasonId) => {
+    try {
+        const colRef = collection(db, QUALIFYING_COLLECTION);
+        const q = query(colRef, where("seasonId", "==", String(seasonId)));
+        const snapshot = await getDocs(q);
+
+        const batch = writeBatch(db);
+        snapshot.docs.forEach((doc) => {
+            batch.delete(doc.ref);
+        });
+
+        await batch.commit();
+        console.log(`Deleted ${snapshot.size} qualifying entries.`);
+    } catch (error) {
+        console.error("Error clearing qualifying:", error);
+        throw error;
+    }
+};
 
 // Collection Name
 const SEASONS_COLLECTION = 'seasons';
@@ -68,6 +136,47 @@ export const saveSeasonData = async (seasonId, data) => {
     } catch (e) {
         console.error("Error saving season data:", e);
         throw e;
+    }
+};
+
+
+
+
+
+
+
+
+
+/**
+ * Delete cached standings (Use for Reset)
+ * @param {string|number} seasonId 
+ */
+/**
+ * Hard Overwrite season data (No Merge). 
+ * Use this for RESET operations.
+ * @param {string|number} seasonId 
+ * @param {object} data 
+ */
+export const overwriteSeasonData = async (seasonId, data) => {
+    try {
+        const docRef = doc(db, SEASONS_COLLECTION, String(seasonId));
+        await setDoc(docRef, data, { merge: false });
+    } catch (e) {
+        console.error("Error overwriting season data:", e);
+        throw e;
+    }
+};
+
+/**
+ * Delete cached standings (Use for Reset)
+ * @param {string|number} seasonId 
+ */
+export const deleteStandings = async (seasonId) => {
+    try {
+        const docRef = doc(db, 'standings', String(seasonId));
+        await deleteDoc(docRef);
+    } catch (e) {
+        console.error("Error deleting standings:", e);
     }
 };
 
@@ -173,22 +282,4 @@ export const subscribeToQualifying = (seasonId, onDataChange) => {
     return unsubscribe;
 };
 
-/**
- * Upload Raw XML file to Firebase Storage for backup
- * @param {File} file 
- * @param {string} seasonId 
- */
-// Imports moved to top
 
-export const uploadXmlBackup = async (file, seasonId) => {
-    try {
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-        // Path: season_DATA/uploads/YYYY-MM-DD_HH-MM-SS_filename.xml
-        const storageRef = ref(storage, `season_${seasonId}/uploads/${timestamp}_${file.name}`);
-        const snapshot = await uploadBytes(storageRef, file);
-        return snapshot.metadata.fullPath;
-    } catch (error) {
-        console.error("Error uploading XML backup:", error);
-        throw error;
-    }
-};

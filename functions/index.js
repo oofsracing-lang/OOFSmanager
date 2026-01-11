@@ -358,7 +358,45 @@ const analyzeQualifyingXml = (xmlContent, criteriaSettings, targetDriverName = n
 
     const raceResults = parsed.rFactorXML.RaceResults;
     const trackName = raceResults.TrackVenue;
-    const raceDate = raceResults.DateTime;
+
+    // Priority: Try TimeString (e.g. "2026/01/10 14:12:04")
+    // Fallback: DateTime (Unix Seconds or Milliseconds)
+    let rawDate = raceResults.DateTime;
+    let timeString = raceResults.TimeString;
+    let raceDateVal;
+
+    if (timeString && typeof timeString === 'string') {
+        const parsed = new Date(timeString); // Works with "2026/01/10..."
+        if (!isNaN(parsed.getTime())) {
+            raceDateVal = parsed;
+        }
+    }
+
+    if (!raceDateVal) {
+        // Fallback to DateTime logic
+        if (typeof rawDate === 'string' && !isNaN(rawDate)) {
+            rawDate = parseInt(rawDate);
+        }
+
+        if (typeof rawDate === 'number') {
+            // Heuristic: If < 100,000,000,000, it's seconds
+            if (rawDate < 100000000000) {
+                raceDateVal = new Date(rawDate * 1000);
+            } else {
+                raceDateVal = new Date(rawDate);
+            }
+        } else {
+            raceDateVal = new Date(rawDate);
+        }
+    }
+
+    // Fallback if invalid
+    if (isNaN(raceDateVal.getTime())) {
+        raceDateVal = new Date(); // Warning: Date parsing failed
+        console.warn("Date parsing failed for XML, defaulting to Now", { rawDate, timeString });
+    }
+
+    const raceDate = raceDateVal.toISOString();
 
     // 1. Extract Drivers
     let driversData = raceResults.Driver;
@@ -577,7 +615,8 @@ exports.submitQualifying = functions.https.onCall(async (data, context) => {
         // 3. Save to Firestore
         const submission = {
             id: db.collection('qualifying').doc().id, // Generate ID
-            timestamp: new Date().toISOString(),
+            timestamp: result.raceDate || new Date().toISOString(),
+            createdAt: new Date().toISOString(),
             xmlDate: result.raceDate,
             driverName: result.driver.Name,
             carClass: result.criteriaClass,

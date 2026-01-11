@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useChampionship } from '../context/ChampionshipContext';
 import { formatTime } from '../utils/timeHelpers';
 import { httpsCallable } from 'firebase/functions';
-import { functions } from '../firebase';
+import { functions, storage } from '../firebase';
+import { ref, uploadBytes } from 'firebase/storage';
 
 const Qualifying = () => {
     const { qualifyingSettings, submitQualifyingResult, currentSeasonId } = useChampionship();
@@ -11,15 +12,6 @@ const Qualifying = () => {
     const [lastSubmission, setLastSubmission] = useState(null);
     const [driversList, setDriversList] = useState([]);
     const [cachedFileContent, setCachedFileContent] = useState(null);
-
-    // Import functions (Lazy load or assume global available via context? Usually imported from firebase config)
-    // We assume `functions` is exported from `../firebase/db` or similar, but typically we need `getFunctions`.
-    // Let's use the standard import pattern if available, or just fetch from window/module if configured.
-    // In this project structure, we need to verify where `functions` instance is safely exposed.
-    // Looking at Context, it usually exposes `submitQualifyingResult` which is a DB write.
-    // Now we need a CALLABLE.
-
-    // Functions initialized globally
 
     const processDriver = async (driver) => {
         if (!cachedFileContent) return;
@@ -62,6 +54,17 @@ const Qualifying = () => {
         setDriversList([]);
 
         try {
+            // 1. Auto-Backup to Storage
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            const safeName = selectedFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+            const storagePath = `season_${currentSeasonId || 3}/uploads/${timestamp}_${safeName}`;
+            const storageRef = ref(storage, storagePath);
+
+            // Non-blocking upload (fire and forget, or await if strict safety needed)
+            // Awaiting ensures we have a backup before processing
+            await uploadBytes(storageRef, selectedFile);
+            console.log("Backup uploaded to:", storagePath);
+
             const text = await selectedFile.text();
             setCachedFileContent(text); // Cache for potential re-submission
 

@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { seasons, latestSeason } from '../data';
 import { parseTime, BALLAST_SYSTEM, getBallastAdjustment } from '../utils/raceLogic';
-import { subscribeToSeason, subscribeToStandings, saveSeasonData, updateSeasonFields, saveQualifyingSubmission, deleteQualifyingSubmission, subscribeToQualifying } from '../firebase/db';
+import { subscribeToSeason, subscribeToStandings, saveSeasonData, overwriteSeasonData, updateSeasonFields, saveQualifyingSubmission, deleteQualifyingSubmission, subscribeToQualifying, deleteStandings } from '../firebase/db';
 import { useAuth } from './AuthContext';
 
 const ChampionshipContext = createContext(null);
@@ -256,6 +256,44 @@ export const ChampionshipProvider = ({ children }) => {
         }
     };
 
+    const toggleDriverReserveStatus = (driverName) => {
+        if (!currentUser || !seasonData) return;
+
+        try {
+            const next = JSON.parse(JSON.stringify(seasonData));
+
+            // Ensure config exists
+            if (!next.config) next.config = {};
+            if (!next.config.driverRoster) next.config.driverRoster = [];
+
+            // Find driver in roster
+            const rosterIndex = next.config.driverRoster.findIndex(
+                d => d.name.toLowerCase().trim() === driverName.toLowerCase().trim()
+            );
+
+            if (rosterIndex !== -1) {
+                // Toggle existing
+                next.config.driverRoster[rosterIndex].reserve = !next.config.driverRoster[rosterIndex].reserve;
+            } else {
+                // Should not happen theoretically if we auto-add, but robust handling:
+                // Add as reserve if not found (implied intent is to manage them)
+                // We need to try and find their class/team from drivers list if possible
+                const existingDriver = next.drivers.find(d => d.name.toLowerCase().trim() === driverName.toLowerCase().trim());
+                next.config.driverRoster.push({
+                    name: driverName,
+                    class: existingDriver ? existingDriver.class : 'LMGT3',
+                    team: existingDriver ? existingDriver.team : '',
+                    reserve: true // Toggle ON
+                });
+            }
+
+            saveSeasonData(currentSeasonId, next);
+
+        } catch (err) {
+            console.error("Error toggling reserve status:", err);
+        }
+    };
+
     const importRaceResults = async (raceId, parsedResults, raceInfo = {}) => {
         if (!currentUser) {
             console.error("Import failed: No User Logged In");
@@ -333,12 +371,19 @@ export const ChampionshipProvider = ({ children }) => {
             newData.totalRounds = newData.races.length;
         }
 
-        // 1. Process parsed results
+        // 1. Process parsed results & Roster Updates
+
+        // Ensure roster exists
+        if (!newData.config) newData.config = {};
+        if (!newData.config.driverRoster) newData.config.driverRoster = [];
+
         parsedResults.forEach(pResult => {
             // Hardened matching: Case-insensitive & Trimmed
             const pResultName = (pResult.name || '').trim();
-            // Find or Create Driver
-            let driver = newData.drivers.find(d => (d.name || '').trim().toLowerCase() === pResultName.toLowerCase());
+
+            // --- ROSTER SYNC ---
+            // If this driver is NOT in the roster, add them as Active (reserve: false)
+            const rosterEntry = newData.config.driverRoster.find(rd => rd.name.toLowerCase() === pResultName.toLowerCase());
 
             // Better Class Mapping
             let determinedClass = 'LMGT3'; // Default
@@ -347,6 +392,24 @@ export const ChampionshipProvider = ({ children }) => {
             if (rawClass.includes('LMP2') || rawClass.includes('P2') || rawClass.includes('ORECA')) {
                 determinedClass = 'LMP2-UR';
             }
+
+            if (!rosterEntry) {
+                newData.config.driverRoster.push({
+                    name: pResultName,
+                    class: determinedClass,
+                    team: pResult.team || '',
+                    reserve: false // Default to ACTIVE
+                });
+            } else {
+                // Optional: Update class/team if they changed? 
+                // Let's stick to the roster being the master for simple things, but maybe update team if missing.
+                if (!rosterEntry.team && pResult.team) rosterEntry.team = pResult.team;
+                // Don't overwrite class blindly as user might have corrected it manually in JSON
+            }
+            // -------------------
+
+            // Find or Create Driver
+            let driver = newData.drivers.find(d => (d.name || '').trim().toLowerCase() === pResultName.toLowerCase());
 
             if (!driver) {
                 const newId = newData.drivers.length > 0 ? Math.max(...newData.drivers.map(d => d.id)) + 1 : 1;
@@ -372,15 +435,16 @@ export const ChampionshipProvider = ({ children }) => {
             }
 
             // Create Result Object
+            const lapsCount = Number(pResult.laps) || 0;
             const raceResult = {
                 raceId: Number(raceIdToUse), // Enforce Number
                 position: Number(pResult.position) || 0,
                 classPosition: Number(pResult.classPosition) || 0,
-                laps: Number(pResult.laps) || 0,
+                laps: lapsCount,
                 finishTime: parseTime(pResult.finishTime || pResult.totalTime) || null,
                 bestLap: pResult.bestLap || null,
                 status: pResult.status || 'Finished',
-                attendance: 'Raced',
+                attendance: lapsCount > 0 ? 'Raced' : 'DNS', // Dynamic Attendance
                 drivenClass: determinedClass, // Store the class driven in this specific race
                 points: 0,
                 ballastChange: 0, // Init explicit
@@ -671,14 +735,27 @@ export const ChampionshipProvider = ({ children }) => {
         }
     }, [penalties, manualPositions, exclusions, seasonData, cloudStandings, qualifyingSettings, qualifyingSubmissions]);
 
-    const resetSeasonData = () => {
-        if (!currentUser) return;
+    const resetSeasonData = async () => {
+        if (!currentUser) {
+            alert("Error: You must be logged in to reset data.");
+            return;
+        }
 
+        try {
+            console.log("Resetting Season Data for:", currentSeasonId);
+            const defaultData = JSON.parse(JSON.stringify(seasons[currentSeasonId] || latestSeason));
 
-        // Overwrite cloud with default
-        const defaultData = JSON.parse(JSON.stringify(seasons[currentSeasonId] || latestSeason));
-        saveSeasonData(currentSeasonId, defaultData);
-        // Note: We don't need to reload window anymore, the subscription will update the UI
+            // Hard Overwrite
+            await overwriteSeasonData(currentSeasonId, defaultData);
+
+            // CLEAR CACHED STANDINGS
+            await deleteStandings(currentSeasonId);
+
+            console.log("Reset Complete");
+        } catch (err) {
+            console.error("Reset Failed:", err);
+            throw err;
+        }
     };
 
     // Auto-Sync removed to prevent overwriting user data
@@ -696,6 +773,8 @@ export const ChampionshipProvider = ({ children }) => {
         return JSON.stringify(exportObj, null, 2);
     };
 
+
+
     const value = {
         championshipData: processedData,
         loading,
@@ -712,6 +791,7 @@ export const ChampionshipProvider = ({ children }) => {
         updateQualifyingSettings,
         submitQualifyingResult,
         deleteSubmission,
+        toggleDriverReserveStatus,
         manualPositions,
         exclusions,
         qualifyingSettings,
