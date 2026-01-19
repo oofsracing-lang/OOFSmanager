@@ -282,4 +282,88 @@ export const subscribeToQualifying = (seasonId, onDataChange) => {
     return unsubscribe;
 };
 
+// Collection Name
+const INCIDENTS_COLLECTION = 'incidents';
+
+/**
+ * Save a new incident report (Public Access)
+ * @param {object} incident 
+ */
+export const saveIncident = async (incident) => {
+    try {
+        const colRef = collection(db, INCIDENTS_COLLECTION);
+        const rawPayload = {
+            ...incident,
+            createdAt: new Date().toISOString(),
+            status: 'Pending'
+        };
+        const payload = cleanObject(rawPayload);
+        await addDoc(colRef, payload);
+    } catch (e) {
+        console.error("Error saving incident:", e);
+        throw e;
+    }
+};
+
+/**
+ * Delete an incident
+ * @param {string} incidentId 
+ */
+export const deleteIncident = async (incidentId) => {
+    try {
+        const docRef = doc(db, INCIDENTS_COLLECTION, incidentId);
+        await deleteDoc(docRef);
+    } catch (e) {
+        console.error("Error deleting incident:", e);
+        throw e;
+    }
+};
+
+/**
+ * Update an incident (Admin Access - Decisions/Penalties)
+ * @param {string} incidentId 
+ * @param {object} updates 
+ */
+export const updateIncident = async (incidentId, updates) => {
+    try {
+        const docRef = doc(db, INCIDENTS_COLLECTION, incidentId);
+        const payload = cleanObject(updates);
+        // Automatic status update removed to allow manual 'Complete' toggle
+        await updateDoc(docRef, payload);
+    } catch (e) {
+        console.error("Error updating incident:", e);
+        throw e;
+    }
+};
+
+/**
+ * Subscribe to incidents for a specific season.
+ * @param {string|number} seasonId 
+ * @param {function} onDataChange 
+ */
+export const subscribeToIncidents = (seasonId, onDataChange) => {
+    const colRef = collection(db, INCIDENTS_COLLECTION);
+
+    const q = query(
+        colRef,
+        where("seasonId", "==", String(seasonId))
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+        const incidents = [];
+        snapshot.forEach((doc) => {
+            incidents.push({ ...doc.data(), id: doc.id });
+        });
+        // Client-side sort: Newest first
+        incidents.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        onDataChange(incidents);
+    }, (error) => {
+        console.error("Incidents Subscription Error:", error);
+        onDataChange([]);
+    });
+
+    return unsubscribe;
+};
+
 

@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useChampionship } from '../context/ChampionshipContext';
 import { formatTime as formatTimeHelper, parseTimeInput } from '../utils/timeHelpers';
 import { parseRaceXml } from '../utils/raceParser';
-import { uploadXmlBackup } from '../firebase/db';
+import { uploadXmlBackup, subscribeToIncidents, updateIncident, deleteIncident } from '../firebase/db';
 import AttendanceTab from '../components/AttendanceTab';
 import { httpsCallable } from 'firebase/functions';
 import { functions } from '../firebase';
@@ -11,6 +11,7 @@ import { functions } from '../firebase';
 const Admin = () => {
     const [activeTab, setActiveTab] = useState('results');
     const [selectedRace, setSelectedRace] = useState(null);
+    const [incidents, setIncidents] = useState([]); // Stewarding Incidents
     const { championshipData, seasonData, currentSeasonId, updatePenalty, updateManualPosition, updateExclusion, exclusions, importRaceResults, addRound, deleteRound, resetSeasonData, exportSeasonData, qualifyingSettings, updateQualifyingSettings, qualifyingSubmissions, deleteSubmission } = useChampionship();
 
     // Export Modal State
@@ -99,6 +100,14 @@ const Admin = () => {
     // New Race Form State
     const [newRaceTrack, setNewRaceTrack] = useState('');
     const [newRaceDate, setNewRaceDate] = useState('');
+
+    // Subscribe to incidents when tab is active
+    useEffect(() => {
+        if (activeTab === 'stewarding' && currentSeasonId) {
+            const unsubscribe = subscribeToIncidents(currentSeasonId, setIncidents);
+            return () => unsubscribe();
+        }
+    }, [activeTab, currentSeasonId]);
 
     const handleAddRound = (e) => {
         e.preventDefault();
@@ -678,9 +687,175 @@ const Admin = () => {
 
             {/* Stewarding Tab Content */}
             {activeTab === 'stewarding' && (
-                <div className="glass-panel" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-                    <h3>Stewarding Tools</h3>
-                    <p>Coming Soon - Penalty management and manual overrides will be available here.</p>
+                <div className="glass-panel" style={{ padding: '0' }}>
+                    <div style={{ padding: '2rem', borderBottom: '1px solid var(--border-color)' }}>
+                        <h3>Incident Reviews ({incidents.length})</h3>
+                    </div>
+                    <div style={{ overflowX: 'auto' }}>
+                        <table className="table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <thead>
+                                <tr style={{ textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
+                                    <th style={{ padding: '1rem', width: '10%' }}>Submission Date</th>
+                                    <th style={{ padding: '1rem', width: '15%' }}>Race Session</th>
+                                    <th style={{ padding: '1rem', width: '10%' }}>Car(s) Involved</th>
+                                    <th style={{ padding: '1rem', width: '15%' }}>Timestamp/Lap</th>
+                                    <th style={{ padding: '1rem', width: '25%' }}>Descriptions</th>
+                                    <th style={{ padding: '1rem', width: '10%' }}>Stewarding Decision</th>
+                                    <th style={{ padding: '1rem', width: '5%' }}>Time Penalty</th>
+                                    <th style={{ padding: '1rem', width: '5%' }}>Penalized Car(s)</th>
+                                    <th style={{ padding: '1rem' }}></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {incidents.map((incident) => (
+                                    <tr key={incident.id} style={{ borderBottom: '1px solid var(--border-color)', backgroundColor: incident.status === 'Complete' ? 'rgba(16, 185, 129, 0.05)' : 'transparent' }}>
+                                        <td style={{ padding: '1rem', verticalAlign: 'top', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                                            {incident.createdAt ? new Date(incident.createdAt).toLocaleString() : '-'}
+                                        </td>
+                                        <td style={{ padding: '1rem', verticalAlign: 'top' }}>
+                                            <select
+                                                className="form-control"
+                                                defaultValue={incident.raceId}
+                                                onChange={(e) => updateIncident(incident.id, { raceId: e.target.value })}
+                                                style={{ width: '100%', fontSize: '0.85rem', padding: '0.4rem', background: 'var(--bg-tertiary)', color: 'white', border: '1px solid var(--border-color)' }}
+                                            >
+                                                {championshipData?.races?.map(race => (
+                                                    <option key={race.id} value={race.id}>
+                                                        {race.track || `Round ${race.id}`}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </td>
+                                        <td style={{ padding: '1rem', verticalAlign: 'top' }}>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                defaultValue={incident.carNumbers}
+                                                onBlur={(e) => updateIncident(incident.id, { carNumbers: e.target.value })}
+                                                style={{ width: '100%', fontSize: '0.9rem', padding: '0.4rem', background: 'transparent', border: '1px solid transparent', color: 'white' }}
+                                            />
+                                        </td>
+                                        <td style={{ padding: '1rem', verticalAlign: 'top' }}>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                defaultValue={incident.timestamp}
+                                                onBlur={(e) => updateIncident(incident.id, { timestamp: e.target.value })}
+                                                style={{ width: '100%', fontSize: '0.9rem', color: 'var(--text-muted)', background: 'transparent', border: '1px solid transparent' }}
+                                            />
+                                        </td>
+                                        <td style={{ padding: '1rem', verticalAlign: 'top' }}>
+                                            <div style={{ marginBottom: '1rem' }}>
+                                                <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>Driver Report</div>
+                                                <textarea
+                                                    className="form-control"
+                                                    defaultValue={incident.description}
+                                                    onBlur={(e) => updateIncident(incident.id, { description: e.target.value })}
+                                                    rows="3"
+                                                    style={{ width: '100%', fontSize: '0.9rem', color: 'var(--text-muted)', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)' }}
+                                                    placeholder="Driver's description..."
+                                                />
+                                            </div>
+                                            <div>
+                                                <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: '#60a5fa', marginBottom: '0.25rem' }}>Steward Notes</div>
+                                                <textarea
+                                                    className="form-control"
+                                                    defaultValue={incident.stewardNotes || ''}
+                                                    onBlur={(e) => updateIncident(incident.id, { stewardNotes: e.target.value })}
+                                                    rows="3"
+                                                    style={{ width: '100%', fontSize: '0.9rem', color: 'white', background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)' }}
+                                                    placeholder="Notes for the driver..."
+                                                />
+                                            </div>
+                                        </td>
+                                        <td style={{ padding: '1rem', verticalAlign: 'top' }}>
+                                            <select
+                                                className="form-control"
+                                                defaultValue={incident.decision || ''}
+                                                onChange={(e) => updateIncident(incident.id, { decision: e.target.value })}
+                                                style={{ padding: '0.4rem', fontSize: '0.9rem', width: '100%' }}
+                                            >
+                                                <option value="">-- No Decision --</option>
+                                                <option value="No Further Action">No Further Action</option>
+                                                <option value="Racing Incident">Racing Incident</option>
+                                                <option value="Warning">Warning</option>
+                                                <option value="Time Penalty">Time Penalty</option>
+                                                <option value="Drive Through">Drive Through</option>
+                                                <option value="Stop and Go">Stop and Go</option>
+                                                <option value="Disqualification">Disqualification</option>
+                                                <option value="Avoidable Contact">Avoidable Contact</option>
+                                                <option value="Unsafe Rejoin">Unsafe Rejoin</option>
+                                            </select>
+                                        </td>
+                                        <td style={{ padding: '1rem', verticalAlign: 'top' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                                <input
+                                                    type="number"
+                                                    defaultValue={incident.timePenalty || ''}
+                                                    onBlur={(e) => updateIncident(incident.id, { timePenalty: parseFloat(e.target.value) })}
+                                                    style={{ width: '50px', padding: '0.4rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-tertiary)', color: 'white' }}
+                                                />
+                                                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>s</span>
+                                            </div>
+                                        </td>
+                                        <td style={{ padding: '1rem', verticalAlign: 'top' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>#</span>
+                                                <input
+                                                    type="text"
+                                                    defaultValue={incident.penalizedCar || ''}
+                                                    onBlur={(e) => updateIncident(incident.id, { penalizedCar: e.target.value })}
+                                                    style={{ width: '50px', padding: '0.4rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-tertiary)', color: 'white' }}
+                                                />
+                                            </div>
+                                        </td>
+                                        <td style={{ padding: '1rem', verticalAlign: 'top', textAlign: 'right' }}>
+                                            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                                                <button
+                                                    className="btn btn-icon"
+                                                    style={{
+                                                        backgroundColor: incident.status === 'Complete' ? '#10b981' : 'transparent',
+                                                        border: '1px solid #10b981',
+                                                        color: incident.status === 'Complete' ? 'white' : '#10b981',
+                                                        cursor: 'pointer'
+                                                    }}
+                                                    onClick={() => updateIncident(incident.id, { status: incident.status === 'Complete' ? 'Pending' : 'Complete' })}
+                                                    title={incident.status === 'Complete' ? "Mark as Pending" : "Mark as Complete"}
+                                                >
+                                                    ✓
+                                                </button>
+                                                <button
+                                                    className="btn btn-icon btn-danger"
+                                                    onClick={async (e) => {
+                                                        e.stopPropagation();
+                                                        // Match Qualifying Logic: Immediate Delete (No Confirm) + Optimistic Update
+                                                        try {
+                                                            setIncidents(prev => prev.filter(i => i.id !== incident.id));
+                                                            await deleteIncident(incident.id);
+                                                        } catch (err) {
+                                                            console.error("Failed to delete:", err);
+                                                            alert("Failed to delete: " + err.message);
+                                                            // Optional: Revert optimistic update here if needed
+                                                        }
+                                                    }}
+                                                    title="Delete"
+                                                >
+                                                    ✕
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                                {incidents.length === 0 && (
+                                    <tr>
+                                        <td colSpan="9" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                                            No active protests or incidents.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )}
 

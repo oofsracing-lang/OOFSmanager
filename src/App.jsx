@@ -10,6 +10,7 @@ import DriverProfile from './pages/DriverProfile';
 import Admin from './pages/Admin';
 import Login from './pages/Login';
 import Qualifying from './pages/Qualifying';
+import Stewarding from './pages/Stewarding';
 import Home from './pages/Home';
 import { ChampionshipProvider } from './context/ChampionshipContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -43,6 +44,7 @@ function App() {
                 <Route path="drivers" element={<Drivers />} />
                 <Route path="driver/:id" element={<DriverProfile />} />
                 <Route path="qualifying" element={<Qualifying />} />
+                <Route path="stewarding" element={<Stewarding />} />
                 <Route path="admin" element={
                   <ProtectedRoute>
                     <Admin />

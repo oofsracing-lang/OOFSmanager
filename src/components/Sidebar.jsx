@@ -120,6 +120,14 @@ const Sidebar = ({ isOpen, onClose }) => {
                 )}
 
                 <NavLink
+                    to={getPath('/stewarding')}
+                    style={({ isActive }) => styles.link(isActive)}
+                    onClick={handleNavClick}
+                >
+                    Stewarding
+                </NavLink>
+
+                <NavLink
                     to={getPath('/admin')}
                     style={({ isActive }) => styles.link(isActive)}
                     onClick={handleNavClick}
