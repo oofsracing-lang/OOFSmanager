@@ -253,6 +253,35 @@ const Admin = () => {
         }
     };
 
+    // Debug: Trace what the Admin UI actually received from Context
+    useEffect(() => {
+        if (selectedRace) {
+            console.log(`[Admin Debug] Selected Race ID: ${selectedRace} (Type: ${typeof selectedRace})`);
+
+            const drivers = seasonData?.drivers || [];
+            console.log(`[Admin Debug] Total Drivers in Context: ${drivers.length}`);
+
+            // Check for any results matching the ID (fuzzy match)
+            const driversWithResults = drivers.filter(d =>
+                d.raceResults?.some(r => String(r.raceId) === String(selectedRace))
+            );
+
+            console.log(`[Admin Debug] Drivers with Results for Race ${selectedRace}: ${driversWithResults.length}`);
+
+            if (driversWithResults.length > 0) {
+                // Deep dive into the first matching result to see structure
+                const firstResult = driversWithResults[0].raceResults.find(r => String(r.raceId) === String(selectedRace));
+                console.log("[Admin Debug] Sample Result Structure:", firstResult);
+            } else {
+                if (drivers.length > 0) {
+                    console.log("[Admin Debug] First Driver Raw Data:", drivers[0]);
+                } else {
+                    console.log("[Admin Debug] Drivers array is empty.");
+                }
+            }
+        }
+    }, [selectedRace, seasonData]);
+
     return (
         <div>
             {/* Reset Button Area */}
@@ -302,6 +331,35 @@ const Admin = () => {
                             >
                                 {isResetting ? "Deleting..." : "Yes, Delete Everything"}
                             </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* VISUAL DEBUG PANEL v3.2 - SAFE */}
+            {seasonData && championshipData && (
+                <div style={{ background: '#222', border: '1px solid #555', padding: '10px', marginBottom: '20px', fontSize: '12px', fontFamily: 'monospace', overflowX: 'auto' }}>
+                    <strong style={{ color: 'cyan' }}>DIAGNOSTICS v3.3 (DETAILED)</strong>
+                    <div>Active Season ID: {currentSeasonId}</div>
+                    <div>SeasonData Drivers: <span style={{ color: (seasonData?.drivers?.length > 0) ? '#0f0' : '#f00' }}>{seasonData?.drivers?.length || 0}</span></div>
+                    <div>SeasonData Races: {seasonData?.races?.length || 0}</div>
+                    <div style={{ color: championshipData?.drivers?.length > 0 ? '#0f0' : '#f00' }}>
+                        ChampionshipData Drivers: {championshipData?.drivers?.length || 0}
+                    </div>
+                    <div>ChampionshipData Source: {championshipData?.calculationSource || 'Unknown'}</div>
+                    <div>ChampionshipData Error: {championshipData?.error || 'None'}</div>
+                    <div>Result array length: {results.length}</div>
+                    <div>Selected Race: {String(selectedRace)} (Type: {typeof selectedRace})</div>
+                    <div style={{ marginTop: '10px', padding: '5px', background: '#333' }}>
+                        <strong>Sample Driver from seasonData:</strong>
+                        <div style={{ fontSize: '10px' }}>
+                            {seasonData?.drivers?.[0] ? `ID: ${seasonData.drivers[0].id}, Name: ${seasonData.drivers[0].name}, Results: ${seasonData.drivers[0].raceResults?.length || 0}` : 'No drivers'}
+                        </div>
+                    </div>
+                    <div style={{ marginTop: '5px', padding: '5px', background: '#333' }}>
+                        <strong>Sample Driver from championshipData:</strong>
+                        <div style={{ fontSize: '10px' }}>
+                            {championshipData?.drivers?.[0] ? `ID: ${championshipData.drivers[0].id}, Name: ${championshipData.drivers[0].name}` : 'No drivers'}
                         </div>
                     </div>
                 </div>
@@ -389,7 +447,10 @@ const Admin = () => {
                                                 }}
                                             >
                                                 <div
-                                                    onClick={() => setSelectedRace(race.id)}
+                                                    onClick={() => {
+                                                        console.log("Selecting race:", race.id);
+                                                        setSelectedRace(Number(race.id));
+                                                    }}
                                                     style={{ flex: 1, cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
                                                 >
                                                     <span style={{ fontWeight: 'bold', color: 'white' }}>{race.track || race.name}</span>

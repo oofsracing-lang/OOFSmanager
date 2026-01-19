@@ -524,9 +524,13 @@ export const ChampionshipProvider = ({ children }) => {
         // PRIORITY 1: Cloud Calculated Standings (PRODUCTION ONLY)
         // In Dev, we ignore this to test local changes/inputs instantly.
         // In Prod, we trust the cloud function for consistency across users.
+        // PRIORITY 1: Cloud Calculated Standings (PRODUCTION ONLY)
+        // In Dev, we ignore this to test local changes/inputs instantly.
+        // In Prod, we trust the cloud function for consistency across users.
+        // EXCEPTION: IF USER IS LOGGED IN (Admin), we FORCE local calculation to see optimistic updates (e.g. penalties) instantly.
         const isProd = import.meta.env.PROD;
 
-        if (isProd && cloudStandings && cloudStandings.season === (seasonData?.season) &&
+        if (!currentUser && isProd && cloudStandings && cloudStandings.season === (seasonData?.season) &&
             (cloudStandings.races || []).length >= (seasonData?.races || []).length) {
 
             return {
@@ -534,8 +538,6 @@ export const ChampionshipProvider = ({ children }) => {
                 calculationSource: 'Cloud Backend (Official)'
             };
         }
-
-        console.log("[ChampionshipContext] Using LOCAL calculation (Dev/Fallback)");
 
         // PRIORITY 2: Local Fallback (The original huge logic)
 
@@ -555,6 +557,10 @@ export const ChampionshipProvider = ({ children }) => {
         }
 
         try {
+            console.log("[ChampionshipContext] Starting data processing...");
+            console.log("[ChampionshipContext] seasonData.drivers:", seasonData?.drivers?.length);
+            console.log("[ChampionshipContext] seasonData.races:", seasonData?.races?.length);
+
             const data = JSON.parse(JSON.stringify(seasonData));
 
 
@@ -572,9 +578,18 @@ export const ChampionshipProvider = ({ children }) => {
             ];
 
             // 1. Calculate Points for Completed Races
-            // 1. Calculate Points for Completed Races
-            // Fix: Don't rely on currentRound index. Just process everything marked 'Completed'.
-            const completedRaces = data.races.filter(r => r.status === 'Completed' || r.id <= data.currentRound);
+            // Fix: Process races that have results, regardless of status field
+            const completedRaces = data.races.filter(r => {
+                // A race is "completed" if at least one driver has results for it
+                const hasResults = data.drivers.some(d =>
+                    d.raceResults && d.raceResults.some(res => String(res.raceId) === String(r.id))
+                );
+                return hasResults || r.status === 'Completed' || (r.id <= (data.currentRound || 0));
+            });
+
+            console.log("[ChampionshipContext] Completed races found:", completedRaces.length);
+            console.log("[ChampionshipContext] Completed race IDs:", completedRaces.map(r => r.id));
+
             completedRaces.forEach(race => {
                 const processClass = (className) => {
                     // Filter drivers who actually raced in this class for this round

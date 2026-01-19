@@ -79,7 +79,41 @@ function calculateChampionship(seasonData) {
         35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16
     ];
 
-    const completedRaces = data.races.filter(r => r.id <= data.currentRound);
+    // Defensive checks
+    if (!data.drivers || !Array.isArray(data.drivers)) {
+        console.error('Invalid drivers data:', data.drivers);
+        return {
+            season: data.season || 'Unknown',
+            races: [],
+            drivers: [],
+            currentRound: 0,
+            totalRounds: 0,
+            error: 'Invalid drivers data structure'
+        };
+    }
+
+    if (!data.races || !Array.isArray(data.races)) {
+        console.error('Invalid races data:', data.races);
+        return {
+            season: data.season || 'Unknown',
+            races: [],
+            drivers: [],
+            currentRound: 0,
+            totalRounds: 0,
+            error: 'Invalid races data structure'
+        };
+    }
+
+    // Auto-calculate currentRound based on which races have results
+    // Find the highest race ID that has at least one driver with results
+    const currentRound = data.currentRound || Math.max(
+        0,
+        ...data.drivers.flatMap(d =>
+            (d.raceResults || []).map(r => r.raceId)
+        )
+    );
+
+    const completedRaces = data.races.filter(r => r.id <= currentRound);
 
     completedRaces.forEach(race => {
         const processClass = (className) => {
@@ -173,6 +207,7 @@ function calculateChampionship(seasonData) {
                 const { result } = entry;
                 // Use Helper with Config
                 const rules = data.config && data.config.rules ? data.config.rules : {};
+                const isFinished = true; // Race is completed if we're calculating standings
                 bChange = getBallastAdjustment(pos, !isFinished, rules, className);
                 ballastMap[entry.driver.id] = bChange;
             });
@@ -649,3 +684,44 @@ exports.submitQualifying = functions.https.onCall(async (data, context) => {
 });
 
 
+
+
+// Temporary HTTP function to manually populate standings/3
+exports.fixStandings = functions.https.onRequest(async (req, res) => {
+    try {
+        console.log('Manual standings fix triggered...');
+
+        // Read season data
+        const seasonDoc = await admin.firestore().collection('seasons').doc('3').get();
+        if (!seasonDoc.exists) {
+            throw new Error('Season 3 not found');
+        }
+
+        const seasonData = seasonDoc.data();
+        console.log(`Season: ${seasonData.season}, Drivers: ${seasonData.drivers?.length}`);
+
+        // Calculate standings
+        const calculatedData = calculateChampionship(seasonData);
+        const sanitized = sanitizeForFirestore(calculatedData);
+
+        // Add metadata
+        sanitized.lastUpdated = admin.firestore.FieldValue.serverTimestamp();
+        sanitized.calculationSource = 'Manual Fix via HTTP';
+
+        // Write to standings/3
+        await admin.firestore().collection('standings').doc('3').set(sanitized);
+
+        console.log(`✓ Standings written. Drivers: ${sanitized.drivers?.length}`);
+
+        res.status(200).json({
+            success: true,
+            season: sanitized.season,
+            drivers: sanitized.drivers?.length || 0,
+            races: sanitized.races?.length || 0,
+            currentRound: sanitized.currentRound
+        });
+    } catch (error) {
+        console.error('Fix standings error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
