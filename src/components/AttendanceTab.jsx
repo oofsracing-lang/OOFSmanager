@@ -1,9 +1,20 @@
 import { useState } from 'react';
 import { useChampionship } from '../context/ChampionshipContext';
+import { useAuth } from '../context/AuthContext';
 
 const AttendanceTab = () => {
-    const { championshipData, seasonData, toggleDriverReserveStatus } = useChampionship();
+    const { championshipData, seasonData, toggleDriverReserveStatus, addRosterDriver, deleteRosterDriver, updateDriverName, mergeDrivers } = useChampionship();
+    const { currentUser } = useAuth();
     const [filterClass, setFilterClass] = useState('all');
+
+    // UI States
+    const [editingDriver, setEditingDriver] = useState(null); // { name, newName }
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [newDriver, setNewDriver] = useState({ name: '', class: 'LMGT3', team: '', reserve: false });
+    const [showMergeModal, setShowMergeModal] = useState(false);
+    const [mergeTarget, setMergeTarget] = useState(''); // The one we are keeping
+    const [mergeSource, setMergeSource] = useState(''); // The one we are merging FROM (deleting)
+
 
     if (!championshipData || !seasonData) {
         return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading...</div>;
@@ -73,9 +84,59 @@ const AttendanceTab = () => {
         );
     };
 
+    // Actions
+    const handleAddSubmit = async (e) => {
+        e.preventDefault();
+        if (!newDriver.name) return;
+        try {
+            await addRosterDriver(newDriver.name, newDriver.class, newDriver.team, newDriver.reserve);
+            setShowAddModal(false);
+            setNewDriver({ name: '', class: 'LMGT3', team: '', reserve: false });
+        } catch (err) {
+            alert("Failed to add driver: " + err.message);
+        }
+    };
+
+    const handleUpdateName = async () => {
+        if (!editingDriver || !editingDriver.newName || editingDriver.newName === editingDriver.name) {
+            setEditingDriver(null);
+            return;
+        }
+
+        // Check availability (simple check)
+        if (drivers.some(d => d.name.toLowerCase() === editingDriver.newName.toLowerCase())) {
+            if (confirm(`Driver "${editingDriver.newName}" already exists. Do you want to MERGE "${editingDriver.name}" into "${editingDriver.newName}"?`)) {
+                try {
+                    await mergeDrivers(editingDriver.newName, editingDriver.name);
+                    setEditingDriver(null);
+                } catch (err) {
+                    alert("Merge failed: " + err.message);
+                }
+            }
+            return;
+        }
+
+        try {
+            await updateDriverName(editingDriver.name, editingDriver.newName);
+            setEditingDriver(null);
+        } catch (err) {
+            alert("Update failed: " + err.message);
+        }
+    };
+
+    const handleDelete = async (name) => {
+        if (confirm(`Are you sure you want to delete ${name}? This will remove them from the roster.`)) {
+            try {
+                await deleteRosterDriver(name);
+            } catch (err) {
+                alert("Delete failed: " + err.message);
+            }
+        }
+    };
+
     return (
         <div>
-            <div style={{ marginBottom: '1.5rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            <div style={{ marginBottom: '1.5rem', display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
                 <h3 style={{ margin: 0 }}>Driver Attendance</h3>
                 <select
                     value={filterClass}
@@ -87,10 +148,75 @@ const AttendanceTab = () => {
                     <option value="LMP2-UR">LMP2-UR</option>
                     <option value="LMGT3">LMGT3</option>
                 </select>
+
+                {currentUser && (
+                    <button className="btn btn-primary" onClick={() => setShowAddModal(true)} style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem' }}>
+                        + Add Driver
+                    </button>
+                )}
+
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                    Tip: Click the 'R' button next to a driver to toggle Reserve status.
+                    Tip: Click name to rename/merge. Click 'R' to toggle Reserve.
                 </div>
             </div>
+
+            {/* ADD MODAL */}
+            {showAddModal && (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 1100,
+                    display: 'flex', justifyContent: 'center', alignItems: 'center'
+                }}>
+                    <div className="glass-panel" style={{ width: '400px', padding: '2rem' }}>
+                        <h4>Add New Driver</h4>
+                        <form onSubmit={handleAddSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <div>
+                                <label style={{ display: 'block', fontSize: '0.8rem', marginBottom: '0.3rem' }}>Name</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={newDriver.name}
+                                    onChange={e => setNewDriver({ ...newDriver, name: e.target.value })}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label style={{ display: 'block', fontSize: '0.8rem', marginBottom: '0.3rem' }}>Class</label>
+                                <select
+                                    className="form-control"
+                                    value={newDriver.class}
+                                    onChange={e => setNewDriver({ ...newDriver, class: e.target.value })}
+                                >
+                                    <option value="LMGT3">LMGT3</option>
+                                    <option value="LMP2-UR">LMP2-UR</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style={{ display: 'block', fontSize: '0.8rem', marginBottom: '0.3rem' }}>Team (Optional)</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={newDriver.team}
+                                    onChange={e => setNewDriver({ ...newDriver, team: e.target.value })}
+                                />
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <input
+                                    type="checkbox"
+                                    checked={newDriver.reserve}
+                                    onChange={e => setNewDriver({ ...newDriver, reserve: e.target.checked })}
+                                />
+                                <label>Reserve Driver?</label>
+                            </div>
+
+                            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                                <button type="button" className="btn" onClick={() => setShowAddModal(false)}>Cancel</button>
+                                <button type="submit" className="btn btn-primary">Add Driver</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
 
             <div style={{ overflowX: 'auto', maxHeight: '70vh' }}>
                 <table className="table" style={{ minWidth: '800px', borderCollapse: 'separate', borderSpacing: 0 }}>
@@ -121,25 +247,77 @@ const AttendanceTab = () => {
                                     alignItems: 'center',
                                     gap: '0.5rem'
                                 }}>
-                                    <button
-                                        onClick={() => toggleDriverReserveStatus(driver.name)}
-                                        title={driver.reserve ? "Click to Remove Reserve Status" : "Click to Set as Reserve"}
-                                        style={{
-                                            fontSize: '0.65rem',
-                                            backgroundColor: driver.reserve ? 'var(--bg-tertiary)' : 'transparent',
-                                            color: driver.reserve ? 'var(--text-muted)' : 'var(--text-dim)',
-                                            padding: '1px 4px',
-                                            borderRadius: '3px',
-                                            border: '1px solid var(--border-color)',
-                                            cursor: 'pointer',
-                                            minWidth: '20px',
-                                            textAlign: 'center',
-                                            opacity: driver.reserve ? 1 : 0.5
-                                        }}
-                                    >
-                                        R
-                                    </button>
-                                    <span style={{ fontWeight: 500 }}>{driver.name}</span>
+                                    {currentUser && (
+                                        <>
+                                            <button
+                                                className="btn btn-ghost"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    e.preventDefault();
+                                                    handleDelete(driver.name);
+                                                }}
+                                                style={{
+                                                    color: 'white',
+                                                    padding: '0',
+                                                    marginLeft: '4px',
+                                                    width: '24px',
+                                                    height: '24px',
+                                                    borderRadius: '4px',
+                                                    cursor: 'pointer',
+                                                    zIndex: 9999,
+                                                    position: 'relative',
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center'
+                                                }}
+                                                title="Delete Driver"
+                                            >
+                                                <span style={{ fontSize: '0.85rem', lineHeight: 1, pointerEvents: 'none', fontWeight: 'bold' }}>✕</span>
+                                            </button>
+                                            <button
+                                                onClick={() => toggleDriverReserveStatus(driver.name)}
+                                                title={driver.reserve ? "Click to Remove Reserve Status" : "Click to Set as Reserve"}
+                                                style={{
+                                                    fontSize: '0.65rem',
+                                                    backgroundColor: driver.reserve ? 'var(--bg-tertiary)' : 'transparent',
+                                                    color: driver.reserve ? 'var(--text-muted)' : 'var(--text-dim)',
+                                                    padding: '1px 4px',
+                                                    borderRadius: '3px',
+                                                    border: '1px solid var(--border-color)',
+                                                    cursor: 'pointer',
+                                                    minWidth: '20px',
+                                                    textAlign: 'center',
+                                                    opacity: driver.reserve ? 1 : 0.5
+                                                }}
+                                            >
+                                                R
+                                            </button>
+                                        </>
+                                    )}
+
+                                    {/* EDITABLE NAME */}
+                                    {editingDriver?.name === driver.name ? (
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <input
+                                                type="text"
+                                                value={editingDriver.newName}
+                                                onChange={e => setEditingDriver({ ...editingDriver, newName: e.target.value })}
+                                                style={{ fontSize: '0.8rem', padding: '2px 4px', width: '120px' }}
+                                                autoFocus
+                                            />
+                                            <button onClick={handleUpdateName} style={{ fontSize: '0.7rem', padding: '0 4px', color: 'var(--success)' }}>✓</button>
+                                            <button onClick={() => setEditingDriver(null)} style={{ fontSize: '0.7rem', padding: '0 4px', color: 'var(--text-muted)' }}>✕</button>
+                                        </div>
+                                    ) : (
+                                        <span
+                                            style={{ fontWeight: 500, cursor: currentUser ? 'pointer' : 'default' }}
+                                            onClick={() => currentUser && setEditingDriver({ name: driver.name, newName: driver.name })}
+                                            title={currentUser ? "Click to Rename/Merge" : ""}
+                                        >
+                                            {driver.name}
+                                        </span>
+                                    )}
+
                                 </td>
                                 <td>
                                     <span style={{

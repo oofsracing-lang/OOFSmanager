@@ -150,6 +150,45 @@ body {
   background: rgba(255, 255, 255, 0.05);
 }
 
+.btn-danger {
+  background-color: var(--danger);
+  color: white;
+  border: 1px solid var(--danger);
+}
+
+.btn-danger:hover {
+  background-color: #d50000;
+  border-color: #d50000;
+}
+
+.btn-outline-danger {
+  background-color: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+.btn-outline-danger:hover {
+  background-color: var(--danger);
+  color: white;
+}
+
+.btn-icon {
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.btn-icon.btn-sm {
+  width: 24px;
+  height: 24px;
+  font-size: 0.8rem;
+}
+
 h1,
 h2,
 h3,

@@ -1,7 +1,18 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { seasons, latestSeason } from '../data';
 import { parseTime, BALLAST_SYSTEM, getBallastAdjustment } from '../utils/raceLogic';
-import { subscribeToSeason, subscribeToStandings, saveSeasonData, overwriteSeasonData, updateSeasonFields, saveQualifyingSubmission, deleteQualifyingSubmission, subscribeToQualifying, deleteStandings } from '../firebase/db';
+import {
+    subscribeToSeason,
+    subscribeToStandings,
+    saveSeasonData,
+    overwriteSeasonData,
+    updateSeasonFields,
+    saveQualifyingSubmission,
+    deleteQualifyingSubmission,
+    subscribeToQualifying,
+    deleteStandings,
+    mergeDriverLicensePoints
+} from '../firebase/db';
 import { useAuth } from './AuthContext';
 
 const ChampionshipContext = createContext(null);
@@ -339,6 +350,154 @@ export const ChampionshipProvider = ({ children }) => {
 
         } catch (err) {
             console.error("Error toggling reserve status:", err);
+        }
+    };
+
+    // --- ROSTER MANAGEMENT (NEW) ---
+
+    const addRosterDriver = async (name, vehicleClass, team, isReserve = false) => {
+        if (!currentUser || !seasonData) return;
+        try {
+            const next = JSON.parse(JSON.stringify(seasonData));
+            if (!next.config) next.config = {};
+            if (!next.config.driverRoster) next.config.driverRoster = [];
+
+            // Check duplicate
+            if (next.config.driverRoster.some(d => d.name.toLowerCase() === name.toLowerCase())) {
+                alert("Driver already exists in roster!");
+                return;
+            }
+
+            next.config.driverRoster.push({
+                name,
+                class: vehicleClass,
+                team: team || '',
+                reserve: isReserve
+            });
+
+            // Also ensure they exist in drivers list if not already
+            if (!next.drivers.find(d => d.name.toLowerCase() === name.toLowerCase())) {
+                const newId = next.drivers.length > 0 ? Math.max(...next.drivers.map(d => d.id)) + 1 : 1;
+                next.drivers.push({
+                    id: newId,
+                    name: name,
+                    class: vehicleClass,
+                    team: team || '',
+                    raceResults: []
+                });
+            }
+
+            await saveSeasonData(currentSeasonId, next);
+        } catch (err) {
+            console.error("Error adding driver:", err);
+            throw err;
+        }
+    };
+
+    const deleteRosterDriver = async (name) => {
+        if (!currentUser || !seasonData) return;
+        try {
+            const next = JSON.parse(JSON.stringify(seasonData));
+            if (!next.config || !next.config.driverRoster) return;
+
+            // Remove from Roster
+            next.config.driverRoster = next.config.driverRoster.filter(d => d.name.toLowerCase() !== name.toLowerCase());
+
+            // OPTIONAL: Do we remove from 'drivers' list (historical results)? 
+            // Usually safest to KEEP results history but remove from Roster view to hide them from future management.
+            // But user asked "Delete". If they have 0 results, we should delete them entirely.
+            // OR if the user EXPLICITLY deleted them, they probably want them gone.
+            const driverIndex = next.drivers.findIndex(d => d.name.toLowerCase() === name.toLowerCase());
+            if (driverIndex !== -1) {
+                const driver = next.drivers[driverIndex];
+                // Only delete form Master list if NO results, or if specific user request (implied "clean up"). 
+                // Let's delete if no results strings attached.
+                if (!driver.raceResults || driver.raceResults.length === 0) {
+                    next.drivers.splice(driverIndex, 1);
+                }
+            }
+
+            await saveSeasonData(currentSeasonId, next);
+        } catch (err) {
+            console.error("Error deleting driver:", err);
+            throw err;
+        }
+    };
+
+    const updateDriverName = async (oldName, newName) => {
+        if (!currentUser || !seasonData) return;
+        try {
+            const next = JSON.parse(JSON.stringify(seasonData));
+
+            // 1. Update Roster
+            if (next.config && next.config.driverRoster) {
+                const rParams = next.config.driverRoster.find(d => d.name.toLowerCase() === oldName.toLowerCase());
+                if (rParams) rParams.name = newName;
+            }
+
+            // 2. Update Master Driver List
+            const driver = next.drivers.find(d => d.name.toLowerCase() === oldName.toLowerCase());
+            if (driver) {
+                driver.name = newName;
+            }
+
+            await saveSeasonData(currentSeasonId, next);
+        } catch (err) {
+            console.error("Error updating name:", err);
+            throw err;
+        }
+    };
+
+    const mergeDrivers = async (targetName, sourceName) => {
+        if (!currentUser || !seasonData) return;
+        console.log(`Merging ${sourceName} into ${targetName}`);
+        try {
+            const next = JSON.parse(JSON.stringify(seasonData));
+
+            // 1. Find Actors
+            const targetDriver = next.drivers.find(d => d.name.toLowerCase() === targetName.toLowerCase());
+            const sourceDriverIndex = next.drivers.findIndex(d => d.name.toLowerCase() === sourceName.toLowerCase());
+
+            if (!targetDriver || sourceDriverIndex === -1) {
+                throw new Error("Target or Source driver not found");
+            }
+            const sourceDriver = next.drivers[sourceDriverIndex];
+
+            // 2. Merge Results
+            if (sourceDriver.raceResults) {
+                sourceDriver.raceResults.forEach((sourceResult) => {
+                    // Check if target already has result for this race
+                    const existing = targetDriver.raceResults.find(r => String(r.raceId) === String(sourceResult.raceId));
+                    if (!existing) {
+                        // Transfer result
+                        targetDriver.raceResults.push(sourceResult);
+                    } else {
+                        // Conflict! Target has result, Source has result.
+                        // Strategy: Keep Target's result, discard Source's (assuming Target is the "Good" one).
+                    }
+                });
+            }
+
+            // 3. Merge License Points
+            // We must do this before deleting the source, just to be clean, 
+            // though we already captured the object.
+            if (targetDriver.id && sourceDriver.id) {
+                await mergeDriverLicensePoints(currentSeasonId, targetDriver.id, sourceDriver.id);
+            }
+
+            // 4. Remove Source from Master List
+            next.drivers.splice(sourceDriverIndex, 1);
+
+            // 5. Update Roster (Remove Source)
+            if (next.config && next.config.driverRoster) {
+                next.config.driverRoster = next.config.driverRoster.filter(d => d.name.toLowerCase() !== sourceName.toLowerCase());
+            }
+
+            await saveSeasonData(currentSeasonId, next);
+
+        } catch (err) {
+            console.error("Error merging drivers:", err);
+            throw err;
         }
     };
 
@@ -864,6 +1023,10 @@ export const ChampionshipProvider = ({ children }) => {
         submitQualifyingResult,
         deleteSubmission,
         toggleDriverReserveStatus,
+        addRosterDriver,
+        deleteRosterDriver,
+        updateDriverName,
+        mergeDrivers,
         manualPositions,
         exclusions,
         qualifyingSettings,
