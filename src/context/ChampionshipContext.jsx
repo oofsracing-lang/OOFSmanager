@@ -557,9 +557,9 @@ export const ChampionshipProvider = ({ children }) => {
         }
 
         try {
-            console.log("[ChampionshipContext] Starting data processing...");
-            console.log("[ChampionshipContext] seasonData.drivers:", seasonData?.drivers?.length);
-            console.log("[ChampionshipContext] seasonData.races:", seasonData?.races?.length);
+            // console.log("[ChampionshipContext] Starting data processing...");
+            // console.log("[ChampionshipContext] seasonData.drivers:", seasonData?.drivers?.length);
+            // console.log("[ChampionshipContext] seasonData.races:", seasonData?.races?.length);
 
             const data = JSON.parse(JSON.stringify(seasonData));
 
@@ -587,8 +587,8 @@ export const ChampionshipProvider = ({ children }) => {
                 return hasResults || r.status === 'Completed' || (r.id <= (data.currentRound || 0));
             });
 
-            console.log("[ChampionshipContext] Completed races found:", completedRaces.length);
-            console.log("[ChampionshipContext] Completed race IDs:", completedRaces.map(r => r.id));
+            // console.log("[ChampionshipContext] Completed races found:", completedRaces.length);
+            // console.log("[ChampionshipContext] Completed race IDs:", completedRaces.map(r => r.id));
 
             completedRaces.forEach(race => {
                 const processClass = (className) => {
