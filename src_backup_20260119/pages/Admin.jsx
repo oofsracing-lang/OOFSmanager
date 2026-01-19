@@ -80,7 +80,6 @@ const Admin = () => {
                     name: driver.name,
                     team: driver.team,
                     car: driver.car,
-                    number: driver.number,
                     class: result.drivenClass || driver.class,
                     isExcluded: exclusions[`${raceId}-${driver.id}`]
                 });
@@ -471,204 +470,200 @@ const Admin = () => {
                                     </h3>
 
                                     {/* LMP2 Results */}
-                                    {results.filter(r => r.class === 'LMP2-UR' || r.class === 'LMP2').length > 0 && (
-                                        <div style={{ marginBottom: '2rem' }}>
-                                            <h4 style={{ color: 'var(--info)', marginBottom: '1rem' }}>LMP2-UR</h4>
-                                            <div style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
-                                                <div style={{ overflowX: 'auto' }}>
-                                                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
-                                                        <thead>
-                                                            <tr style={{ borderBottom: '2px solid var(--primary)', textAlign: 'left' }}>
-                                                                <th style={{ padding: '0.5rem' }}>Rank</th>
-                                                                <th style={{ padding: '0.5rem' }}>Driver</th>
-                                                                <th style={{ padding: '0.5rem' }}>Orig Time</th>
-                                                                <th style={{ padding: '0.5rem' }}>Penalty</th>
-                                                                <th style={{ padding: '0.5rem' }}>Final Time</th>
-                                                                <th style={{ padding: '0.5rem' }}>Points</th>
-                                                                <th style={{ padding: '0.5rem' }}>Actions</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {results.filter(r => r.class === 'LMP2-UR' || r.class === 'LMP2').map(result => (
-                                                                <tr key={result.driverId} style={{ borderBottom: '1px solid var(--border-color)', opacity: result.isExcluded ? 0.5 : 1, textDecoration: result.isExcluded ? 'line-through' : 'none' }}>
-                                                                    <td style={{ padding: '0.5rem' }}>
-                                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                                                                            <span style={{ fontWeight: 'bold' }}>P{result.newPosition || result.position}</span>
-                                                                            <input
-                                                                                type="number"
-                                                                                placeholder="#"
-                                                                                style={{ width: '40px', padding: '2px', fontSize: '12px' }}
-                                                                                defaultValue={result.manualPosition || ''}
-                                                                                onBlur={(e) => updateManualPosition(result.driverId, selectedRace, e.target.value)}
-                                                                                onKeyDown={(e) => {
-                                                                                    if (e.key === 'Enter') updateManualPosition(result.driverId, selectedRace, e.target.value);
-                                                                                }}
-                                                                            />
-                                                                        </div>
-                                                                    </td>
-                                                                    <td style={{ padding: '0.5rem' }}>{result.name}</td>
-                                                                    <td style={{ padding: '0.5rem' }}>{formatTime(result.originalTime)}</td>
-                                                                    <td style={{ padding: '0.5rem' }}>
-                                                                        {result.totalPenalty > 0 ? (
-                                                                            <span style={{ color: 'var(--danger)' }}>
-                                                                                +{result.totalPenalty}s
-                                                                                {result.additionalPenalty > 0 && ` (${result.originalPenalty || 0}s + ${result.additionalPenalty}s)`}
-                                                                            </span>
-                                                                        ) : '-'}
-                                                                    </td>
-                                                                    <td style={{ padding: '0.5rem', fontWeight: 'bold' }}>{formatTime(result.finalTime)}</td>
-                                                                    <td style={{ padding: '0.5rem' }}>
-                                                                        <span style={{ color: 'var(--success)' }}>
-                                                                            {result.newPoints || result.points}
+                                    <div style={{ marginBottom: '2rem' }}>
+                                        <h4 style={{ color: 'var(--info)', marginBottom: '1rem' }}>LMP2-UR</h4>
+                                        <div style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
+                                            <div style={{ overflowX: 'auto' }}>
+                                                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                                                    <thead>
+                                                        <tr style={{ borderBottom: '2px solid var(--primary)', textAlign: 'left' }}>
+                                                            <th style={{ padding: '0.5rem' }}>Rank</th>
+                                                            <th style={{ padding: '0.5rem' }}>Driver</th>
+                                                            <th style={{ padding: '0.5rem' }}>Orig Time</th>
+                                                            <th style={{ padding: '0.5rem' }}>Penalty</th>
+                                                            <th style={{ padding: '0.5rem' }}>Final Time</th>
+                                                            <th style={{ padding: '0.5rem' }}>Points</th>
+                                                            <th style={{ padding: '0.5rem' }}>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {results.filter(r => r.class === 'LMP2-UR' || r.class === 'LMP2').map(result => (
+                                                            <tr key={result.driverId} style={{ borderBottom: '1px solid var(--border-color)', opacity: result.isExcluded ? 0.5 : 1, textDecoration: result.isExcluded ? 'line-through' : 'none' }}>
+                                                                <td style={{ padding: '0.5rem' }}>
+                                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                                                        <span style={{ fontWeight: 'bold' }}>P{result.newPosition || result.position}</span>
+                                                                        <input
+                                                                            type="number"
+                                                                            placeholder="#"
+                                                                            style={{ width: '40px', padding: '2px', fontSize: '12px' }}
+                                                                            defaultValue={result.manualPosition || ''}
+                                                                            onBlur={(e) => updateManualPosition(result.driverId, selectedRace, e.target.value)}
+                                                                            onKeyDown={(e) => {
+                                                                                if (e.key === 'Enter') updateManualPosition(result.driverId, selectedRace, e.target.value);
+                                                                            }}
+                                                                        />
+                                                                    </div>
+                                                                </td>
+                                                                <td style={{ padding: '0.5rem' }}>{result.name}</td>
+                                                                <td style={{ padding: '0.5rem' }}>{formatTime(result.originalTime)}</td>
+                                                                <td style={{ padding: '0.5rem' }}>
+                                                                    {result.totalPenalty > 0 ? (
+                                                                        <span style={{ color: 'var(--danger)' }}>
+                                                                            +{result.totalPenalty}s
+                                                                            {result.additionalPenalty > 0 && ` (${result.originalPenalty || 0}s + ${result.additionalPenalty}s)`}
                                                                         </span>
-                                                                    </td>
-                                                                    <td style={{ padding: '0.5rem' }}>
-                                                                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                                                                            <button
-                                                                                className={`btn ${result.isExcluded ? 'btn-danger' : 'btn-outline-danger'} `}
-                                                                                style={{ fontSize: '0.7rem', padding: '0.25rem 0.5rem', minWidth: '35px' }}
-                                                                                onClick={() => updateExclusion(result.driverId, selectedRace, !result.isExcluded)}
-                                                                                title={result.isExcluded ? "Re-instate Driver" : "Exclude Driver (DSQ)"}
-                                                                            >
-                                                                                {result.isExcluded ? "IN" : "DQ"}
-                                                                            </button>
-                                                                            <input
-                                                                                type="number"
-                                                                                step="0.1"
-                                                                                placeholder="0"
-                                                                                defaultValue={result.additionalPenalty || ''}
-                                                                                id={`penalty - p2 - ${result.driverId} `}
-                                                                                style={{
-                                                                                    width: '60px',
-                                                                                    padding: '0.25rem',
-                                                                                    background: 'var(--bg-card)',
-                                                                                    border: '1px solid var(--border-color)',
-                                                                                    borderRadius: 'var(--radius-sm)',
-                                                                                    color: 'var(--text-main)',
-                                                                                    fontSize: '0.85rem'
-                                                                                }}
-                                                                            />
-                                                                            <button
-                                                                                className="btn btn-primary"
-                                                                                style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
-                                                                                onClick={() => {
-                                                                                    const input = document.getElementById(`penalty - p2 - ${result.driverId} `);
-                                                                                    const penalty = parseFloat(input.value);
-                                                                                    updatePenalty(result.driverId, selectedRace, isNaN(penalty) ? 0 : penalty);
-                                                                                }}
-                                                                            >
-                                                                                Apply
-                                                                            </button>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                                    ) : '-'}
+                                                                </td>
+                                                                <td style={{ padding: '0.5rem', fontWeight: 'bold' }}>{formatTime(result.finalTime)}</td>
+                                                                <td style={{ padding: '0.5rem' }}>
+                                                                    <span style={{ color: 'var(--success)' }}>
+                                                                        {result.newPoints || result.points}
+                                                                    </span>
+                                                                </td>
+                                                                <td style={{ padding: '0.5rem' }}>
+                                                                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                                                        <button
+                                                                            className={`btn ${result.isExcluded ? 'btn-danger' : 'btn-outline-danger'} `}
+                                                                            style={{ fontSize: '0.7rem', padding: '0.25rem 0.5rem', minWidth: '35px' }}
+                                                                            onClick={() => updateExclusion(result.driverId, selectedRace, !result.isExcluded)}
+                                                                            title={result.isExcluded ? "Re-instate Driver" : "Exclude Driver (DSQ)"}
+                                                                        >
+                                                                            {result.isExcluded ? "IN" : "DQ"}
+                                                                        </button>
+                                                                        <input
+                                                                            type="number"
+                                                                            step="0.1"
+                                                                            placeholder="0"
+                                                                            defaultValue={result.additionalPenalty || ''}
+                                                                            id={`penalty - p2 - ${result.driverId} `}
+                                                                            style={{
+                                                                                width: '60px',
+                                                                                padding: '0.25rem',
+                                                                                background: 'var(--bg-card)',
+                                                                                border: '1px solid var(--border-color)',
+                                                                                borderRadius: 'var(--radius-sm)',
+                                                                                color: 'var(--text-main)',
+                                                                                fontSize: '0.85rem'
+                                                                            }}
+                                                                        />
+                                                                        <button
+                                                                            className="btn btn-primary"
+                                                                            style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
+                                                                            onClick={() => {
+                                                                                const input = document.getElementById(`penalty - p2 - ${result.driverId} `);
+                                                                                const penalty = parseFloat(input.value);
+                                                                                updatePenalty(result.driverId, selectedRace, isNaN(penalty) ? 0 : penalty);
+                                                                            }}
+                                                                        >
+                                                                            Apply
+                                                                        </button>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
-                                    )}
+                                    </div>
 
                                     {/* LMGT3 Results */}
-                                    {results.filter(r => r.class === 'LMGT3').length > 0 && (
-                                        <div>
-                                            <h4 style={{ color: 'var(--warning)', marginBottom: '1rem' }}>LMGT3</h4>
-                                            <div style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
-                                                <div style={{ overflowX: 'auto' }}>
-                                                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
-                                                        <thead>
-                                                            <tr style={{ borderBottom: '2px solid var(--primary)', textAlign: 'left' }}>
-                                                                <th style={{ padding: '0.5rem' }}>Rank</th>
-                                                                <th style={{ padding: '0.5rem' }}>Driver</th>
-                                                                <th style={{ padding: '0.5rem' }}>Orig Time</th>
-                                                                <th style={{ padding: '0.5rem' }}>Penalty</th>
-                                                                <th style={{ padding: '0.5rem' }}>Final Time</th>
-                                                                <th style={{ padding: '0.5rem' }}>Points</th>
-                                                                <th style={{ padding: '0.5rem' }}>Actions</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {results.filter(r => r.class === 'LMGT3').map(result => (
-                                                                <tr key={result.driverId} style={{ borderBottom: '1px solid var(--border-color)', opacity: result.isExcluded ? 0.5 : 1, textDecoration: result.isExcluded ? 'line-through' : 'none' }}>
-                                                                    <td style={{ padding: '0.5rem' }}>
-                                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                                                                            <span style={{ fontWeight: 'bold' }}>P{result.newPosition || result.classPosition || result.position}</span>
-                                                                            <input
-                                                                                type="number"
-                                                                                placeholder="#"
-                                                                                style={{ width: '40px', padding: '2px', fontSize: '12px' }}
-                                                                                defaultValue={result.manualPosition || ''}
-                                                                                onBlur={(e) => updateManualPosition(result.driverId, selectedRace, e.target.value)}
-                                                                                onKeyDown={(e) => {
-                                                                                    if (e.key === 'Enter') updateManualPosition(result.driverId, selectedRace, e.target.value);
-                                                                                }}
-                                                                            />
-                                                                        </div>
-                                                                    </td>
-                                                                    <td style={{ padding: '0.5rem' }}>{result.name}</td>
-                                                                    <td style={{ padding: '0.5rem' }}>{formatTime(result.originalTime)}</td>
-                                                                    <td style={{ padding: '0.5rem' }}>
-                                                                        {result.totalPenalty > 0 ? (
-                                                                            <span style={{ color: 'var(--danger)' }}>
-                                                                                +{result.totalPenalty}s
-                                                                                {result.additionalPenalty > 0 && ` (${result.originalPenalty || 0}s + ${result.additionalPenalty}s)`}
-                                                                            </span>
-                                                                        ) : '-'}
-                                                                    </td>
-                                                                    <td style={{ padding: '0.5rem', fontWeight: 'bold' }}>{formatTime(result.finalTime)}</td>
-                                                                    <td style={{ padding: '0.5rem' }}>
-                                                                        <span style={{ color: 'var(--success)' }}>
-                                                                            {result.newPoints || result.points}
+                                    <div>
+                                        <h4 style={{ color: 'var(--warning)', marginBottom: '1rem' }}>LMGT3</h4>
+                                        <div style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
+                                            <div style={{ overflowX: 'auto' }}>
+                                                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                                                    <thead>
+                                                        <tr style={{ borderBottom: '2px solid var(--primary)', textAlign: 'left' }}>
+                                                            <th style={{ padding: '0.5rem' }}>Rank</th>
+                                                            <th style={{ padding: '0.5rem' }}>Driver</th>
+                                                            <th style={{ padding: '0.5rem' }}>Orig Time</th>
+                                                            <th style={{ padding: '0.5rem' }}>Penalty</th>
+                                                            <th style={{ padding: '0.5rem' }}>Final Time</th>
+                                                            <th style={{ padding: '0.5rem' }}>Points</th>
+                                                            <th style={{ padding: '0.5rem' }}>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {results.filter(r => r.class === 'LMGT3').map(result => (
+                                                            <tr key={result.driverId} style={{ borderBottom: '1px solid var(--border-color)', opacity: result.isExcluded ? 0.5 : 1, textDecoration: result.isExcluded ? 'line-through' : 'none' }}>
+                                                                <td style={{ padding: '0.5rem' }}>
+                                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                                                        <span style={{ fontWeight: 'bold' }}>P{result.newPosition || result.classPosition || result.position}</span>
+                                                                        <input
+                                                                            type="number"
+                                                                            placeholder="#"
+                                                                            style={{ width: '40px', padding: '2px', fontSize: '12px' }}
+                                                                            defaultValue={result.manualPosition || ''}
+                                                                            onBlur={(e) => updateManualPosition(result.driverId, selectedRace, e.target.value)}
+                                                                            onKeyDown={(e) => {
+                                                                                if (e.key === 'Enter') updateManualPosition(result.driverId, selectedRace, e.target.value);
+                                                                            }}
+                                                                        />
+                                                                    </div>
+                                                                </td>
+                                                                <td style={{ padding: '0.5rem' }}>{result.name}</td>
+                                                                <td style={{ padding: '0.5rem' }}>{formatTime(result.originalTime)}</td>
+                                                                <td style={{ padding: '0.5rem' }}>
+                                                                    {result.totalPenalty > 0 ? (
+                                                                        <span style={{ color: 'var(--danger)' }}>
+                                                                            +{result.totalPenalty}s
+                                                                            {result.additionalPenalty > 0 && ` (${result.originalPenalty || 0}s + ${result.additionalPenalty}s)`}
                                                                         </span>
-                                                                    </td>
-                                                                    <td style={{ padding: '0.5rem' }}>
-                                                                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                                                                            <button
-                                                                                className={`btn ${result.isExcluded ? 'btn-danger' : 'btn-outline-danger'} `}
-                                                                                style={{ fontSize: '0.7rem', padding: '0.25rem 0.5rem', minWidth: '35px' }}
-                                                                                onClick={() => updateExclusion(result.driverId, selectedRace, !result.isExcluded)}
-                                                                                title={result.isExcluded ? "Re-instate Driver" : "Exclude Driver (DSQ)"}
-                                                                            >
-                                                                                {result.isExcluded ? "IN" : "DQ"}
-                                                                            </button>
-                                                                            <input
-                                                                                type="number"
-                                                                                step="0.1"
-                                                                                placeholder="0"
-                                                                                defaultValue={result.additionalPenalty || ''}
-                                                                                id={`penalty - gt3 - ${result.driverId} `}
-                                                                                style={{
-                                                                                    width: '60px',
-                                                                                    padding: '0.25rem',
-                                                                                    background: 'var(--bg-card)',
-                                                                                    border: '1px solid var(--border-color)',
-                                                                                    borderRadius: 'var(--radius-sm)',
-                                                                                    color: 'var(--text-main)',
-                                                                                    fontSize: '0.85rem'
-                                                                                }}
-                                                                            />
-                                                                            <button
-                                                                                className="btn btn-primary"
-                                                                                style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
-                                                                                onClick={() => {
-                                                                                    const input = document.getElementById(`penalty - gt3 - ${result.driverId} `);
-                                                                                    const penalty = parseFloat(input.value);
-                                                                                    updatePenalty(result.driverId, selectedRace, isNaN(penalty) ? 0 : penalty);
-                                                                                }}
-                                                                            >
-                                                                                Apply
-                                                                            </button>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                                    ) : '-'}
+                                                                </td>
+                                                                <td style={{ padding: '0.5rem', fontWeight: 'bold' }}>{formatTime(result.finalTime)}</td>
+                                                                <td style={{ padding: '0.5rem' }}>
+                                                                    <span style={{ color: 'var(--success)' }}>
+                                                                        {result.newPoints || result.points}
+                                                                    </span>
+                                                                </td>
+                                                                <td style={{ padding: '0.5rem' }}>
+                                                                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                                                        <button
+                                                                            className={`btn ${result.isExcluded ? 'btn-danger' : 'btn-outline-danger'} `}
+                                                                            style={{ fontSize: '0.7rem', padding: '0.25rem 0.5rem', minWidth: '35px' }}
+                                                                            onClick={() => updateExclusion(result.driverId, selectedRace, !result.isExcluded)}
+                                                                            title={result.isExcluded ? "Re-instate Driver" : "Exclude Driver (DSQ)"}
+                                                                        >
+                                                                            {result.isExcluded ? "IN" : "DQ"}
+                                                                        </button>
+                                                                        <input
+                                                                            type="number"
+                                                                            step="0.1"
+                                                                            placeholder="0"
+                                                                            defaultValue={result.additionalPenalty || ''}
+                                                                            id={`penalty - gt3 - ${result.driverId} `}
+                                                                            style={{
+                                                                                width: '60px',
+                                                                                padding: '0.25rem',
+                                                                                background: 'var(--bg-card)',
+                                                                                border: '1px solid var(--border-color)',
+                                                                                borderRadius: 'var(--radius-sm)',
+                                                                                color: 'var(--text-main)',
+                                                                                fontSize: '0.85rem'
+                                                                            }}
+                                                                        />
+                                                                        <button
+                                                                            className="btn btn-primary"
+                                                                            style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
+                                                                            onClick={() => {
+                                                                                const input = document.getElementById(`penalty - gt3 - ${result.driverId} `);
+                                                                                const penalty = parseFloat(input.value);
+                                                                                updatePenalty(result.driverId, selectedRace, isNaN(penalty) ? 0 : penalty);
+                                                                            }}
+                                                                        >
+                                                                            Apply
+                                                                        </button>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
-                                    )}
+                                    </div>
                                 </>
                             ) : (
                                 <p style={{ color: 'var(--text-muted)' }}>Select a race to manage penalties</p>
@@ -715,10 +710,10 @@ const Admin = () => {
                                         </td>
                                         <td style={{ padding: '1rem', verticalAlign: 'top' }}>
                                             <select
-                                                className="form-control input-ghost"
+                                                className="form-control"
                                                 defaultValue={incident.raceId}
                                                 onChange={(e) => updateIncident(incident.id, { raceId: e.target.value })}
-                                                style={{ width: '100%', fontSize: '0.85rem', padding: '0.4rem' }}
+                                                style={{ width: '100%', fontSize: '0.85rem', padding: '0.4rem', background: 'var(--bg-tertiary)', color: 'white', border: '1px solid var(--border-color)' }}
                                             >
                                                 {championshipData?.races?.map(race => (
                                                     <option key={race.id} value={race.id}>
@@ -771,7 +766,7 @@ const Admin = () => {
                                         </td>
                                         <td style={{ padding: '1rem', verticalAlign: 'top' }}>
                                             <select
-                                                className="form-control input-ghost"
+                                                className="form-control"
                                                 defaultValue={incident.decision || ''}
                                                 onChange={(e) => updateIncident(incident.id, { decision: e.target.value })}
                                                 style={{ padding: '0.4rem', fontSize: '0.9rem', width: '100%' }}
@@ -792,38 +787,22 @@ const Admin = () => {
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                                                 <input
                                                     type="number"
-                                                    className="form-control input-ghost"
                                                     defaultValue={incident.timePenalty || ''}
                                                     onBlur={(e) => updateIncident(incident.id, { timePenalty: parseFloat(e.target.value) })}
-                                                    style={{ width: '50px', padding: '0.4rem', borderRadius: '4px' }}
+                                                    style={{ width: '50px', padding: '0.4rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-tertiary)', color: 'white' }}
                                                 />
                                                 <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>s</span>
                                             </div>
                                         </td>
                                         <td style={{ padding: '1rem', verticalAlign: 'top' }}>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                                                {incident.raceId ? (
-                                                    <select
-                                                        className="form-control input-ghost"
-                                                        value={incident.penalizedDriverId || ''}
-                                                        onChange={(e) => updateIncident(incident.id, { penalizedDriverId: Number(e.target.value) })}
-                                                        style={{
-                                                            width: '120px',
-                                                            padding: '0.4rem',
-                                                            borderRadius: '4px',
-                                                            fontSize: '0.85rem'
-                                                        }}
-                                                    >
-                                                        <option value="">-- Select Driver --</option>
-                                                        {getRaceResults(incident.raceId).map(driver => (
-                                                            <option key={driver.driverId} value={driver.driverId}>
-                                                                #{driver.carNumber || driver.number} - {driver.name}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                ) : (
-                                                    <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Select Race First</span>
-                                                )}
+                                                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>#</span>
+                                                <input
+                                                    type="text"
+                                                    defaultValue={incident.penalizedCar || ''}
+                                                    onBlur={(e) => updateIncident(incident.id, { penalizedCar: e.target.value })}
+                                                    style={{ width: '50px', padding: '0.4rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-tertiary)', color: 'white' }}
+                                                />
                                             </div>
                                         </td>
                                         <td style={{ padding: '1rem', verticalAlign: 'top', textAlign: 'right' }}>
@@ -834,38 +813,12 @@ const Admin = () => {
                                                         backgroundColor: incident.status === 'Complete' ? '#10b981' : 'transparent',
                                                         border: '1px solid #10b981',
                                                         color: incident.status === 'Complete' ? 'white' : '#10b981',
-                                                        cursor: 'pointer',
-                                                        opacity: (!incident.penalizedDriverId && incident.timePenalty > 0) ? 0.5 : 1
+                                                        cursor: 'pointer'
                                                     }}
-                                                    onClick={async () => {
-                                                        const isCompleting = incident.status !== 'Complete';
-
-                                                        // 1. Update Incident Status
-                                                        await updateIncident(incident.id, { status: isCompleting ? 'Complete' : 'Pending' });
-
-                                                        // 2. If Completing, Apply Time Penalty & License Points (via updated Context)
-                                                        if (isCompleting && incident.timePenalty && incident.timePenalty > 0 && incident.penalizedDriverId) {
-                                                            try {
-                                                                // This triggers Context -> Auto-Recalc Standings -> Auto-Log License Points (if > 15s)
-                                                                // We pass the "Decision" text as the reason for the log
-                                                                // Note: updatePenalty is smart enough to handle the data flow
-                                                                await updatePenalty(
-                                                                    incident.penalizedDriverId,
-                                                                    incident.raceId,
-                                                                    incident.timePenalty,
-                                                                    incident.decision || 'Admin Penalty' // Pass decision as reason
-                                                                );
-                                                                alert(`Penalty Applied: +${incident.timePenalty}s to Driver ID ${incident.penalizedDriverId}`);
-                                                            } catch (err) {
-                                                                console.error("Smart Stewarding Error:", err);
-                                                                alert("Error applying penalty logic. Check console.");
-                                                            }
-                                                        }
-                                                    }}
-                                                    title={incident.status === 'Complete' ? "Mark as Pending" : "Commit Decision (Apply Penalties)"}
-                                                    disabled={!incident.penalizedDriverId && incident.timePenalty > 0}
+                                                    onClick={() => updateIncident(incident.id, { status: incident.status === 'Complete' ? 'Pending' : 'Complete' })}
+                                                    title={incident.status === 'Complete' ? "Mark as Pending" : "Mark as Complete"}
                                                 >
-                                                    {incident.status === 'Complete' ? '✓' : '⚡'}
+                                                    ✓
                                                 </button>
                                                 <button
                                                     className="btn btn-icon btn-danger"

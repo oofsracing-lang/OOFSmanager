@@ -1,0 +1,81 @@
+
+import { Outlet, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useChampionship } from '../context/ChampionshipContext';
+import Sidebar from './Sidebar';
+
+import multiclassBg from '../assets/multiclass_wec_bg.png';
+import sprintBg from '../assets/gt3_sprint_wec_bg.png';
+
+const SeasonLayout = () => {
+    const { seasonId } = useParams();
+    const { currentSeasonId, changeSeason } = useChampionship();
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    // Synchronization: Ensure Context matches URL
+    useEffect(() => {
+        if (seasonId && seasonId !== currentSeasonId) {
+            console.log(`[SeasonLayout] Syncing URL season (${seasonId}) to Context`);
+            changeSeason(seasonId);
+        }
+    }, [seasonId, currentSeasonId, changeSeason]);
+
+    // Determine Background
+    const isSprint = seasonId?.includes('sprint');
+    const backgroundImage = isSprint ? sprintBg : multiclassBg;
+
+    // We keep the dynamic background logic here, but delegating layout structure to CSS
+    const containerStyle = {
+        display: 'flex',
+        minHeight: '100vh',
+        background: `url(${backgroundImage}) center/cover fixed no-repeat`,
+        position: 'relative'
+    };
+
+    const overlayStyle = {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'rgba(10, 10, 15, 0.85)', // Dark overlay for readability
+        zIndex: 0
+    };
+
+    return (
+        <div style={containerStyle}>
+            {/* Background Overlay */}
+            <div style={overlayStyle} />
+
+            {/* Mobile Menu Button */}
+            <button
+                className="mobile-menu-btn"
+                onClick={() => setIsSidebarOpen(true)}
+                aria-label="Open Menu"
+            >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+
+            {/* Mobile Backdrop */}
+            <div
+                className={`mobile-backdrop ${isSidebarOpen ? 'open' : ''}`}
+                onClick={() => setIsSidebarOpen(false)}
+            />
+
+            <Sidebar
+                isOpen={isSidebarOpen}
+                onClose={() => setIsSidebarOpen(false)}
+            />
+
+            <main className="layout-main">
+                <Outlet />
+            </main>
+        </div>
+    );
+};
+
+export default SeasonLayout;

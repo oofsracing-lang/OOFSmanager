@@ -1,22 +1,11 @@
 import { useParams, Link } from 'react-router-dom';
 import { useChampionship } from '../context/ChampionshipContext';
 import { formatDriverName } from '../utils/formatting';
-import { getDriverLicensePoints } from '../firebase/db';
-import { useState, useEffect } from 'react';
 
 const DriverProfile = () => {
     const { id: driverId, seasonId } = useParams();
     const { championshipData, loading, seasonConfig } = useChampionship();
     const driver = championshipData.drivers.find(d => String(d.id) === String(driverId));
-    const [licensePointsData, setLicensePointsData] = useState(null);
-
-    useEffect(() => {
-        if (driverId && seasonId) {
-            getDriverLicensePoints(seasonId, driverId).then(data => {
-                setLicensePointsData(data);
-            });
-        }
-    }, [driverId, seasonId]);
 
     if (loading) {
         return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading Driver Profile...</div>;
@@ -175,16 +164,6 @@ const DriverProfile = () => {
                     <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
                         <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Fastest Laps</h4>
                         <p style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#eab308' }}>{fastestLapsCount}</p>
-                    </div>
-
-                    <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
-                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>License Points</h4>
-                        <p style={{ fontSize: '1.8rem', fontWeight: 'bold', color: (licensePointsData?.totalPoints || 0) > 0 ? 'var(--danger)' : 'var(--text-main)' }}>
-                            {licensePointsData?.totalPoints || 0}
-                            <span style={{ fontSize: '0.8rem', marginLeft: '0.5rem', opacity: 0.7 }}>
-                                {licensePointsData?.currentStatus !== 'OK' ? `(${licensePointsData?.statusDescription || 'Warning'})` : ''}
-                            </span>
-                        </p>
                     </div>
                 </div>
 

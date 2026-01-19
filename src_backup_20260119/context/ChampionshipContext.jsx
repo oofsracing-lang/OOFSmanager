@@ -115,7 +115,7 @@ export const ChampionshipProvider = ({ children }) => {
         name: seasons[id].season
     }));
 
-    const updatePenalty = async (driverId, raceId, seconds, reason = 'admin_penalty') => {
+    const updatePenalty = async (driverId, raceId, seconds) => {
         if (!currentUser) return;
         const key = `${raceId}-${driverId}`;
         const nextPenalties = { ...penalties };
@@ -145,30 +145,24 @@ export const ChampionshipProvider = ({ children }) => {
                 const driver = seasonData?.drivers?.find(d => d.id === driverId);
                 if (driver) {
                     // Logic: 15s = 1 point.
-                    let licensePoints = 0;
+                    // If diff is +30s, points = +2.
+                    // If diff is -30s, points = -2.
+                    // Math.floor works differently for negatives: Math.floor(-0.5) = -1. 
+                    // We want Math.trunc() or just check direction.
 
-                    // Special Rule: Drive Through = 2 License Points
-                    if (reason === 'Drive Through') {
-                        licensePoints = 2;
-                    }
-                    // Standard Rule: 15s Time Penalty = 1 License Point
-                    else if (Math.abs(penaltyDiff) >= 15) {
+                    let licensePoints = 0;
+                    if (Math.abs(penaltyDiff) >= 15) {
                         licensePoints = Math.trunc(penaltyDiff / 15);
                     }
 
                     if (licensePoints !== 0) {
                         const action = licensePoints > 0 ? "applied" : "removed";
-                        // Use provided reason or build a default string
-                        const logReason = reason === 'admin_penalty'
-                            ? `${Math.abs(penaltyDiff)}s time penalty ${action} (Race ${raceId})`
-                            : `${Math.abs(penaltyDiff)}s time penalty - ${reason} (Race ${raceId})`;
-
                         await updateDriverLicensePoints(
                             currentSeasonId,
                             driverId,
                             driver.name,
                             licensePoints,
-                            logReason,
+                            `${Math.abs(penaltyDiff)}s time penalty ${action} (Race ${raceId})`,
                             'admin_penalty',
                             String(raceId),
                             currentUser.email || 'Admin'

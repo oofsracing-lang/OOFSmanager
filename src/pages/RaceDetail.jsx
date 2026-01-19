@@ -101,7 +101,7 @@ const RaceDetail = () => {
     };
 
     const lmgt3Results = getClassResults('LMGT3');
-    const lmp2Results = getClassResults('LMP2');
+    const lmp2Results = getClassResults('LMP2-UR');
 
     return (
         <div>
@@ -150,112 +150,116 @@ const RaceDetail = () => {
 
 
                         {/* LMP2 Results */}
-                        <div style={{ marginBottom: '3rem' }}>
-                            <h3 style={{ marginBottom: '1rem', color: 'var(--primary)' }}>LMP2-UR Results</h3>
-                            <div style={{ overflowX: 'auto' }}>
-                                <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
-                                    <thead>
-                                        <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--primary)' }}>
-                                            <th style={{ padding: '0.75rem 0.5rem' }}>Pos</th>
-                                            <th style={{ padding: '0.75rem 0.5rem' }}>Driver</th>
-                                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Status</th>
-                                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Points</th>
-                                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Ballast Δ</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {lmp2Results.map((driver, index) => (
-                                            <tr key={driver.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                                                <td style={{ padding: '0.75rem 0.5rem', fontWeight: 'bold' }}>P{driver.raceResult.classPosition || index + 1}</td>
-                                                <td style={{ padding: '0.75rem 0.5rem' }}>
-                                                    <Link to={`/season/${seasonId}/driver/${driver.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
-                                                        {formatDriverName(driver.name)}
-                                                    </Link>
-                                                </td>
-                                                <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>
-                                                    <span style={{
-                                                        color: driver.raceResult.laps === 0 ? 'var(--text-muted)' : (driver.raceResult.attendance === 'Raced' ? 'var(--text-muted)' : 'var(--warning)'),
-                                                        fontSize: '0.85rem'
-                                                    }}>
-                                                        {driver.raceResult.laps === 0 ? "DNS" :
-                                                            (driver.raceResult.attendance === 'Raced' ?
-                                                                (driver.raceResult.totalPenalty ?
-                                                                    <span>Finished <span style={{ color: 'var(--danger)', fontSize: '0.7em' }}>(+{driver.raceResult.totalPenalty}s)</span></span>
-                                                                    : "Finished")
-                                                                : driver.raceResult.attendance)
-                                                        }
-                                                    </span>
-                                                </td>
-                                                <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', fontWeight: 'bold', color: 'var(--success)' }}>
-                                                    +{driver.raceResult.points}
-                                                </td>
-                                                <td style={{
-                                                    padding: '0.75rem 0.5rem',
-                                                    textAlign: 'center',
-                                                    color: driver.raceResult.effectiveBallastChange > 0 ? 'var(--warning)' : driver.raceResult.effectiveBallastChange < 0 ? 'var(--success)' : 'var(--text-muted)'
-                                                }}>
-                                                    {driver.raceResult.effectiveBallastChange > 0 ? '+' : ''}{driver.raceResult.effectiveBallastChange}kg
-                                                </td>
+                        {lmp2Results.length > 0 && (
+                            <div style={{ marginBottom: '3rem' }}>
+                                <h3 style={{ marginBottom: '1rem', color: 'var(--primary)' }}>LMP2-UR Results</h3>
+                                <div style={{ overflowX: 'auto' }}>
+                                    <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
+                                        <thead>
+                                            <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--primary)' }}>
+                                                <th style={{ padding: '0.75rem 0.5rem' }}>Pos</th>
+                                                <th style={{ padding: '0.75rem 0.5rem' }}>Driver</th>
+                                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Status</th>
+                                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Points</th>
+                                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Ballast Δ</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            {lmp2Results.map((driver, index) => (
+                                                <tr key={driver.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                                                    <td style={{ padding: '0.75rem 0.5rem', fontWeight: 'bold' }}>P{driver.raceResult.classPosition || index + 1}</td>
+                                                    <td style={{ padding: '0.75rem 0.5rem' }}>
+                                                        <Link to={`/season/${seasonId}/driver/${driver.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
+                                                            {formatDriverName(driver.name)}
+                                                        </Link>
+                                                    </td>
+                                                    <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>
+                                                        <span style={{
+                                                            color: driver.raceResult.laps === 0 ? 'var(--text-muted)' : (driver.raceResult.attendance === 'Raced' ? 'var(--text-muted)' : 'var(--warning)'),
+                                                            fontSize: '0.85rem'
+                                                        }}>
+                                                            {driver.raceResult.laps === 0 ? "DNS" :
+                                                                (driver.raceResult.attendance === 'Raced' ?
+                                                                    (driver.raceResult.totalPenalty ?
+                                                                        <span>Finished <span style={{ color: 'var(--danger)', fontSize: '0.7em' }}>(+{driver.raceResult.totalPenalty}s)</span></span>
+                                                                        : "Finished")
+                                                                    : driver.raceResult.attendance)
+                                                            }
+                                                        </span>
+                                                    </td>
+                                                    <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', fontWeight: 'bold', color: 'var(--success)' }}>
+                                                        +{driver.raceResult.points}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: '0.75rem 0.5rem',
+                                                        textAlign: 'center',
+                                                        color: driver.raceResult.effectiveBallastChange > 0 ? 'var(--warning)' : driver.raceResult.effectiveBallastChange < 0 ? 'var(--success)' : 'var(--text-muted)'
+                                                    }}>
+                                                        {driver.raceResult.effectiveBallastChange > 0 ? '+' : ''}{driver.raceResult.effectiveBallastChange}kg
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         {/* LMGT3 Results */}
-                        <div>
-                            <h3 style={{ marginBottom: '1rem', color: 'var(--primary)' }}>LMGT3 Results</h3>
-                            <div style={{ overflowX: 'auto' }}>
-                                <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
-                                    <thead>
-                                        <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--primary)' }}>
-                                            <th style={{ padding: '0.75rem 0.5rem' }}>Pos</th>
-                                            <th style={{ padding: '0.75rem 0.5rem' }}>Driver</th>
-                                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Status</th>
-                                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Points</th>
-                                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Ballast Δ</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {lmgt3Results.map((driver, index) => (
-                                            <tr key={driver.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                                                <td style={{ padding: '0.75rem 0.5rem', fontWeight: 'bold' }}>P{driver.raceResult.classPosition || index + 1}</td>
-                                                <td style={{ padding: '0.75rem 0.5rem' }}>
-                                                    <Link to={`/season/${seasonId}/driver/${driver.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
-                                                        {formatDriverName(driver.name)}
-                                                    </Link>
-                                                </td>
-                                                <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>
-                                                    <span style={{
-                                                        color: driver.raceResult.laps === 0 ? 'var(--text-muted)' : (driver.raceResult.attendance === 'Raced' ? 'var(--text-muted)' : 'var(--warning)'),
-                                                        fontSize: '0.85rem'
-                                                    }}>
-                                                        {driver.raceResult.laps === 0 ? "DNS" :
-                                                            (driver.raceResult.attendance === 'Raced' ?
-                                                                (driver.raceResult.totalPenalty ?
-                                                                    <span>Finished <span style={{ color: 'var(--danger)', fontSize: '0.7em' }}>(+{driver.raceResult.totalPenalty}s)</span></span>
-                                                                    : "Finished")
-                                                                : driver.raceResult.attendance)
-                                                        }
-                                                    </span>
-                                                </td>
-                                                <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', fontWeight: 'bold', color: 'var(--success)' }}>
-                                                    +{driver.raceResult.points}
-                                                </td>
-                                                <td style={{
-                                                    padding: '0.75rem 0.5rem',
-                                                    textAlign: 'center',
-                                                    color: driver.raceResult.effectiveBallastChange > 0 ? 'var(--warning)' : driver.raceResult.effectiveBallastChange < 0 ? 'var(--success)' : 'var(--text-muted)'
-                                                }}>
-                                                    {driver.raceResult.effectiveBallastChange > 0 ? '+' : ''}{driver.raceResult.effectiveBallastChange}kg
-                                                </td>
+                        {lmgt3Results.length > 0 && (
+                            <div>
+                                <h3 style={{ marginBottom: '1rem', color: 'var(--primary)' }}>LMGT3 Results</h3>
+                                <div style={{ overflowX: 'auto' }}>
+                                    <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
+                                        <thead>
+                                            <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--primary)' }}>
+                                                <th style={{ padding: '0.75rem 0.5rem' }}>Pos</th>
+                                                <th style={{ padding: '0.75rem 0.5rem' }}>Driver</th>
+                                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Status</th>
+                                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Points</th>
+                                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Ballast Δ</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            {lmgt3Results.map((driver, index) => (
+                                                <tr key={driver.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                                                    <td style={{ padding: '0.75rem 0.5rem', fontWeight: 'bold' }}>P{driver.raceResult.classPosition || index + 1}</td>
+                                                    <td style={{ padding: '0.75rem 0.5rem' }}>
+                                                        <Link to={`/season/${seasonId}/driver/${driver.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
+                                                            {formatDriverName(driver.name)}
+                                                        </Link>
+                                                    </td>
+                                                    <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>
+                                                        <span style={{
+                                                            color: driver.raceResult.laps === 0 ? 'var(--text-muted)' : (driver.raceResult.attendance === 'Raced' ? 'var(--text-muted)' : 'var(--warning)'),
+                                                            fontSize: '0.85rem'
+                                                        }}>
+                                                            {driver.raceResult.laps === 0 ? "DNS" :
+                                                                (driver.raceResult.attendance === 'Raced' ?
+                                                                    (driver.raceResult.totalPenalty ?
+                                                                        <span>Finished <span style={{ color: 'var(--danger)', fontSize: '0.7em' }}>(+{driver.raceResult.totalPenalty}s)</span></span>
+                                                                        : "Finished")
+                                                                    : driver.raceResult.attendance)
+                                                            }
+                                                        </span>
+                                                    </td>
+                                                    <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', fontWeight: 'bold', color: 'var(--success)' }}>
+                                                        +{driver.raceResult.points}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: '0.75rem 0.5rem',
+                                                        textAlign: 'center',
+                                                        color: driver.raceResult.effectiveBallastChange > 0 ? 'var(--warning)' : driver.raceResult.effectiveBallastChange < 0 ? 'var(--success)' : 'var(--text-muted)'
+                                                    }}>
+                                                        {driver.raceResult.effectiveBallastChange > 0 ? '+' : ''}{driver.raceResult.effectiveBallastChange}kg
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                     </>
                 )}

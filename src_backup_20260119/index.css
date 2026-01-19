@@ -525,23 +525,3 @@ h1 {
     max-width: 300px;
   }
 }
-
-/* Ghost Input - Transparent until hover */
-.input-ghost {
-  background: transparent !important;
-  border: 1px solid transparent !important;
-  color: var(--text-muted) !important;
-  transition: all 0.2s ease;
-}
-
-.input-ghost:hover,
-.input-ghost:focus {
-  background: var(--bg-card) !important;
-  border: 1px solid var(--border-color) !important;
-  color: var(--text-main) !important;
-}
-
-.input-ghost option {
-  background-color: var(--bg-surface);
-  color: var(--text-main);
-}

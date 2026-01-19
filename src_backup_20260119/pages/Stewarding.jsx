@@ -59,13 +59,6 @@ const Stewarding = () => {
         return race ? (race.track || race.name) : `Round ${raceId}`;
     };
 
-    // Helper to get penalized driver number
-    const getPenalizedDriverNumber = (driverId) => {
-        if (!driverId) return '-';
-        const driver = championshipData?.drivers?.find(d => d.id === Number(driverId));
-        return driver ? `#${driver.number}` : '-';
-    };
-
     return (
         <div className="fade-in" style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
@@ -186,7 +179,6 @@ const Stewarding = () => {
                                 <th style={{ padding: '1rem' }}>Cars</th>
                                 <th style={{ padding: '1rem', width: '30%' }}>Description</th>
                                 <th style={{ padding: '1rem' }}>Timestamp</th>
-                                <th style={{ padding: '1rem' }}>Car #</th>
                                 <th style={{ padding: '1rem' }}>Decision</th>
                                 <th style={{ padding: '1rem' }}>Penalty</th>
                             </tr>
@@ -194,7 +186,7 @@ const Stewarding = () => {
                         <tbody>
                             {incidents.length === 0 ? (
                                 <tr>
-                                    <td colSpan="8" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                                    <td colSpan="7" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
                                         No incidents reported yet.
                                     </td>
                                 </tr>
@@ -219,7 +211,7 @@ const Stewarding = () => {
                                         </td>
                                         <td style={{ padding: '1rem', fontWeight: 'bold' }}>{getRaceName(incident.raceId)}</td>
                                         <td style={{ padding: '1rem' }}>{incident.carNumbers}</td>
-                                        <td style={{ padding: '1rem', fontSize: '0.9rem', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                                        <td style={{ padding: '1rem', fontSize: '0.9rem' }}>
                                             {incident.stewardNotes ? (
                                                 <>
                                                     <div style={{ color: 'white', marginBottom: '0.5rem' }}>{incident.stewardNotes}</div>
@@ -232,9 +224,6 @@ const Stewarding = () => {
                                             )}
                                         </td>
                                         <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>{incident.timestamp}</td>
-                                        <td style={{ padding: '1rem', fontWeight: 'bold', color: 'var(--accent)' }}>
-                                            {getPenalizedDriverNumber(incident.penalizedDriverId)}
-                                        </td>
                                         <td style={{ padding: '1rem', fontWeight: 'bold', color: 'var(--primary)' }}>
                                             {incident.decision || '-'}
                                         </td>
@@ -242,6 +231,7 @@ const Stewarding = () => {
                                             {incident.decision ? (
                                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                                                     {incident.timePenalty > 0 && <span style={{ color: 'var(--danger)' }}>+{incident.timePenalty}s</span>}
+                                                    {incident.penalizedCar && <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Car #{incident.penalizedCar}</span>}
                                                 </div>
                                             ) : '-'}
                                         </td>
