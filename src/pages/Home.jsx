@@ -29,7 +29,7 @@ const Home = () => {
                     >
                         <div
                             className="home-card-line"
-                            style={{ background: 'linear-gradient(90deg, #512da8, #ffd700)' }}
+                            style={{ background: 'linear-gradient(90deg, #7B1FA2, #E1BEE7)' }}
                         ></div>
                         <span className="home-card-type">Season 3</span>
                         <h2 className="home-card-title">Multiclass</h2>
@@ -47,7 +47,7 @@ const Home = () => {
                     >
                         <div
                             className="home-card-line"
-                            style={{ background: 'linear-gradient(90deg, #c6ff00, #b0bec5)' }}
+                            style={{ background: 'linear-gradient(90deg, #64DD17, #CCFF90)' }}
                         ></div>
                         <span className="home-card-type">Season 3</span>
                         <h2 className="home-card-title">Sprint Series</h2>
