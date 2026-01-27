@@ -4,7 +4,7 @@ import { useChampionship } from '../context/ChampionshipContext';
 import { formatDriverName, formatTeamName } from '../utils/formatting';
 
 const Standings = () => {
-    const { championshipData, seasonConfig } = useChampionship();
+    const { championshipData, seasonConfig, licensePoints } = useChampionship();
     const classesToShow = seasonConfig.classes || ['LMP2', 'LMGT3'];
 
     const [selectedClass, setSelectedClass] = useState(classesToShow[0] || 'LMGT3');
@@ -109,6 +109,7 @@ const Standings = () => {
                                 {showTeam && <th style={{ padding: '1rem 0.5rem' }}>Team</th>}
                                 <th style={{ padding: '1rem 0.5rem', textAlign: 'center' }}>Points</th>
                                 {showBallast && <th style={{ padding: '1rem 0.5rem', textAlign: 'center' }}>Ballast</th>}
+                                <th style={{ padding: '1rem 0.5rem', textAlign: 'center' }}>License Points</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -172,6 +173,28 @@ const Standings = () => {
                                             {driver.currentBallast}kg
                                         </td>
                                     )}
+                                    <td style={{
+                                        padding: '1rem 0.5rem',
+                                        textAlign: 'center'
+                                    }}>
+                                        {(() => {
+                                            const lpData = (licensePoints || []).find(lp =>
+                                                lp.driverName.toLowerCase() === driver.name.toLowerCase()
+                                            );
+                                            const points = lpData ? lpData.totalPoints : 0;
+
+                                            if (points === 0) return <span style={{ color: 'var(--text-muted)', opacity: 0.5 }}>-</span>;
+
+                                            return (
+                                                <span style={{
+                                                    color: points >= 7 ? 'var(--danger)' : points >= 4 ? 'var(--warning)' : 'var(--text-main)',
+                                                    fontWeight: points > 0 ? 'bold' : 'normal'
+                                                }}>
+                                                    {points}
+                                                </span>
+                                            );
+                                        })()}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

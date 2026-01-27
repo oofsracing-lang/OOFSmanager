@@ -10,9 +10,10 @@ import {
 } from '../firebase/db';
 
 const LicensePointsTab = () => {
-    const { championshipData, currentSeasonId, seasonData } = useChampionship();
+    const { championshipData, currentSeasonId, seasonData, licensePoints } = useChampionship();
     const { currentUser } = useAuth();
-    const [licenseRecords, setLicenseRecords] = useState([]);
+    // const [licenseRecords, setLicenseRecords] = useState([]); // Removed local state
+    const licenseRecords = licensePoints || []; // Use context data
     const [selectedDriver, setSelectedDriver] = useState(null);
     const [showAddDriver, setShowAddDriver] = useState(false);
     const [showLogModal, setShowLogModal] = useState(false);
@@ -35,13 +36,7 @@ const LicensePointsTab = () => {
     const [penaltyNote, setPenaltyNote] = useState('');
 
     // Subscribe to license points
-    useEffect(() => {
-        if (!currentSeasonId) return;
-        const unsubscribe = subscribeToLicensePoints(currentSeasonId, (data) => {
-            setLicenseRecords(data);
-        });
-        return () => unsubscribe();
-    }, [currentSeasonId]);
+    // useEffect(() => { ... }) - REMOVED, using Context now.
 
     const handleAddDriver = async (e) => {
         e.preventDefault();

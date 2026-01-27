@@ -11,7 +11,8 @@ import {
     deleteQualifyingSubmission,
     subscribeToQualifying,
     deleteStandings,
-    mergeDriverLicensePoints
+    mergeDriverLicensePoints,
+    subscribeToLicensePoints
 } from '../firebase/db';
 import { useAuth } from './AuthContext';
 
@@ -38,6 +39,9 @@ export const ChampionshipProvider = ({ children }) => {
 
     // Cloud Calculated Standings
     const [cloudStandings, setCloudStandings] = useState(null);
+
+    // Global License Points Data
+    const [licensePoints, setLicensePoints] = useState([]);
 
     // Auth for writing permissions
     const { currentUser } = useAuth();
@@ -88,10 +92,15 @@ export const ChampionshipProvider = ({ children }) => {
             setCloudStandings(data);
         });
 
+        const unsubLicense = subscribeToLicensePoints(currentSeasonId, (data) => {
+            setLicensePoints(data || []);
+        });
+
         return () => {
             unsubSeason();
             unsubStandings();
             unsubQualifying();
+            unsubLicense();
         };
     }, [currentSeasonId]);
 
@@ -1031,6 +1040,7 @@ export const ChampionshipProvider = ({ children }) => {
         exclusions,
         qualifyingSettings,
         qualifyingSubmissions,
+        licensePoints, // Added licensePoints here
         seasonData, // Expose raw data for Admin (Schedule Management)
         exportSeasonData,
         seasonConfig: (seasons[currentSeasonId]?.config)
