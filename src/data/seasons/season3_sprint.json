@@ -16,7 +16,195 @@
             "ballastType": "none",
             "dropRounds": true,
             "participationRequirement": "must_complete_lap"
-        }
+        },
+        "driverRoster": [
+            {
+                "name": "Andrew Canelli",
+                "class": "LMGT3",
+                "number": "1",
+                "reserve": false
+            },
+            {
+                "name": "David Paccagnini",
+                "class": "LMGT3",
+                "number": "808",
+                "reserve": false
+            },
+            {
+                "name": "Nick Johnson",
+                "class": "LMGT3",
+                "number": "696",
+                "reserve": false
+            },
+            {
+                "name": "Parker Thomas",
+                "class": "LMGT3",
+                "number": "69",
+                "reserve": false
+            },
+            {
+                "name": "Gage Galvin",
+                "class": "LMGT3",
+                "number": "420",
+                "reserve": false
+            },
+            {
+                "name": "Ron Heslop",
+                "class": "LMGT3",
+                "number": "22",
+                "reserve": false
+            },
+            {
+                "name": "Macaroni ToutGarni",
+                "class": "LMGT3",
+                "number": "8",
+                "reserve": false
+            },
+            {
+                "name": "Richie Wood",
+                "class": "LMGT3",
+                "number": "101",
+                "reserve": false
+            },
+            {
+                "name": "Grayson Head",
+                "class": "LMGT3",
+                "number": "34",
+                "reserve": false
+            },
+            {
+                "name": "David Carter",
+                "class": "LMGT3",
+                "number": "969",
+                "reserve": false
+            },
+            {
+                "name": "Kasi Jackman",
+                "class": "LMGT3",
+                "number": "868",
+                "reserve": false
+            },
+            {
+                "name": "Javier Tellez",
+                "class": "LMGT3",
+                "number": "67",
+                "reserve": false
+            },
+            {
+                "name": "Justin Fortunato",
+                "class": "LMGT3",
+                "number": "88",
+                "reserve": false
+            },
+            {
+                "name": "Willie Mangram",
+                "class": "LMGT3",
+                "number": "2",
+                "reserve": false
+            },
+            {
+                "name": "Dustin Rand",
+                "class": "LMGT3",
+                "number": "5",
+                "reserve": false
+            },
+            {
+                "name": "Matthew Canelli",
+                "class": "LMGT3",
+                "number": "33",
+                "reserve": false
+            },
+            {
+                "name": "Guillermo Paret",
+                "class": "LMGT3",
+                "number": "52",
+                "reserve": false
+            },
+            {
+                "name": "Joel Ristau",
+                "class": "LMGT3",
+                "number": "249",
+                "reserve": false
+            },
+            {
+                "name": "Edriel Lugo-Ortiz",
+                "class": "LMGT3",
+                "number": "35",
+                "reserve": false
+            },
+            {
+                "name": "Jesse Olsen",
+                "class": "LMGT3",
+                "number": "16",
+                "reserve": false
+            },
+            {
+                "name": "Patricio Fernandez",
+                "class": "LMGT3",
+                "number": "4",
+                "reserve": false
+            },
+            {
+                "name": "Harrison Miller",
+                "class": "LMGT3",
+                "number": "17",
+                "reserve": false
+            },
+            {
+                "name": "Rich Spoon",
+                "class": "LMGT3",
+                "number": "735",
+                "reserve": false
+            },
+            {
+                "name": "Ross McLean",
+                "class": "LMGT3",
+                "number": "93",
+                "reserve": false
+            },
+            {
+                "name": "Dakota Botello",
+                "class": "LMGT3",
+                "number": "303",
+                "reserve": false
+            },
+            {
+                "name": "Nitin Murthy",
+                "class": "LMGT3",
+                "number": "95",
+                "reserve": false
+            },
+            {
+                "name": "Ayrton Senna",
+                "class": "LMGT3",
+                "number": "44",
+                "reserve": false
+            },
+            {
+                "name": "Alessandro Guevara",
+                "class": "LMGT3",
+                "number": "14",
+                "reserve": true
+            },
+            {
+                "name": "Dave Harris",
+                "class": "LMGT3",
+                "number": "91",
+                "reserve": false
+            },
+            {
+                "name": "Nelson Villalobos",
+                "class": "LMGT3",
+                "number": "3",
+                "reserve": true
+            },
+            {
+                "name": "Donnie Greathouse",
+                "class": "LMGT3",
+                "number": "55",
+                "reserve": false
+            }
+        ]
     },
     "currentRound": 0,
     "totalRounds": 0,

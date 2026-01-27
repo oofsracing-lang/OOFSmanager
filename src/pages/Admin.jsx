@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useChampionship } from '../context/ChampionshipContext';
 import { formatTime as formatTimeHelper, parseTimeInput } from '../utils/timeHelpers';
 import { parseRaceXml } from '../utils/raceParser';
-import { uploadXmlBackup, subscribeToIncidents, updateIncident, deleteIncident } from '../firebase/db';
+import { uploadXmlBackup, subscribeToIncidents, updateIncident, deleteIncident, saveSeasonData } from '../firebase/db';
 import AttendanceTab from '../components/AttendanceTab';
 import LicensePointsTab from '../components/LicensePointsTab';
 import { httpsCallable } from 'firebase/functions';
