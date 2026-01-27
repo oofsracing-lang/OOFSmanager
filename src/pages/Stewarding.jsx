@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useChampionship } from '../context/ChampionshipContext';
 import { saveIncident, subscribeToIncidents } from '../firebase/db';
+import { formatDriverName } from '../utils/formatting';
 
 const Stewarding = () => {
     const { championshipData, currentSeasonId } = useChampionship();
@@ -232,8 +233,18 @@ const Stewarding = () => {
                                             )}
                                         </td>
                                         <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>{incident.timestamp}</td>
-                                        <td style={{ padding: '1rem', fontWeight: 'bold', color: 'var(--accent)' }}>
-                                            {getPenalizedDriverNumber(incident.penalizedDriverId)}
+                                        <td style={{ padding: '1rem' }}>
+                                            <div style={{ fontWeight: 'bold', color: 'var(--accent)', fontSize: '1.2rem' }}>
+                                                {getPenalizedDriverNumber(incident.penalizedDriverId)}
+                                            </div>
+                                            {incident.penalizedDriverId && (
+                                                <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+                                                    {(() => {
+                                                        const d = championshipData?.drivers?.find(driver => driver.id === Number(incident.penalizedDriverId));
+                                                        return d ? formatDriverName(d.name) : '';
+                                                    })()}
+                                                </div>
+                                            )}
                                         </td>
                                         <td style={{ padding: '1rem', fontWeight: 'bold', color: 'var(--primary)' }}>
                                             {incident.decision || '-'}
