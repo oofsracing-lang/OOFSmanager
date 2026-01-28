@@ -4,7 +4,7 @@
   "config": {
     "seriesName": "Season 2",
     "classes": [
-      "LMP2",
+      "LMP2-UR",
       "LMGT3"
     ],
     "ui": {
@@ -19,13 +19,13 @@
       "participationRequirement": "must_complete_lap"
     }
   },
-  "currentRound": 7,
+  "currentRound": 8,
   "totalRounds": 8,
   "drivers": [
     {
       "id": 1,
       "name": "James Rubio",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 210,
       "currentBallast": 20,
       "team": "OOFS Racing",
@@ -127,13 +127,26 @@
           "points": 0,
           "ballastChange": 0,
           "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 8,
+          "position": 3,
+          "classPosition": 3,
+          "laps": 20,
+          "finishTime": null,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2-UR",
+          "points": 44,
+          "ballastChange": 5,
+          "effectiveBallastChange": 5
         }
       ]
     },
     {
       "id": 2,
       "name": "Jeremy Wade",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 200,
       "currentBallast": 0,
       "team": "OOFS Racing",
@@ -235,13 +248,26 @@
           "points": 0,
           "ballastChange": 0,
           "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 8,
+          "position": 7,
+          "classPosition": 7,
+          "laps": 20,
+          "finishTime": null,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2-UR",
+          "points": 34,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
     {
       "id": 3,
       "name": "Greg Kach",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 197,
       "currentBallast": 45,
       "team": "OOFS Racing",
@@ -329,13 +355,26 @@
           "points": 0,
           "ballastChange": 0,
           "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 8,
+          "position": 4,
+          "classPosition": 4,
+          "laps": 20,
+          "finishTime": null,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2-UR",
+          "points": 41,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
     {
       "id": 4,
       "name": "Chris MacLennan",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 181,
       "currentBallast": 0,
       "team": "OOFS Racing",
@@ -437,13 +476,26 @@
           "points": 0,
           "ballastChange": 0,
           "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 8,
+          "position": 6,
+          "classPosition": 6,
+          "laps": 20,
+          "finishTime": null,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2-UR",
+          "points": 35,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
     {
       "id": 5,
       "name": "p thomas",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 180,
       "currentBallast": 0,
       "team": "OOFS Racing",
@@ -531,13 +583,26 @@
           "points": 0,
           "ballastChange": 0,
           "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 8,
+          "position": 13,
+          "classPosition": 13,
+          "laps": 20,
+          "finishTime": null,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2-UR",
+          "points": 28,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
     {
       "id": 6,
       "name": "Brian Crane",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 176,
       "currentBallast": 0,
       "team": "OOFS Racing",
@@ -611,13 +676,26 @@
           "points": 0,
           "ballastChange": 0,
           "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 8,
+          "position": 11,
+          "classPosition": 11,
+          "laps": 20,
+          "finishTime": null,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2-UR",
+          "points": 30,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
     {
       "id": 7,
       "name": "Nick Johnson",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 175,
       "currentBallast": 10,
       "team": "OOFS Racing",
@@ -718,13 +796,26 @@
           "points": 0,
           "ballastChange": 0,
           "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 8,
+          "position": 12,
+          "classPosition": 12,
+          "laps": 20,
+          "finishTime": null,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2-UR",
+          "points": 29,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
     {
       "id": 8,
       "name": "Donovan Bailey",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 164,
       "currentBallast": 5,
       "team": "OOFS Racing",
@@ -798,13 +889,26 @@
           "points": 0,
           "ballastChange": 0,
           "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 8,
+          "position": 1,
+          "classPosition": 1,
+          "laps": 20,
+          "finishTime": null,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2-UR",
+          "points": 50,
+          "ballastChange": 15,
+          "effectiveBallastChange": 15
         }
       ]
     },
     {
       "id": 9,
       "name": "Russell Dame",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 125,
       "currentBallast": 0,
       "team": "OOFS Racing",
@@ -892,13 +996,26 @@
           "points": 0,
           "ballastChange": 0,
           "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 8,
+          "position": 16,
+          "classPosition": 16,
+          "laps": 0,
+          "finishTime": null,
+          "status": "DNS",
+          "attendance": "DNS",
+          "drivenClass": "LMP2-UR",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
     {
       "id": 10,
       "name": "Gage Galvin",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 125,
       "currentBallast": 0,
       "team": "OOFS Racing",
@@ -985,13 +1102,26 @@
           "points": 0,
           "ballastChange": 0,
           "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 8,
+          "position": 9,
+          "classPosition": 9,
+          "laps": 20,
+          "finishTime": null,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2-UR",
+          "points": 32,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
     {
       "id": 11,
       "name": "Kasi Jackman",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 118,
       "currentBallast": 5,
       "team": "OOFS Racing",
@@ -1064,13 +1194,26 @@
           "points": 0,
           "ballastChange": 0,
           "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 8,
+          "position": 5,
+          "classPosition": 5,
+          "laps": 20,
+          "finishTime": null,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2-UR",
+          "points": 38,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
     {
       "id": 12,
       "name": "Dick Garcia",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 101,
       "currentBallast": 0,
       "team": "OOFS Racing",
@@ -1157,13 +1300,26 @@
           "points": 0,
           "ballastChange": 0,
           "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 8,
+          "position": 2,
+          "classPosition": 2,
+          "laps": 20,
+          "finishTime": null,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2-UR",
+          "points": 47,
+          "ballastChange": 10,
+          "effectiveBallastChange": 10
         }
       ]
     },
     {
       "id": 13,
       "name": "Ryan Bellune",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 75,
       "currentBallast": 5,
       "team": "OOFS Racing",
@@ -1220,6 +1376,19 @@
           "status": "DNF",
           "attendance": "Raced",
           "drivenClass": "LMP2",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 8,
+          "position": 15,
+          "classPosition": 15,
+          "laps": 0,
+          "finishTime": null,
+          "status": "DNS",
+          "attendance": "DNS",
+          "drivenClass": "LMP2-UR",
           "points": 0,
           "ballastChange": 0,
           "effectiveBallastChange": 0
@@ -1389,7 +1558,7 @@
     {
       "id": 16,
       "name": "Joseph Tippen",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 44,
       "currentBallast": 5,
       "team": "OOFS Racing",
@@ -1421,13 +1590,26 @@
           "points": 0,
           "ballastChange": 0,
           "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 8,
+          "position": 14,
+          "classPosition": 14,
+          "laps": 20,
+          "finishTime": null,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2-UR",
+          "points": 27,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
     {
       "id": 17,
       "name": "Santhosh Kumarasamy",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 31,
       "currentBallast": 0,
       "team": "OOFS Racing",
@@ -1472,13 +1654,26 @@
           "points": 0,
           "ballastChange": 0,
           "effectiveBallastChange": 0
+        },
+        {
+          "raceId": 8,
+          "position": 8,
+          "classPosition": 8,
+          "laps": 20,
+          "finishTime": null,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2-UR",
+          "points": 33,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
         }
       ]
     },
     {
       "id": 18,
       "name": "Jacob Lozano",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 0,
       "currentBallast": 0,
       "team": "OOFS Racing",
@@ -1514,7 +1709,7 @@
     {
       "id": 19,
       "name": "Patches U",
-      "class": "LMP2",
+      "class": "LMP2-UR",
       "totalPoints": 0,
       "currentBallast": 0,
       "team": "OOFS Racing",
@@ -4072,6 +4267,48 @@
           "effectiveBallastChange": 0
         }
       ]
+    },
+    {
+      "id": 61,
+      "name": "Daniel J.",
+      "class": "LMP2-UR",
+      "team": "Unknown",
+      "raceResults": [
+        {
+          "raceId": 8,
+          "position": 10,
+          "classPosition": 10,
+          "laps": 20,
+          "finishTime": null,
+          "status": "Finished Normally",
+          "attendance": "Raced",
+          "drivenClass": "LMP2-UR",
+          "points": 31,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "name": "Mikey M.",
+      "class": "LMP2-UR",
+      "team": "Unknown",
+      "raceResults": [
+        {
+          "raceId": 8,
+          "position": 17,
+          "classPosition": 17,
+          "laps": 0,
+          "finishTime": null,
+          "status": "DNS",
+          "attendance": "DNS",
+          "drivenClass": "LMP2-UR",
+          "points": 0,
+          "ballastChange": 0,
+          "effectiveBallastChange": 0
+        }
+      ]
     }
   ],
   "races": [
@@ -4129,7 +4366,7 @@
       "name": "Round 8",
       "track": "Spa",
       "date": "2025-12-18",
-      "status": "Scheduled"
+      "status": "Completed"
     }
   ],
   "penalties": {

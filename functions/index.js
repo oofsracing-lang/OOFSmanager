@@ -62,7 +62,7 @@ function getBallastAdjustment(position, isDnf, rules = {}, className = "LMGT3") 
 }
 
 function calculateChampionship(seasonData) {
-    // console.log("Processing championship data for season:", seasonData.season);
+    console.log("Processing championship data for season:", seasonData.season);
 
     const data = JSON.parse(JSON.stringify(seasonData));
     const penalties = data.penalties || {};
@@ -72,6 +72,8 @@ function calculateChampionship(seasonData) {
     // EMERGENCY HOTFIX (Persisted)
     if (data.drivers) {
         data.drivers = data.drivers.filter(d => ![40, 41].includes(d.id));
+        // Reset points for clean recalculation
+        data.drivers.forEach(d => d.totalPoints = 0);
     }
 
     const pointsTable = [
@@ -122,8 +124,17 @@ function calculateChampionship(seasonData) {
                 const r = d.raceResults.find(res => String(res.raceId) === String(race.id));
                 if (!r) return false;
                 const raceClass = r.drivenClass || d.class;
+                // Handle both LMP2 and LMP2-UR for backwards compatibility
+                if ((className === 'LMP2' || className === 'LMP2-UR') && (raceClass === 'LMP2' || raceClass === 'LMP2-UR')) {
+                    return true;
+                }
                 return raceClass === className;
             });
+
+            console.log(`Race ${race.id}, Class ${className}: ${participants.length} participants`);
+            if (participants.length > 0 && participants.length < 5) {
+                console.log(`  Sample drivers:`, participants.slice(0, 3).map(d => `${d.name} (class=${d.class})`));
+            }
 
             // 2. Prepare Data (Penalties, Times)
             participants.forEach(d => {
@@ -208,7 +219,7 @@ function calculateChampionship(seasonData) {
                 // Use Helper with Config
                 const rules = data.config && data.config.rules ? data.config.rules : {};
                 const isFinished = true; // Race is completed if we're calculating standings
-                bChange = getBallastAdjustment(pos, !isFinished, rules, className);
+                const bChange = getBallastAdjustment(pos, !isFinished, rules, className);
                 ballastMap[entry.driver.id] = bChange;
             });
 
@@ -686,15 +697,17 @@ exports.submitQualifying = functions.https.onCall(async (data, context) => {
 
 
 
-// Temporary HTTP function to manually populate standings/3
+// Temporary HTTP function to manually populate standings for any season
 exports.fixStandings = functions.https.onRequest(async (req, res) => {
     try {
-        console.log('Manual standings fix triggered...');
+        // Accept seasonId from query parameter, default to '3'
+        const seasonId = req.query.seasonId || '3';
+        console.log(`Manual standings fix triggered for Season ${seasonId}...`);
 
         // Read season data
-        const seasonDoc = await admin.firestore().collection('seasons').doc('3').get();
+        const seasonDoc = await admin.firestore().collection('seasons').doc(seasonId).get();
         if (!seasonDoc.exists) {
-            throw new Error('Season 3 not found');
+            throw new Error(`Season ${seasonId} not found`);
         }
 
         const seasonData = seasonDoc.data();
@@ -708,13 +721,14 @@ exports.fixStandings = functions.https.onRequest(async (req, res) => {
         sanitized.lastUpdated = admin.firestore.FieldValue.serverTimestamp();
         sanitized.calculationSource = 'Manual Fix via HTTP';
 
-        // Write to standings/3
-        await admin.firestore().collection('standings').doc('3').set(sanitized);
+        // Write to standings/{seasonId}
+        await admin.firestore().collection('standings').doc(seasonId).set(sanitized);
 
-        console.log(`✓ Standings written. Drivers: ${sanitized.drivers?.length}`);
+        console.log(`✓ Standings written for Season ${seasonId}. Drivers: ${sanitized.drivers?.length}`);
 
         res.status(200).json({
             success: true,
+            seasonId: seasonId,
             season: sanitized.season,
             drivers: sanitized.drivers?.length || 0,
             races: sanitized.races?.length || 0,
@@ -722,6 +736,44 @@ exports.fixStandings = functions.https.onRequest(async (req, res) => {
         });
     } catch (error) {
         console.error('Fix standings error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// HTTP endpoint to upload Season 2 data
+exports.uploadSeason2 = functions.https.onRequest(async (req, res) => {
+    // CORS
+    res.set('Access-Control-Allow-Origin', '*');
+
+    if (req.method === 'OPTIONS') {
+        res.set('Access-Control-Allow-Methods', 'POST');
+        res.set('Access-Control-Allow-Headers', 'Content-Type');
+        res.status(204).send('');
+        return;
+    }
+
+    try {
+        const season2Data = req.body;
+
+        if (!season2Data || !season2Data.drivers || !season2Data.races) {
+            throw new Error('Invalid season data format');
+        }
+
+        console.log(`Uploading Season 2: ${season2Data.drivers.length} drivers, ${season2Data.races.length} races`);
+
+        // Write to Firestore
+        await db.collection('seasons').doc('2').set(season2Data);
+
+        console.log('✅ Season 2 uploaded successfully');
+
+        res.status(200).json({
+            success: true,
+            message: 'Season 2 data uploaded',
+            drivers: season2Data.drivers.length,
+            races: season2Data.races.length
+        });
+    } catch (error) {
+        console.error('Upload error:', error);
         res.status(500).json({ error: error.message });
     }
 });

@@ -88,7 +88,15 @@ export const ChampionshipProvider = ({ children }) => {
         // Debug: Log when legacy data would have been loaded
         // const unsubSeason = subscribeToSeason... (existing code)
         const unsubStandings = subscribeToStandings(currentSeasonId, (data) => {
-            // console.log("Cloud Standings Received:", data ? "Found" : "Empty");
+            console.log("Cloud Standings Received for Season", currentSeasonId, ":", data ? "Found" : "Empty");
+            if (data) {
+                console.log("Cloud Standings Data:", {
+                    season: data.season,
+                    drivers: data.drivers?.length,
+                    races: data.races?.length,
+                    calculationSource: data.calculationSource
+                });
+            }
             setCloudStandings(data);
         });
 
@@ -662,9 +670,7 @@ export const ChampionshipProvider = ({ children }) => {
                 status: pResult.status || 'Finished',
                 attendance: lapsCount > 0 ? 'Raced' : 'DNS', // Dynamic Attendance
                 drivenClass: determinedClass, // Store the class driven in this specific race
-                points: 0,
-                ballastChange: 0, // Init explicit
-                effectiveBallastChange: 0,
+                // Don't set points/ballast here - let cloud function calculate
                 purpleSectors: Number(pResult.purpleSectors) || 0,
                 incidents: Number(pResult.incidents) || 0,
                 penaltyCount: Number(pResult.penalties) || 0,
@@ -674,9 +680,24 @@ export const ChampionshipProvider = ({ children }) => {
             // Update or Add Result
             const existingResultIndex = driver.raceResults.findIndex(r => String(r.raceId) === String(raceIdToUse));
             if (existingResultIndex !== -1) {
-                driver.raceResults[existingResultIndex] = { ...driver.raceResults[existingResultIndex], ...raceResult };
+                // Merge: Keep existing points/ballast, update race data
+                const existing = driver.raceResults[existingResultIndex];
+                driver.raceResults[existingResultIndex] = {
+                    ...existing,
+                    ...raceResult,
+                    // Preserve calculated values from cloud function
+                    points: existing.points || 0,
+                    ballastChange: existing.ballastChange || 0,
+                    effectiveBallastChange: existing.effectiveBallastChange || 0
+                };
             } else {
-                driver.raceResults.push(raceResult);
+                // New result: Initialize with 0 (cloud function will calculate)
+                driver.raceResults.push({
+                    ...raceResult,
+                    points: 0,
+                    ballastChange: 0,
+                    effectiveBallastChange: 0
+                });
             }
         });
 
@@ -698,14 +719,28 @@ export const ChampionshipProvider = ({ children }) => {
         // EXCEPTION: IF USER IS LOGGED IN (Admin), we FORCE local calculation to see optimistic updates (e.g. penalties) instantly.
         const isProd = import.meta.env.PROD;
 
-        if (!currentUser && isProd && cloudStandings && cloudStandings.season === (seasonData?.season) &&
+        console.log("[processedData] Decision factors:", {
+            isProd,
+            currentUser: !!currentUser,
+            cloudStandings: !!cloudStandings,
+            cloudStandingsSeason: cloudStandings?.season,
+            seasonDataSeason: seasonData?.season,
+            cloudRaces: cloudStandings?.races?.length,
+            seasonRaces: seasonData?.races?.length
+        });
+
+        // Use cloud standings in production if available and valid
+        if (isProd && cloudStandings && cloudStandings.season === (seasonData?.season) &&
             (cloudStandings.races || []).length >= (seasonData?.races || []).length) {
 
+            console.log("[processedData] Using CLOUD STANDINGS");
             return {
                 ...cloudStandings,
                 calculationSource: 'Cloud Backend (Official)'
             };
         }
+
+        console.log("[processedData] Using LOCAL CALCULATION");
 
         // PRIORITY 2: Local Fallback (The original huge logic)
 

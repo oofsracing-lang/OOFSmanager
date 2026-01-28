@@ -5,7 +5,9 @@ import { formatDriverName, formatTeamName } from '../utils/formatting';
 
 const Standings = () => {
     const { championshipData, seasonConfig, licensePoints } = useChampionship();
-    const classesToShow = seasonConfig.classes || ['LMP2', 'LMGT3'];
+    const classesToShow = (seasonConfig.id === '2' || championshipData.season === 'Season 2')
+        ? ['LMP2-UR', 'LMGT3']
+        : (seasonConfig.classes || ['LMP2', 'LMGT3']);
 
     const [selectedClass, setSelectedClass] = useState(classesToShow[0] || 'LMGT3');
     const [useDropRound, setUseDropRound] = useState(false);
