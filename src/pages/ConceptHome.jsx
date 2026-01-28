@@ -212,7 +212,7 @@ const ConceptHome = () => {
                 {/* Social Links */}
                 <div style={styles.socialContainer}>
                     <a
-                        href="https://discord.gg/your-link" // Replace with real link
+                        href="https://discord.gg/F292B8qAU4" // Replace with real link
                         target="_blank"
                         rel="noreferrer"
                         style={styles.socialBtn('discord')}

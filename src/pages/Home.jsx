@@ -62,7 +62,7 @@ const Home = () => {
                 {/* Social Links */}
                 <div className="social-container">
                     <a
-                        href="https://discord.gg/ANWSZAURJT"
+                        href="https://discord.gg/F292B8qAU4"
                         target="_blank"
                         rel="noreferrer"
                         className="social-btn"
