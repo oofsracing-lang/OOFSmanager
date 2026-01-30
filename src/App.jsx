@@ -1,5 +1,5 @@
 
-import { Routes, Route, HashRouter, Navigate } from 'react-router-dom';
+import { Routes, Route, HashRouter, Navigate, useLocation } from 'react-router-dom';
 import SeasonLayout from './components/SeasonLayout';
 import Dashboard from './pages/Dashboard';
 import Standings from './pages/Standings';
@@ -18,7 +18,8 @@ import ErrorBoundary from './components/ErrorBoundary';
 
 const ProtectedRoute = ({ children }) => {
   const { currentUser } = useAuth();
-  if (!currentUser) return <Navigate to="/login" />;
+  const location = useLocation(); // Keep track of current location
+  if (!currentUser) return <Navigate to="/login" state={{ from: location }} replace />;
   return children;
 };
 
