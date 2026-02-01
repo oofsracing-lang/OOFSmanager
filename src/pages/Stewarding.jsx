@@ -182,13 +182,13 @@ const Stewarding = () => {
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                         <thead>
                             <tr style={{ background: 'rgba(255,255,255,0.05)', textAlign: 'left' }}>
-                                <th style={{ padding: '1rem' }}>Review Status</th>
-                                <th style={{ padding: '1rem' }}>Race</th>
-                                <th style={{ padding: '1rem' }}>Cars</th>
-                                <th style={{ padding: '1rem', width: '40%' }}>Description</th>
-                                <th style={{ padding: '1rem', width: '20%' }}>Timestamp</th>
-                                <th style={{ padding: '1rem' }}>Car #</th>
-                                <th style={{ padding: '1rem' }}>Decision</th>
+                                <th style={{ padding: '1rem', width: '8%' }}>Review Status</th>
+                                <th style={{ padding: '1rem', width: '15%' }}>Race</th>
+                                <th style={{ padding: '1rem', width: '10%' }}>Cars</th>
+                                <th style={{ padding: '1rem', width: '42%' }}>Description</th>
+                                <th style={{ padding: '1rem', width: '15%' }}>Timestamp</th>
+                                <th style={{ padding: '1rem', width: '5%' }}>Car #</th>
+                                <th style={{ padding: '1rem', width: '5%' }}>Decision</th>
                                 <th style={{ padding: '1rem' }}>Penalty</th>
                             </tr>
                         </thead>
