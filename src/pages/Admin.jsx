@@ -725,7 +725,7 @@ const Admin = () => {
                                     <th style={{ padding: '1rem', width: '15%' }}>Race Session</th>
                                     <th style={{ padding: '1rem', width: '10%' }}>Car(s) Involved</th>
                                     <th style={{ padding: '1rem', width: '15%' }}>Timestamp/Lap</th>
-                                    <th style={{ padding: '1rem', width: '25%' }}>Descriptions</th>
+                                    <th style={{ padding: '1rem', width: '40%' }}>Descriptions</th>
                                     <th style={{ padding: '1rem', width: '10%' }}>Stewarding Decision</th>
                                     <th style={{ padding: '1rem', width: '5%' }}>Time Penalty</th>
                                     <th style={{ padding: '1rem', width: '5%' }}>Penalized Car(s)</th>
