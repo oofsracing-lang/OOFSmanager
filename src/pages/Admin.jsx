@@ -721,15 +721,15 @@ const Admin = () => {
                         <table className="table" style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
                             <thead>
                                 <tr style={{ textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
-                                    <th style={{ padding: '1rem', width: '10%' }}>Submission Date</th>
-                                    <th style={{ padding: '1rem', width: '15%' }}>Race Session</th>
-                                    <th style={{ padding: '1rem', width: '10%' }}>Car(s) Involved</th>
-                                    <th style={{ padding: '1rem', width: '15%' }}>Timestamp/Lap</th>
-                                    <th style={{ padding: '1rem', width: '40%' }}>Descriptions</th>
-                                    <th style={{ padding: '1rem', width: '5%' }}>Stewarding Decision</th>
-                                    <th style={{ padding: '1rem', width: '5%' }}>Time Penalty</th>
-                                    <th style={{ padding: '1rem' }}>Penalized Car(s)</th>
-                                    <th style={{ padding: '1rem' }}></th>
+                                    <th style={{ padding: '1rem', width: '8%' }}>Submission Date</th>
+                                    <th style={{ padding: '1rem', width: '12%' }}>Race Session</th>
+                                    <th style={{ padding: '1rem', width: '8%' }}>Car(s) Involved</th>
+                                    <th style={{ padding: '1rem', width: '12%' }}>Timestamp/Lap</th>
+                                    <th style={{ padding: '1rem', width: '35%' }}>Descriptions</th>
+                                    <th style={{ padding: '1rem', width: '8%' }}>Stewarding Decision</th>
+                                    <th style={{ padding: '1rem', width: '6%' }}>Time Penalty</th>
+                                    <th style={{ padding: '1rem', width: '6%' }}>Penalized Car(s)</th>
+                                    <th style={{ padding: '1rem', width: '5%' }}></th>
                                 </tr>
                             </thead>
                             <tbody>
