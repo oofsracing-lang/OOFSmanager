@@ -718,7 +718,7 @@ const Admin = () => {
                         <h3>Incident Reviews ({incidents.length})</h3>
                     </div>
                     <div style={{ overflowX: 'auto' }}>
-                        <table className="table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <table className="table" style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
                             <thead>
                                 <tr style={{ textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
                                     <th style={{ padding: '1rem', width: '10%' }}>Submission Date</th>
