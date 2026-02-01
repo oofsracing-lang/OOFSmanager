@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useChampionship } from '../context/ChampionshipContext';
 import { formatTime as formatTimeHelper, parseTimeInput } from '../utils/timeHelpers';
 import { parseRaceXml } from '../utils/raceParser';
-import { uploadXmlBackup, subscribeToIncidents, updateIncident, deleteIncident, saveSeasonData } from '../firebase/db';
+import { uploadXmlBackup, subscribeToIncidents, updateIncident, deleteIncident, saveSeasonData, overwriteSeasonData } from '../firebase/db';
 import AttendanceTab from '../components/AttendanceTab';
 import LicensePointsTab from '../components/LicensePointsTab';
 import { httpsCallable } from 'firebase/functions';
@@ -262,6 +262,25 @@ const Admin = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <h2>Admin - Schedule & Penalties</h2>
                 <div style={{ display: 'flex', gap: '1rem' }}>
+                    {currentSeasonId === '2' && (
+                        <button
+                            className="btn btn-primary"
+                            style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
+                            onClick={async () => {
+                                if (!confirm('Upload corrected Season 2 data to Cloud?')) return;
+                                try {
+                                    const season2Data = await import('../data/seasons/season2.json');
+                                    await overwriteSeasonData('2', season2Data.default);
+                                    alert('Season 2 data uploaded! Refreshing...');
+                                    window.location.reload();
+                                } catch (err) {
+                                    alert('Upload failed: ' + err.message);
+                                }
+                            }}
+                        >
+                            🔄 Upload Season 2 Fix
+                        </button>
+                    )}
                     <button
                         className="btn btn-outline-danger"
                         disabled={isResetting}

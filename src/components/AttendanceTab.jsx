@@ -370,7 +370,128 @@ const AttendanceTab = () => {
                     </div>
                 </div>
             </div>
-        </div>
+            {/* NON-ROSTER DRIVERS SECTION */}
+            {
+                (() => {
+                    // Calculate Non-Roster Drivers (Drivers in data but not in roster config)
+                    const nonRosterDrivers = championshipData.drivers.filter(d => {
+                        // Normalize names to match roster check
+                        const dName = d.name.toLowerCase().trim();
+                        const inRoster = driverRoster.some(r => r.name.toLowerCase().trim() === dName);
+                        return !inRoster;
+                    });
+
+                    if (nonRosterDrivers.length === 0) return null;
+
+                    // Sort by name
+                    nonRosterDrivers.sort((a, b) => a.name.localeCompare(b.name));
+
+                    // Filter by class if selected
+                    const filteredNonRoster = nonRosterDrivers.filter(d => filterClass === 'all' || d.class === filterClass);
+
+                    if (filteredNonRoster.length === 0) return null;
+
+                    return (
+                        <div style={{ marginTop: '3rem' }}>
+                            <h4 style={{ color: 'var(--text-muted)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+                                Guest / Non-Roster Drivers
+                            </h4>
+                            <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)', marginBottom: '1rem' }}>
+                                These drivers have race results but are not listed in the official driver roster.
+                                They may be guest drivers or duplicate entries (misspelled names).
+                                <br />
+                                <strong>Tip:</strong> You can merge a "Withdrew" roster driver into one of these entries to fix a duplicate.
+                            </p>
+
+                            <div style={{ overflowX: 'auto', maxHeight: '50vh' }}>
+                                <table className="table" style={{ minWidth: '800px', borderCollapse: 'separate', borderSpacing: 0 }}>
+                                    <thead>
+                                        <tr>
+                                            <th style={{ backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-color)' }}>Driver</th>
+                                            <th style={{ backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-color)' }}>Class</th>
+                                            {races.map(race => (
+                                                <th key={race.id} style={{ minWidth: '60px', textAlign: 'center', backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-color)', fontSize: '0.85rem' }}>
+                                                    R{race.id}
+                                                </th>
+                                            ))}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {filteredNonRoster.map((driver, idx) => (
+                                            <tr key={idx}>
+                                                <td style={{
+                                                    backgroundColor: 'var(--bg-card)',
+                                                    borderRight: '1px solid var(--border-color)',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.5rem'
+                                                }}>
+                                                    {/* EDITABLE NAME (Same as above) */}
+                                                    {editingDriver?.name === driver.name ? (
+                                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                                            <input
+                                                                type="text"
+                                                                value={editingDriver.newName}
+                                                                onChange={e => setEditingDriver({ ...editingDriver, newName: e.target.value })}
+                                                                style={{ fontSize: '0.8rem', padding: '2px 4px', width: '120px' }}
+                                                                autoFocus
+                                                            />
+                                                            <button onClick={handleUpdateName} style={{ fontSize: '0.7rem', padding: '0 4px', color: 'var(--success)' }}>✓</button>
+                                                            <button onClick={() => setEditingDriver(null)} style={{ fontSize: '0.7rem', padding: '0 4px', color: 'var(--text-muted)' }}>✕</button>
+                                                        </div>
+                                                    ) : (
+                                                        <span
+                                                            style={{ fontWeight: 500, cursor: currentUser ? 'pointer' : 'default', color: 'var(--text-dim)' }}
+                                                            onClick={() => currentUser && setEditingDriver({ name: driver.name, newName: driver.name })}
+                                                            title={currentUser ? "Click to Rename/Merge" : ""}
+                                                        >
+                                                            {driver.name}
+                                                        </span>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    <span style={{
+                                                        padding: '0.25rem 0.5rem',
+                                                        borderRadius: '4px',
+                                                        fontSize: '0.7rem',
+                                                        backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                                        color: 'var(--text-muted)',
+                                                        border: '1px solid var(--border-color)'
+                                                    }}>
+                                                        {driver.class || '-'}
+                                                    </span>
+                                                </td>
+                                                {races.map(race => {
+                                                    // Modified getAttendanceStatus for non-roster (simple existence check)
+                                                    // We can just reuse getAttendanceStatus logic but need to create a mock "rosterDriver" object
+                                                    // or simpler: check results directly.
+                                                    const result = driver.raceResults?.find(r => r.raceId === race.id);
+                                                    let status = null;
+                                                    if (result) {
+                                                        if (result.attendance) status = result.attendance.toLowerCase();
+                                                        else if (result.laps > 0) status = 'raced';
+                                                        else status = 'dns';
+                                                    }
+
+                                                    return (
+                                                        <td key={race.id} style={{ textAlign: 'center', borderLeft: '1px solid rgba(255,255,255,0.05)' }}>
+                                                            {race.status === 'Completed'
+                                                                ? (status ? getStatusBadge(status) : <span style={{ color: 'var(--text-muted)' }}>-</span>)
+                                                                : <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>•</span>
+                                                            }
+                                                        </td>
+                                                    );
+                                                })}
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    );
+                })()
+            }
+        </div >
     );
 };
 

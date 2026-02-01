@@ -78,7 +78,8 @@ function calculateChampionship(seasonData) {
 
     const pointsTable = [
         50, 47, 44, 41, 38,
-        35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16
+        35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16,
+        15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
     ];
 
     // Defensive checks
@@ -691,89 +692,5 @@ exports.submitQualifying = functions.https.onCall(async (data, context) => {
     } catch (err) {
         console.error("Qualifying Analysis Error:", err);
         throw new functions.https.HttpsError('internal', err.message);
-    }
-});
-
-
-
-
-// Temporary HTTP function to manually populate standings for any season
-exports.fixStandings = functions.https.onRequest(async (req, res) => {
-    try {
-        // Accept seasonId from query parameter, default to '3'
-        const seasonId = req.query.seasonId || '3';
-        console.log(`Manual standings fix triggered for Season ${seasonId}...`);
-
-        // Read season data
-        const seasonDoc = await admin.firestore().collection('seasons').doc(seasonId).get();
-        if (!seasonDoc.exists) {
-            throw new Error(`Season ${seasonId} not found`);
-        }
-
-        const seasonData = seasonDoc.data();
-        console.log(`Season: ${seasonData.season}, Drivers: ${seasonData.drivers?.length}`);
-
-        // Calculate standings
-        const calculatedData = calculateChampionship(seasonData);
-        const sanitized = sanitizeForFirestore(calculatedData);
-
-        // Add metadata
-        sanitized.lastUpdated = admin.firestore.FieldValue.serverTimestamp();
-        sanitized.calculationSource = 'Manual Fix via HTTP';
-
-        // Write to standings/{seasonId}
-        await admin.firestore().collection('standings').doc(seasonId).set(sanitized);
-
-        console.log(`✓ Standings written for Season ${seasonId}. Drivers: ${sanitized.drivers?.length}`);
-
-        res.status(200).json({
-            success: true,
-            seasonId: seasonId,
-            season: sanitized.season,
-            drivers: sanitized.drivers?.length || 0,
-            races: sanitized.races?.length || 0,
-            currentRound: sanitized.currentRound
-        });
-    } catch (error) {
-        console.error('Fix standings error:', error);
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// HTTP endpoint to upload Season 2 data
-exports.uploadSeason2 = functions.https.onRequest(async (req, res) => {
-    // CORS
-    res.set('Access-Control-Allow-Origin', '*');
-
-    if (req.method === 'OPTIONS') {
-        res.set('Access-Control-Allow-Methods', 'POST');
-        res.set('Access-Control-Allow-Headers', 'Content-Type');
-        res.status(204).send('');
-        return;
-    }
-
-    try {
-        const season2Data = req.body;
-
-        if (!season2Data || !season2Data.drivers || !season2Data.races) {
-            throw new Error('Invalid season data format');
-        }
-
-        console.log(`Uploading Season 2: ${season2Data.drivers.length} drivers, ${season2Data.races.length} races`);
-
-        // Write to Firestore
-        await db.collection('seasons').doc('2').set(season2Data);
-
-        console.log('✅ Season 2 uploaded successfully');
-
-        res.status(200).json({
-            success: true,
-            message: 'Season 2 data uploaded',
-            drivers: season2Data.drivers.length,
-            races: season2Data.races.length
-        });
-    } catch (error) {
-        console.error('Upload error:', error);
-        res.status(500).json({ error: error.message });
     }
 });

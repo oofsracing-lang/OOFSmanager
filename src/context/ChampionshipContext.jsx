@@ -502,11 +502,46 @@ export const ChampionshipProvider = ({ children }) => {
                 await mergeDriverLicensePoints(currentSeasonId, targetDriver.id, sourceDriver.id);
             }
 
-            // 4. Remove Source from Master List
+            // 4. Update Roster Logic
+            // If Source is in Roster, and Target is NOT -> Target inherits the Roster spot.
+            // If Source is in Roster, and Target IS -> Just delete Source (Target keeps their own spot).
+            let rosterUpdated = false;
+
+            if (next.config && next.config.driverRoster) {
+                const sourceRosterIndex = next.config.driverRoster.findIndex(d => d.name.toLowerCase() === sourceName.toLowerCase());
+                const targetRosterIndex = next.config.driverRoster.findIndex(d => d.name.toLowerCase() === targetName.toLowerCase());
+
+                if (sourceRosterIndex !== -1) {
+                    // Source is in Roster
+                    if (targetRosterIndex === -1) {
+                        // Target is NOT in roster -> INHERIT
+                        console.log(`[Merge] Transferring Roster spot from ${sourceName} to ${targetName}`);
+                        const sourceEntry = next.config.driverRoster[sourceRosterIndex];
+
+                        // Update the entry to match target
+                        next.config.driverRoster[sourceRosterIndex] = {
+                            ...sourceEntry,
+                            name: targetName,
+                            // Optionally keep Source's team/class or switch? 
+                            // Usually if we are correcting a name, we want to keep the metadata (Reserve status etc)
+                            // But maybe update class if Target had a defined class? 
+                            // Let's keep source metadata (Reserve/Team) as that's the "Roster Configuration".
+                        };
+                        rosterUpdated = true;
+                    } else {
+                        // both in roster -> just delete source
+                        console.log(`[Merge] Both in roster. Deleting source ${sourceName}.`);
+                        next.config.driverRoster.splice(sourceRosterIndex, 1);
+                        rosterUpdated = true;
+                    }
+                }
+            }
+
+            // 5. Remove Source from Master List
             next.drivers.splice(sourceDriverIndex, 1);
 
-            // 5. Update Roster (Remove Source)
-            if (next.config && next.config.driverRoster) {
+            // 6. Fallback Roster cleanup if we didn't handle it in standard logic (e.g. simple delete)
+            if (!rosterUpdated && next.config && next.config.driverRoster) {
                 next.config.driverRoster = next.config.driverRoster.filter(d => d.name.toLowerCase() !== sourceName.toLowerCase());
             }
 
@@ -777,7 +812,8 @@ export const ChampionshipProvider = ({ children }) => {
             // Points System: P1-P25.
             const pointsTable = [
                 50, 47, 44, 41, 38, // P1-P5
-                35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16 // P6-P25
+                35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, // P6-P25
+                15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 // P26-P40
             ];
 
             // 1. Calculate Points for Completed Races
