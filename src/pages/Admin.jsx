@@ -721,14 +721,14 @@ const Admin = () => {
                         <table className="table" style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
                             <thead>
                                 <tr style={{ textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
-                                    <th style={{ padding: '1rem', width: '8%' }}>Submission Date</th>
-                                    <th style={{ padding: '1rem', width: '12%' }}>Race Session</th>
-                                    <th style={{ padding: '1rem', width: '8%' }}>Car(s) Involved</th>
+                                    <th style={{ padding: '1rem', width: '9%' }}>Submission Date</th>
+                                    <th style={{ padding: '1rem', width: '14%' }}>Race Session</th>
+                                    <th style={{ padding: '1rem', width: '7%' }}>Car(s) Involved</th>
                                     <th style={{ padding: '1rem', width: '12%' }}>Timestamp/Lap</th>
-                                    <th style={{ padding: '1rem', width: '35%' }}>Descriptions</th>
-                                    <th style={{ padding: '1rem', width: '8%' }}>Stewarding Decision</th>
-                                    <th style={{ padding: '1rem', width: '6%' }}>Time Penalty</th>
-                                    <th style={{ padding: '1rem', width: '6%' }}>Penalized Car(s)</th>
+                                    <th style={{ padding: '1rem', width: '34%' }}>Descriptions</th>
+                                    <th style={{ padding: '1rem', width: '9%' }}>Stewarding Decision</th>
+                                    <th style={{ padding: '1rem', width: '5%' }}>Time Penalty</th>
+                                    <th style={{ padding: '1rem', width: '5%' }}>Penalized Car(s)</th>
                                     <th style={{ padding: '1rem', width: '5%' }}></th>
                                 </tr>
                             </thead>
@@ -767,7 +767,7 @@ const Admin = () => {
                                                 className="form-control"
                                                 defaultValue={incident.timestamp}
                                                 onBlur={(e) => updateIncident(incident.id, { timestamp: e.target.value })}
-                                                style={{ width: '100%', fontSize: '0.9rem', color: 'var(--text-muted)', background: 'transparent', border: '1px solid transparent' }}
+                                                style={{ width: '100%', fontSize: '0.9rem', color: 'var(--text-muted)', background: 'transparent', border: '1px solid transparent', wordWrap: 'break-word' }}
                                             />
                                         </td>
                                         <td style={{ padding: '1rem', verticalAlign: 'top' }}>

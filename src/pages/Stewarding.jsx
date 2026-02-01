@@ -182,10 +182,10 @@ const Stewarding = () => {
                     <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
                         <thead>
                             <tr style={{ background: 'rgba(255,255,255,0.05)', textAlign: 'left' }}>
-                                <th style={{ padding: '1rem', width: '7%' }}>Review Status</th>
-                                <th style={{ padding: '1rem', width: '13%' }}>Race</th>
-                                <th style={{ padding: '1rem', width: '8%' }}>Cars</th>
-                                <th style={{ padding: '1rem', width: '37%' }}>Description</th>
+                                <th style={{ padding: '1rem', width: '10%' }}>Review Status</th>
+                                <th style={{ padding: '1rem', width: '14%' }}>Race</th>
+                                <th style={{ padding: '1rem', width: '7%' }}>Cars</th>
+                                <th style={{ padding: '1rem', width: '34%' }}>Description</th>
                                 <th style={{ padding: '1rem', width: '15%' }}>Timestamp</th>
                                 <th style={{ padding: '1rem', width: '6%' }}>Car #</th>
                                 <th style={{ padding: '1rem', width: '8%' }}>Decision</th>
@@ -232,7 +232,7 @@ const Stewarding = () => {
                                                 <span style={{ color: 'var(--text-muted)' }}>{incident.description}</span>
                                             )}
                                         </td>
-                                        <td style={{ padding: '1rem', whiteSpace: 'nowrap' }}>{incident.timestamp}</td>
+                                        <td style={{ padding: '1rem', wordBreak: 'break-word' }}>{incident.timestamp}</td>
                                         <td style={{ padding: '1rem' }}>
                                             <div style={{ fontWeight: 'bold', color: 'var(--accent)', fontSize: '1.2rem' }}>
                                                 {getPenalizedDriverNumber(incident.penalizedDriverId)}
