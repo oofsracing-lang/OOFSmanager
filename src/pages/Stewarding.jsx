@@ -185,8 +185,8 @@ const Stewarding = () => {
                                 <th style={{ padding: '1rem' }}>Review Status</th>
                                 <th style={{ padding: '1rem' }}>Race</th>
                                 <th style={{ padding: '1rem' }}>Cars</th>
-                                <th style={{ padding: '1rem', width: '30%' }}>Description</th>
-                                <th style={{ padding: '1rem' }}>Timestamp</th>
+                                <th style={{ padding: '1rem', width: '40%' }}>Description</th>
+                                <th style={{ padding: '1rem', width: '20%' }}>Timestamp</th>
                                 <th style={{ padding: '1rem' }}>Car #</th>
                                 <th style={{ padding: '1rem' }}>Decision</th>
                                 <th style={{ padding: '1rem' }}>Penalty</th>
