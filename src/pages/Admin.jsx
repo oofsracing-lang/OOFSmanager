@@ -722,13 +722,13 @@ const Admin = () => {
                             <thead>
                                 <tr style={{ textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
                                     <th style={{ padding: '1rem', width: '9%' }}>Submission Date</th>
-                                    <th style={{ padding: '1rem', width: '14%' }}>Race Session</th>
+                                    <th style={{ padding: '1rem', width: '12%' }}>Race Session</th>
                                     <th style={{ padding: '1rem', width: '7%' }}>Car(s) Involved</th>
-                                    <th style={{ padding: '1rem', width: '12%' }}>Timestamp/Lap</th>
-                                    <th style={{ padding: '1rem', width: '34%' }}>Descriptions</th>
-                                    <th style={{ padding: '1rem', width: '9%' }}>Stewarding Decision</th>
+                                    <th style={{ padding: '1rem', width: '10%' }}>Timestamp/Lap</th>
+                                    <th style={{ padding: '1rem', width: '25%' }}>Descriptions</th>
+                                    <th style={{ padding: '1rem', width: '12%' }}>Stewarding Decision</th>
                                     <th style={{ padding: '1rem', width: '5%' }}>Time Penalty</th>
-                                    <th style={{ padding: '1rem', width: '5%' }}>Penalized Car(s)</th>
+                                    <th style={{ padding: '1rem', width: '15%' }}>Penalized Car(s)</th>
                                     <th style={{ padding: '1rem', width: '5%' }}></th>
                                 </tr>
                             </thead>
@@ -833,7 +833,7 @@ const Admin = () => {
                                                         value={incident.penalizedDriverId || ''}
                                                         onChange={(e) => updateIncident(incident.id, { penalizedDriverId: Number(e.target.value) })}
                                                         style={{
-                                                            width: '120px',
+                                                            width: '100%',
                                                             padding: '0.4rem',
                                                             borderRadius: '4px',
                                                             fontSize: '0.85rem'
