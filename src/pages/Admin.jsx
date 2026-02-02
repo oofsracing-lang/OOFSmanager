@@ -722,9 +722,9 @@ const Admin = () => {
                             <thead>
                                 <tr style={{ textAlign: 'left', background: 'rgba(255,255,255,0.05)' }}>
                                     <th style={{ padding: '1rem', width: '9%' }}>Submission Date</th>
-                                    <th style={{ padding: '1rem', width: '12%', whiteSpace: 'normal', wordWrap: 'break-word' }}>Race Session</th>
-                                    <th style={{ padding: '1rem', width: '7%', whiteSpace: 'normal', wordWrap: 'break-word' }}>Car(s) Involved</th>
-                                    <th style={{ padding: '1rem', width: '10%', whiteSpace: 'normal', wordWrap: 'break-word' }}>Timestamp/Lap</th>
+                                    <th style={{ padding: '1rem', width: '12%', whiteSpace: 'normal' }}>Race Session</th>
+                                    <th style={{ padding: '1rem', width: '7%', whiteSpace: 'normal' }}>Car(s) Involved</th>
+                                    <th style={{ padding: '1rem', width: '10%', whiteSpace: 'normal' }}>Timestamp/Lap</th>
                                     <th style={{ padding: '1rem', width: '25%' }}>Descriptions</th>
                                     <th style={{ padding: '1rem', width: '12%' }}>Stewarding Decision</th>
                                     <th style={{ padding: '1rem', width: '5%' }}>Time Penalty</th>
@@ -757,8 +757,8 @@ const Admin = () => {
                                                 className="form-control"
                                                 defaultValue={incident.carNumbers}
                                                 onBlur={(e) => updateIncident(incident.id, { carNumbers: e.target.value })}
-                                                rows="1"
-                                                style={{ width: '100%', fontSize: '0.9rem', padding: '0.4rem', background: 'transparent', border: '1px solid transparent', color: 'white', resize: 'vertical', minHeight: '38px' }}
+                                                rows="5"
+                                                style={{ width: '100%', fontSize: '0.9rem', padding: '0.4rem', background: 'transparent', border: '1px solid transparent', color: 'white', resize: 'none', minHeight: '140px' }}
                                             />
                                         </td>
                                         <td style={{ padding: '1rem', verticalAlign: 'top' }}>
@@ -766,8 +766,8 @@ const Admin = () => {
                                                 className="form-control"
                                                 defaultValue={incident.timestamp}
                                                 onBlur={(e) => updateIncident(incident.id, { timestamp: e.target.value })}
-                                                rows="1"
-                                                style={{ width: '100%', fontSize: '0.9rem', color: 'var(--text-muted)', background: 'transparent', border: '1px solid transparent', wordWrap: 'break-word', resize: 'vertical', minHeight: '38px' }}
+                                                rows="5"
+                                                style={{ width: '100%', fontSize: '0.9rem', color: 'var(--text-muted)', background: 'transparent', border: '1px solid transparent', wordWrap: 'break-word', resize: 'none', minHeight: '140px' }}
                                             />
                                         </td>
                                         <td style={{ padding: '1rem', verticalAlign: 'top' }}>
