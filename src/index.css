@@ -598,6 +598,21 @@ h1 {
   color: var(--text-main) !important;
 }
 
+/* Responsive Table Tweaks */
+@media (max-width: 768px) {
+
+  th,
+  td {
+    font-size: 0.85rem !important;
+    padding: 0.75rem !important;
+  }
+
+  .badge {
+    font-size: 0.65rem !important;
+    padding: 0.2rem 0.4rem !important;
+  }
+}
+
 .input-ghost option {
   background-color: var(--bg-surface);
   color: var(--text-main);

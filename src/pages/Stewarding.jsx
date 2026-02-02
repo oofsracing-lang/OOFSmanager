@@ -179,7 +179,7 @@ const Stewarding = () => {
                 </div>
 
                 <div style={{ overflowX: 'auto' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+                    <table style={{ width: '100%', minWidth: '1000px', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
                         <thead>
                             <tr style={{ background: 'rgba(255,255,255,0.05)', textAlign: 'left' }}>
                                 <th style={{ padding: '1rem', width: '10%' }}>Review Status</th>
