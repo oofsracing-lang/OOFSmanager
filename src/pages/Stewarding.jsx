@@ -68,7 +68,7 @@ const Stewarding = () => {
     };
 
     return (
-        <div className="fade-in" style={{ padding: '2rem' }}>
+        <div className="fade-in">
             <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
                 <h1 style={{ fontSize: '3rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '-0.02em' }}>
                     Race Control
