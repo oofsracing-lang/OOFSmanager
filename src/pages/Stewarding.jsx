@@ -179,17 +179,17 @@ const Stewarding = () => {
                 </div>
 
                 <div style={{ overflowX: 'auto' }}>
-                    <table style={{ width: '100%', minWidth: '1000px', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+                    <table style={{ width: '100%', minWidth: '900px', borderCollapse: 'collapse' }}>
                         <thead>
                             <tr style={{ background: 'rgba(255,255,255,0.05)', textAlign: 'left' }}>
-                                <th style={{ padding: '1rem', width: '10%' }}>Review Status</th>
-                                <th style={{ padding: '1rem', width: '14%' }}>Race</th>
-                                <th style={{ padding: '1rem', width: '7%' }}>Cars</th>
-                                <th style={{ padding: '1rem', width: '34%' }}>Description</th>
-                                <th style={{ padding: '1rem', width: '15%' }}>Timestamp</th>
-                                <th style={{ padding: '1rem', width: '6%' }}>Car #</th>
-                                <th style={{ padding: '1rem', width: '8%' }}>Decision</th>
-                                <th style={{ padding: '1rem', width: '6%' }}>Penalty</th>
+                                <th style={{ padding: '1rem 0.5rem' }}>Review Status</th>
+                                <th style={{ padding: '1rem 0.5rem' }}>Race</th>
+                                <th style={{ padding: '1rem 0.5rem' }}>Cars</th>
+                                <th style={{ padding: '1rem 0.5rem', minWidth: '300px' }}>Description</th>
+                                <th style={{ padding: '1rem 0.5rem' }}>Timestamp</th>
+                                <th style={{ padding: '1rem 0.5rem' }}>Car #</th>
+                                <th style={{ padding: '1rem 0.5rem' }}>Decision</th>
+                                <th style={{ padding: '1rem 0.5rem' }}>Penalty</th>
                             </tr>
                         </thead>
                         <tbody>
