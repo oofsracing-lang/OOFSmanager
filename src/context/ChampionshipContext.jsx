@@ -465,6 +465,42 @@ export const ChampionshipProvider = ({ children }) => {
         }
     };
 
+    const updateDriverAttendance = async (driverName, raceId, newStatus) => {
+        if (!currentUser || !seasonData) return;
+        try {
+            const next = JSON.parse(JSON.stringify(seasonData));
+            const driver = next.drivers.find(d => d.name.toLowerCase() === driverName.toLowerCase());
+
+            if (!driver) {
+                console.error("Driver not found:", driverName);
+                return;
+            }
+
+            const result = driver.raceResults.find(r => String(r.raceId) === String(raceId));
+
+            if (result) {
+                result.attendance = newStatus;
+                // If they are marked as Raced, ensure they are not counted as DNS
+                if (newStatus === 'Raced') {
+                    // Start of Race / Did Not Finish - Effectively they were there.
+                    // We don't change laps/time, just the attendance flag.
+                }
+            } else {
+                // If no result exists but we want to mark them as 'Raced' (e.g. they were there but not in XML??)
+                // This is rarer. Usually they are in XML as DNS (0 laps).
+                // But if they are completely missing, we might need to create a dummy result?
+                // For now, let's assume they have a result (DNS/0 laps) if they "Crashed out on Lap 1".
+                console.warn("No result found for driver to update attendance:", driverName);
+                return;
+            }
+
+            await saveSeasonData(currentSeasonId, next);
+        } catch (err) {
+            console.error("Error updating attendance:", err);
+            throw err;
+        }
+    };
+
     const mergeDrivers = async (targetName, sourceName) => {
         if (!currentUser || !seasonData) return;
         console.log(`Merging ${sourceName} into ${targetName}`);
@@ -1107,6 +1143,7 @@ export const ChampionshipProvider = ({ children }) => {
         deleteRosterDriver,
         updateDriverName,
         mergeDrivers,
+        updateDriverAttendance,
         manualPositions,
         exclusions,
         qualifyingSettings,

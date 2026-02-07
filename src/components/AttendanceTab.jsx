@@ -3,7 +3,7 @@ import { useChampionship } from '../context/ChampionshipContext';
 import { useAuth } from '../context/AuthContext';
 
 const AttendanceTab = () => {
-    const { championshipData, seasonData, toggleDriverReserveStatus, addRosterDriver, deleteRosterDriver, updateDriverName, mergeDrivers } = useChampionship();
+    const { championshipData, seasonData, toggleDriverReserveStatus, addRosterDriver, deleteRosterDriver, updateDriverName, mergeDrivers, updateDriverAttendance } = useChampionship();
     const { currentUser } = useAuth();
     const [filterClass, setFilterClass] = useState('all');
 
@@ -53,7 +53,7 @@ const AttendanceTab = () => {
         return 'withdrew'; // Active absent -> Withdrew
     };
 
-    const getStatusBadge = (status) => {
+    const getStatusBadge = (status, driverName, raceId) => {
         if (!status || status === 'reserve') return <span style={{ color: 'var(--text-muted)' }}>-</span>;
 
         const styles = {
@@ -68,17 +68,47 @@ const AttendanceTab = () => {
             dns: 'DNS'
         };
 
+        const handleStatusClick = async (e) => {
+            if (!currentUser) return;
+            e.stopPropagation();
+
+            // Cycle: DNS -> Raced -> Withdrew -> DNS
+            // Or simpler for now: DNS <-> Raced as requested
+            let newStatus = status;
+            if (status === 'dns') newStatus = 'raced';
+            else if (status === 'raced') newStatus = 'dns';
+            // We can add 'withdrew' later if needed, but 'raced' <-> 'dns' is the main fix
+
+            if (newStatus !== status) {
+                // Determine correct casing (backend uses 'Raced', 'DNS', etc sometimes title case)
+                // The getter returns lowercase. The setter in Context handles it? 
+                // Context just sets what we pass. Let's pass 'Raced' or 'DNS' (Title Case) for consistency with XML parser
+                const statusMap = {
+                    'raced': 'Raced',
+                    'dns': 'DNS'
+                };
+
+                if (confirm(`Change status from ${status.toUpperCase()} to ${statusMap[newStatus]}?`)) {
+                    await updateDriverAttendance(driverName, raceId, statusMap[newStatus]);
+                }
+            }
+        };
+
         return (
-            <span style={{
-                ...styles[status],
-                padding: '0.25rem 0.5rem',
-                borderRadius: '4px',
-                fontSize: '0.75rem',
-                fontWeight: 'bold',
-                display: 'inline-block',
-                minWidth: '40px',
-                textAlign: 'center'
-            }} title={status.toUpperCase()}>
+            <span
+                onClick={handleStatusClick}
+                style={{
+                    ...styles[status],
+                    padding: '0.25rem 0.5rem',
+                    borderRadius: '4px',
+                    fontSize: '0.75rem',
+                    fontWeight: 'bold',
+                    display: 'inline-block',
+                    minWidth: '40px',
+                    textAlign: 'center',
+                    cursor: currentUser ? 'pointer' : 'default',
+                    opacity: currentUser ? 1 : 0.9
+                }} title={`${status.toUpperCase()} - Click to toggle`}>
                 {labels[status]}
             </span>
         );
@@ -334,7 +364,7 @@ const AttendanceTab = () => {
                                 {races.map(race => (
                                     <td key={race.id} style={{ textAlign: 'center', borderLeft: '1px solid rgba(255,255,255,0.05)' }}>
                                         {race.status === 'Completed'
-                                            ? getStatusBadge(getAttendanceStatus(driver, race.id))
+                                            ? getStatusBadge(getAttendanceStatus(driver, race.id), driver.name, race.id)
                                             : <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>•</span>
                                         }
                                     </td>
@@ -476,7 +506,7 @@ const AttendanceTab = () => {
                                                     return (
                                                         <td key={race.id} style={{ textAlign: 'center', borderLeft: '1px solid rgba(255,255,255,0.05)' }}>
                                                             {race.status === 'Completed'
-                                                                ? (status ? getStatusBadge(status) : <span style={{ color: 'var(--text-muted)' }}>-</span>)
+                                                                ? (status ? getStatusBadge(status, driver.name, race.id) : <span style={{ color: 'var(--text-muted)' }}>-</span>)
                                                                 : <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>•</span>
                                                             }
                                                         </td>
