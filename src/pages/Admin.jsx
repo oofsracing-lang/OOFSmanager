@@ -840,11 +840,17 @@ const Admin = () => {
                                                         }}
                                                     >
                                                         <option value="">-- Select Driver --</option>
-                                                        {getRaceResults(incident.raceId).map(driver => (
-                                                            <option key={driver.driverId} value={driver.driverId}>
-                                                                #{driver.carNumber || driver.number} - {driver.name}
-                                                            </option>
-                                                        ))}
+                                                        {getRaceResults(incident.raceId)
+                                                            .sort((a, b) => {
+                                                                const numA = parseInt(a.carNumber || a.number, 10);
+                                                                const numB = parseInt(b.carNumber || b.number, 10);
+                                                                return numA - numB;
+                                                            })
+                                                            .map(driver => (
+                                                                <option key={driver.driverId} value={driver.driverId}>
+                                                                    #{driver.carNumber || driver.number} - {driver.name}
+                                                                </option>
+                                                            ))}
                                                     </select>
                                                 ) : (
                                                     <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Select Race First</span>
