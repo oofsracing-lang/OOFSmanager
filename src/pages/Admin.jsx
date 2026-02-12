@@ -271,21 +271,54 @@ const Admin = () => {
 
         try {
             const next = JSON.parse(JSON.stringify(seasonData));
-            const completedRaces = next.races.filter(r => r.status === 'Completed');
-            const maxCompletedIds = completedRaces.map(r => r.id);
-            const newCurrentRound = maxCompletedIds.length > 0 ? Math.max(...maxCompletedIds) : 0;
 
-            if (newCurrentRound !== next.currentRound) {
-                next.currentRound = newCurrentRound;
-                // Also update total Rounds if needed, though usually fixed
-                // next.totalRounds = next.races.length; 
+            // 1. Find Max Race ID from actual driver results
+            let maxRaceIdWithResults = 0;
+            if (next.drivers && Array.isArray(next.drivers)) {
+                // Collect all raceIds from all drivers
+                const allRaceIds = next.drivers.flatMap(d => (d.raceResults || []).map(r => Number(r.raceId)));
+                if (allRaceIds.length > 0) {
+                    maxRaceIdWithResults = Math.max(...allRaceIds);
+                }
+            }
 
+            console.log("Recalculated Max Round (from results):", maxRaceIdWithResults);
+
+            let changesMade = false;
+
+            // 2. Update Current Round
+            if (maxRaceIdWithResults !== next.currentRound) {
+                next.currentRound = maxRaceIdWithResults;
+                changesMade = true;
+            }
+
+            // 3. Fix Race Statuses (Scheduled vs Completed)
+            if (next.races && Array.isArray(next.races)) {
+                next.races.forEach(r => {
+                    const rId = Number(r.id);
+                    if (rId <= maxRaceIdWithResults) {
+                        if (r.status !== 'Completed') {
+                            r.status = 'Completed';
+                            changesMade = true;
+                        }
+                    } else {
+                        if (r.status !== 'Scheduled') {
+                            r.status = 'Scheduled'; // Reset future races
+                            changesMade = true;
+                        }
+                    }
+                });
+            }
+
+            if (changesMade) {
                 await overwriteSeasonData(currentSeasonId, next);
-                alert(`Updated Current Round to ${newCurrentRound}. Refreshing...`);
+                alert(`Fixed! Current Round set to ${maxRaceIdWithResults}.\nFuture rounds marked as Scheduled.\n\nPage will refresh.`);
                 window.location.reload();
             } else {
-                alert(`Current Round is already correct (${newCurrentRound}). No changes made.`);
+                alert("Scan complete. No issues found with round counts or statuses.");
             }
+
+
 
         } catch (err) {
             console.error("Recalculate Failed:", err);
