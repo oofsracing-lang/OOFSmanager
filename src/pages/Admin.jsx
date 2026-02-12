@@ -164,7 +164,8 @@ const Admin = () => {
 
                     // Smart Match Logic
                     const xmlTrack = result.trackName || '';
-                    const normalize = (str) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
+                    // Normalize accents (NFD) and remove diacritics, then lowercase and remove non-alphanumeric
+                    const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, '');
 
                     // Look for a scheduled race (incomplete) that matches the XML track name
                     // FIX: Use seasonData.races (Raw) to ensure we find ALL existing matches
@@ -181,6 +182,18 @@ const Admin = () => {
                     if (matchingRace) {
                         raceIdToUse = matchingRace.id;
                     } else {
+                        // Confirm with user if they want to create a new round or cancel
+                        const confirmNew = window.confirm(
+                            `No matching scheduled race found for "${xmlTrack}".\n\n` +
+                            `Do you want to create a NEW Round (id: ${(seasonData?.races?.length || 0) + 1})?\n\n` +
+                            `Click OK to Create New Round.\n` +
+                            `Click Cancel to Abort (and check the track name).`
+                        );
+
+                        if (!confirmNew) {
+                            return; // User cancelled
+                        }
+
                         const maxId = (seasonData && seasonData.races && seasonData.races.length > 0)
                             ? Math.max(...seasonData.races.map(r => r.id))
                             : 0;
@@ -253,6 +266,33 @@ const Admin = () => {
         }
     };
 
+    const handleRecalculateRounds = async () => {
+        if (!confirm("This will scan all races and set the 'Current Round' to the latest 'Completed' race. Continue?")) return;
+
+        try {
+            const next = JSON.parse(JSON.stringify(seasonData));
+            const completedRaces = next.races.filter(r => r.status === 'Completed');
+            const maxCompletedIds = completedRaces.map(r => r.id);
+            const newCurrentRound = maxCompletedIds.length > 0 ? Math.max(...maxCompletedIds) : 0;
+
+            if (newCurrentRound !== next.currentRound) {
+                next.currentRound = newCurrentRound;
+                // Also update total Rounds if needed, though usually fixed
+                // next.totalRounds = next.races.length; 
+
+                await overwriteSeasonData(currentSeasonId, next);
+                alert(`Updated Current Round to ${newCurrentRound}. Refreshing...`);
+                window.location.reload();
+            } else {
+                alert(`Current Round is already correct (${newCurrentRound}). No changes made.`);
+            }
+
+        } catch (err) {
+            console.error("Recalculate Failed:", err);
+            alert("Error: " + err.message);
+        }
+    };
+
     // Debug: Trace what the Admin UI actually received from Context
     // [CLEANUP] Debug logs removed
 
@@ -288,6 +328,14 @@ const Admin = () => {
                         onClick={handleResetClick}
                     >
                         {isResetting ? "Resetting..." : "Reset All Data"}
+                    </button>
+                    <button
+                        className="btn btn-outline-warning"
+                        style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
+                        onClick={handleRecalculateRounds}
+                        title="Fixes 'Current Round' number if it gets out of sync with completed races"
+                    >
+                        Internal: Fix Round Count
                     </button>
                 </div>
             </div>
