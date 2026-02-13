@@ -395,42 +395,54 @@ const Admin = () => {
 
     return (
         <div>
-            <div style={{ display: 'flex', gap: '1rem' }}>
-                {currentSeasonId === '2' && (
+            {/* Top Bar with Header and Buttons */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                <h2>Admin - Schedule & Penalties</h2>
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                    {currentSeasonId === '2' && (
+                        <button
+                            className="btn btn-primary"
+                            style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
+                            onClick={async () => {
+                                if (!confirm('Upload corrected Season 2 data to Cloud?')) return;
+                                try {
+                                    const season2Data = await import('../data/seasons/season2.json');
+                                    await overwriteSeasonData('2', season2Data.default);
+                                    alert('Season 2 data uploaded! Refreshing...');
+                                    window.location.reload();
+                                } catch (err) {
+                                    alert('Upload failed: ' + err.message);
+                                }
+                            }}
+                        >
+                            🔄 Upload Season 2 Fix
+                        </button>
+                    )}
                     <button
-                        className="btn btn-primary"
+                        className="btn btn-outline-warning"
                         style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
-                        onClick={async () => {
-                            if (!confirm('Upload corrected Season 2 data to Cloud?')) return;
-                            try {
-                                const season2Data = await import('../data/seasons/season2.json');
-                                await overwriteSeasonData('2', season2Data.default);
-                                alert('Season 2 data uploaded! Refreshing...');
-                                window.location.reload();
-                            } catch (err) {
-                                alert('Upload failed: ' + err.message);
-                            }
-                        }}
+                        onClick={handleSortRacesByDate}
+                        title="Re-orders all races by date and re-assigns Round IDs"
                     >
-                        🔄 Upload Season 2 Fix
+                        Internal: Sort by Date
                     </button>
-                )}
-                <button
-                    className="btn btn-outline-warning"
-                    style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
-                    onClick={handleSortRacesByDate}
-                    title="Re-orders all races by date and re-assigns Round IDs"
-                >
-                    Internal: Sort by Date
-                </button>
-                <button
-                    className="btn btn-outline-danger"
-                    disabled={isResetting}
-                    style={{ fontSize: '0.8rem', padding: '0.5rem 1rem', opacity: isResetting ? 0.7 : 1 }}
-                    onClick={handleResetClick}
-                >
-                    {isResetting ? "Resetting..." : "Reset All Data"}
-                </button>
+                    <button
+                        className="btn btn-outline-warning"
+                        style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
+                        onClick={handleRecalculateRounds}
+                        title="Fixes 'Current Round' number if it gets out of sync with completed races"
+                    >
+                        Internal: Fix Round Count
+                    </button>
+                    <button
+                        className="btn btn-outline-danger"
+                        disabled={isResetting}
+                        style={{ fontSize: '0.8rem', padding: '0.5rem 1rem', opacity: isResetting ? 0.7 : 1 }}
+                        onClick={handleResetClick}
+                    >
+                        {isResetting ? "Resetting..." : "Reset All Data"}
+                    </button>
+                </div>
             </div>
 
             {/* Move Results Tool */}
