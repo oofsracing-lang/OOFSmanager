@@ -839,11 +839,10 @@ export const ChampionshipProvider = ({ children }) => {
 
 
 
-            // EMERGENCY HOTFIX: Filter out known duplicate/ghost driver IDs
-            // IDs 40 and 41 identified as duplicates for Dave Paccagnini and Abe Wozniak
-            if (data.drivers) {
-                data.drivers = data.drivers.filter(d => ![40, 41].includes(d.id));
-            }
+            // [REMOVED] EMERGENCY HOTFIX: Filter was deleting valid drivers (IDs 40/41)
+            // if (data.drivers) {
+            //    data.drivers = data.drivers.filter(d => ![40, 41].includes(d.id));
+            // }
 
             // Points System: P1-P25.
             const pointsTable = [

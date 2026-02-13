@@ -69,9 +69,9 @@ function calculateChampionship(seasonData) {
     const manualPositions = data.manualPositions || {};
     const exclusions = data.exclusions || {};
 
-    // EMERGENCY HOTFIX (Persisted)
+    // [REMOVED] EMERGENCY HOTFIX for IDs 40/41
     if (data.drivers) {
-        data.drivers = data.drivers.filter(d => ![40, 41].includes(d.id));
+        // data.drivers = data.drivers.filter(d => ![40, 41].includes(d.id));
         // Reset points for clean recalculation
         data.drivers.forEach(d => d.totalPoints = 0);
     }
