@@ -326,94 +326,70 @@ const Admin = () => {
         }
     };
 
-    // --- RACE MANAGEMENT TOOLS ---
-    const [moveSourceId, setMoveSourceId] = useState('');
-    const [moveTargetId, setMoveTargetId] = useState('');
-
-    const handleMoveResults = async () => {
-        if (!moveSourceId || !moveTargetId) {
-            alert("Please enter both Source and Target Round IDs.");
-            return;
-        }
-        if (moveSourceId === moveTargetId) {
-            alert("Source and Target cannot be the same.");
-            return;
-        }
-
-        if (!confirm(`WARNING: This will move ALL results from Round ${moveSourceId} to Round ${moveTargetId}.\n\nRound ${moveSourceId} will be DELETED.\n\nAre you sure?`)) {
-            return;
-        }
+    const handleSortRacesByDate = async () => {
+        if (!confirm("This will RE-ORDER all races chronologically by Date.\n\nIt will also re-assign Round IDs (1, 2, 3...) to match the new order.\n\nEnsure all races have correct dates before proceeding.\n\nContinue?")) return;
 
         try {
             const next = JSON.parse(JSON.stringify(seasonData));
-            const sourceId = parseInt(moveSourceId);
-            const targetId = parseInt(moveTargetId);
+            const oldRaces = [...(next.races || [])];
 
-            console.log(`Moving results from ${sourceId} to ${targetId}`);
+            if (oldRaces.length === 0) {
+                alert("No races to sort.");
+                return;
+            }
 
-            let moveCount = 0;
+            // 1. Sort Races by Date
+            oldRaces.sort((a, b) => {
+                const dateA = new Date(a.date || '9999-12-31');
+                const dateB = new Date(b.date || '9999-12-31');
+                return dateA - dateB;
+            });
 
-            // 1. Migrate Driver Results
+            // 2. Create ID Map & New Races List
+            const idMap = {}; // oldId -> newId
+            const newRaces = oldRaces.map((r, index) => {
+                const newId = index + 1;
+                // Only map if ID actually changes, but map everything for safety
+                idMap[r.id] = newId;
+                return {
+                    ...r,
+                    id: newId
+                };
+            });
+
+            console.log("Sort Races: ID Mapping:", idMap);
+
+            // 3. Update Driver Results
             if (next.drivers) {
                 next.drivers.forEach(d => {
                     if (d.raceResults) {
-                        const sourceResultIndex = d.raceResults.findIndex(r => r.raceId === sourceId);
-                        if (sourceResultIndex !== -1) {
-                            // Check if target already exists
-                            const targetResultIndex = d.raceResults.findIndex(r => r.raceId === targetId);
-
-                            if (targetResultIndex !== -1) {
-                                // Overwrite existing target with source (assuming source is the "new/correct" upload)
-                                d.raceResults[targetResultIndex] = {
-                                    ...d.raceResults[sourceResultIndex],
-                                    raceId: targetId
-                                };
-                                // Remove source
-                                d.raceResults.splice(sourceResultIndex, 1);
-                            } else {
-                                // Just reassign ID
-                                d.raceResults[sourceResultIndex].raceId = targetId;
+                        d.raceResults.forEach(r => {
+                            // If the raceId exists in our map, update it
+                            // If it doesn't (maybe a result for a deleted race?), keep it or warn? keeping it for now.
+                            if (idMap[r.raceId] !== undefined) {
+                                r.raceId = idMap[r.raceId];
                             }
-                            moveCount++;
-                        }
+                        });
                     }
                 });
             }
 
-            // 2. Initial Status Update for Target
-            const targetRace = next.races.find(r => r.id === targetId);
-            const sourceRace = next.races.find(r => r.id === sourceId);
+            // 4. Update Season Data
+            next.races = newRaces;
 
-            if (targetRace) {
-                targetRace.status = 'Completed';
-                // Copy drama log if source has it and target doesn't
-                if (sourceRace && sourceRace.dramaLog && (!targetRace.dramaLog || targetRace.dramaLog.length === 0)) {
-                    targetRace.dramaLog = sourceRace.dramaLog;
-                }
-                // Update date?
-                if (sourceRace && sourceRace.date) {
-                    targetRace.date = sourceRace.date;
-                }
-            }
-
-            // 3. Delete Source Race
-            next.races = next.races.filter(r => r.id !== sourceId);
-
-            // 4. Update Current Round & Total Rounds
-            // Recalculate based on data
-            const allRaceIds = next.drivers.flatMap(d => (d.raceResults || []).map(r => Number(r.raceId)));
-            const maxRaceId = allRaceIds.length > 0 ? Math.max(...allRaceIds) : 0;
-
-            next.currentRound = maxRaceId;
-            next.totalRounds = next.races.length;
+            // Recalculate Current Round based on new IDs
+            // Find max ID of completed races
+            const completedVals = newRaces.filter(r => r.status === 'Completed').map(r => r.id);
+            next.currentRound = completedVals.length > 0 ? Math.max(...completedVals) : 0;
+            next.totalRounds = newRaces.length;
 
             await overwriteSeasonData(currentSeasonId, next);
-            alert(`Successfully moved ${moveCount} driver results from Round ${sourceId} to ${targetId}.\nRound ${sourceId} deleted.\n\nRefreshing...`);
+            alert("Races sorted by date and re-indexed!\n\nPage will now refresh.");
             window.location.reload();
 
         } catch (err) {
-            console.error("Move Failed:", err);
-            alert("Error moving results: " + err.message);
+            console.error("Sort Failed:", err);
+            alert("Sort failed: " + err.message);
         }
     };
 
@@ -442,10 +418,10 @@ const Admin = () => {
                 <button
                     className="btn btn-outline-warning"
                     style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
-                    onClick={handleRecalculateRounds}
-                    title="Fixes 'Current Round' number if it gets out of sync with completed races"
+                    onClick={handleSortRacesByDate}
+                    title="Re-orders all races by date and re-assigns Round IDs"
                 >
-                    Internal: Fix Round Count
+                    Internal: Sort by Date
                 </button>
                 <button
                     className="btn btn-outline-danger"
@@ -453,46 +429,12 @@ const Admin = () => {
                     style={{ fontSize: '0.8rem', padding: '0.5rem 1rem', opacity: isResetting ? 0.7 : 1 }}
                     onClick={handleResetClick}
                 >
+                    {isResetting ? "Resetting..." : "Reset All Data"}
                 </button>
             </div>
 
             {/* Move Results Tool */}
-            <div className="glass-panel" style={{ padding: '1rem', marginBottom: '2rem', border: '1px solid #555' }}>
-                <h4 style={{ marginTop: 0 }}>Merge / Move Results</h4>
-                <p style={{ fontSize: '0.9rem', color: '#ccc' }}>
-                    Use this to fix duplicate rounds (e.g. if the upload created "Round 9" instead of matching "Round 3").
-                </p>
-                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <label>Source Round ID:</label>
-                        <input
-                            type="number"
-                            style={{ width: '60px', padding: '0.25rem', background: '#333', color: 'white', border: '1px solid #555' }}
-                            value={moveSourceId}
-                            onChange={(e) => setMoveSourceId(e.target.value)}
-                            placeholder="9"
-                        />
-                    </div>
-                    <span style={{ fontSize: '1.2rem' }}>➜</span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <label>Target Round ID:</label>
-                        <input
-                            type="number"
-                            style={{ width: '60px', padding: '0.25rem', background: '#333', color: 'white', border: '1px solid #555' }}
-                            value={moveTargetId}
-                            onChange={(e) => setMoveTargetId(e.target.value)}
-                            placeholder="3"
-                        />
-                    </div>
-                    <button
-                        className="btn btn-danger"
-                        style={{ marginLeft: 'auto' }}
-                        onClick={handleMoveResults}
-                    >
-                        Move Results & Delete Source
-                    </button>
-                </div>
-            </div>
+
 
             {/* Reset Confirmation Modal */}
             {
