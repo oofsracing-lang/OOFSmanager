@@ -112,6 +112,7 @@ const Standings = () => {
                                 <th style={{ padding: '1rem 0.5rem', textAlign: 'center' }}>Points</th>
                                 {showBallast && <th style={{ padding: '1rem 0.5rem', textAlign: 'center' }}>Ballast</th>}
                                 <th style={{ padding: '1rem 0.5rem', textAlign: 'center' }}>License Points</th>
+                                <th style={{ padding: '1rem 0.5rem', textAlign: 'center' }}>License Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -175,28 +176,38 @@ const Standings = () => {
                                             {driver.currentBallast}kg
                                         </td>
                                     )}
-                                    <td style={{
-                                        padding: '1rem 0.5rem',
-                                        textAlign: 'center'
-                                    }}>
-                                        {(() => {
-                                            const lpData = (licensePoints || []).find(lp =>
-                                                lp.driverName.toLowerCase() === driver.name.toLowerCase()
-                                            );
-                                            const points = lpData ? lpData.totalPoints : 0;
+                                    {(() => {
+                                        const lpData = (licensePoints || []).find(lp =>
+                                            lp.driverName.toLowerCase() === driver.name.toLowerCase()
+                                        );
+                                        const points = lpData ? lpData.totalPoints : 0;
+                                        const status = lpData?.currentStatus || 'OK';
+                                        const description = lpData?.statusDescription || 'Clean License';
 
-                                            if (points === 0) return <span style={{ color: 'var(--text-muted)', opacity: 0.5 }}>-</span>;
+                                        const pointsCell = points === 0
+                                            ? <span style={{ color: 'var(--text-muted)', opacity: 0.5 }}>-</span>
+                                            : <span style={{
+                                                color: points >= 7 ? 'var(--danger)' : points >= 4 ? 'var(--warning)' : 'var(--text-main)',
+                                                fontWeight: 'bold'
+                                            }}>{points}</span>;
 
-                                            return (
-                                                <span style={{
-                                                    color: points >= 7 ? 'var(--danger)' : points >= 4 ? 'var(--warning)' : 'var(--text-main)',
-                                                    fontWeight: points > 0 ? 'bold' : 'normal'
-                                                }}>
-                                                    {points}
-                                                </span>
-                                            );
-                                        })()}
-                                    </td>
+                                        const statusEmoji = status === 'RACE_BAN' ? '🔴' : status === 'QUALI_BAN' ? '🟠' : status === 'DT_PENDING' ? '🟡' : '✅';
+                                        const statusColor = status === 'RACE_BAN' ? 'var(--danger)' : status === 'QUALI_BAN' || status === 'DT_PENDING' ? 'var(--warning)' : 'var(--success)';
+                                        const statusLabel = status === 'OK' ? 'Clean' : description;
+
+                                        return (
+                                            <>
+                                                <td style={{ padding: '1rem 0.5rem', textAlign: 'center' }}>
+                                                    {pointsCell}
+                                                </td>
+                                                <td style={{ padding: '1rem 0.5rem', textAlign: 'center' }}>
+                                                    <span style={{ color: statusColor, fontWeight: status !== 'OK' ? 'bold' : 'normal', fontSize: '0.85rem' }}>
+                                                        {statusEmoji} {statusLabel}
+                                                    </span>
+                                                </td>
+                                            </>
+                                        );
+                                    })()}
                                 </tr>
                             ))}
                         </tbody>
