@@ -435,6 +435,54 @@ const Admin = () => {
                         Internal: Fix Round Count
                     </button>
                     <button
+                        className="btn btn-outline-warning"
+                        style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
+                        onClick={async () => {
+                            const oldCarName = prompt(
+                                "Enter the EXACT name of the old car Michael Landry drove in Rounds 1-3:\n\n(e.g., Lamborghini Huracan GT3 EVO2)"
+                            );
+                            if (!oldCarName) return; // User cancelled or left blank
+
+                            const confirmMsg = `This will write "${oldCarName}" into Michael Landry's Rounds 1, 2, and 3.\n\nContinue?`;
+                            if (!confirm(confirmMsg)) return;
+
+                            try {
+                                const next = JSON.parse(JSON.stringify(seasonData));
+                                let patchedCount = 0;
+
+                                if (next.drivers) {
+                                    // Find Michael Landry (ID: 710 or by name)
+                                    const landry = next.drivers.find(d =>
+                                        d.name.toLowerCase().includes('landry') || d.id === '710' || d.id === 710
+                                    );
+
+                                    if (landry && landry.raceResults) {
+                                        landry.raceResults.forEach(r => {
+                                            // Only patch rounds 1, 2, 3 where car is missing
+                                            if (!r.car && r.raceId < 4) {
+                                                r.car = oldCarName;
+                                                patchedCount++;
+                                            }
+                                        });
+                                    }
+                                }
+
+                                if (patchedCount > 0) {
+                                    await overwriteSeasonData(currentSeasonId, next);
+                                    alert(`Success! Set "${oldCarName}" for ${patchedCount} of Michael Landry's old rounds.\n\nNow, re-import his Round 4 file to trigger the points reset.\n\nPage will refresh.`);
+                                    window.location.reload();
+                                } else {
+                                    alert("No rounds were patched. (Either Landry wasn't found, or his old rounds already have car names assigned).");
+                                }
+                            } catch (err) {
+                                alert("Patch failed: " + err.message);
+                            }
+                        }}
+                        title="Patches Michael Landry's old rounds with his old car so the rules can detect the switch"
+                    >
+                        Patch Landry's Old Rounds
+                    </button>
+                    <button
                         className="btn btn-outline-danger"
                         disabled={isResetting}
                         style={{ fontSize: '0.8rem', padding: '0.5rem 1rem', opacity: isResetting ? 0.7 : 1 }}

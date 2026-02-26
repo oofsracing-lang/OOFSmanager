@@ -741,6 +741,7 @@ export const ChampionshipProvider = ({ children }) => {
                 status: pResult.status || 'Finished',
                 attendance: lapsCount > 0 ? 'Raced' : 'DNS', // Dynamic Attendance
                 drivenClass: determinedClass, // Store the class driven in this specific race
+                car: pResult.car || '',       // Store specific car model driven this race
                 // Don't set points/ballast here - let cloud function calculate
                 purpleSectors: Number(pResult.purpleSectors) || 0,
                 incidents: Number(pResult.incidents) || 0,
@@ -802,7 +803,7 @@ export const ChampionshipProvider = ({ children }) => {
 
         // Use cloud standings in production if available and valid
         if (isProd && cloudStandings && cloudStandings.season === (seasonData?.season) &&
-            (cloudStandings.races || []).length >= (seasonData?.races || []).length) {
+            (cloudStandings.currentRound || 0) >= (seasonData?.currentRound || 0)) {
 
             console.log("[processedData] Using CLOUD STANDINGS");
             return {
@@ -1039,6 +1040,43 @@ export const ChampionshipProvider = ({ children }) => {
                                 validResults = currentClassResults;
                             } else {
                                 // Swap was early (Race 1 or 2), keep all points.
+                            }
+                        }
+
+                        // CAR-SWITCH RESET RULE (unconditional — mirrors cloud function)
+                        {
+                            const sortedByRace = [...driver.raceResults].sort((a, b) => a.raceId - b.raceId);
+
+                            let registeredCar = null;
+                            for (let i = sortedByRace.length - 1; i >= 0; i--) {
+                                if (sortedByRace[i].car) {
+                                    registeredCar = sortedByRace[i].car;
+                                    break;
+                                }
+                            }
+
+                            if (registeredCar) {
+                                const firstRegisteredRound = sortedByRace.find(r => r.car === registeredCar);
+                                const firstRegisteredRaceId = firstRegisteredRound ? firstRegisteredRound.raceId : null;
+
+                                const hasCarSwitch = sortedByRace.some(
+                                    r => r.car && r.car !== registeredCar && r.raceId < firstRegisteredRaceId
+                                );
+
+                                if (hasCarSwitch) {
+                                    driver.carSwitched = true;
+                                    driver.registeredCar = registeredCar;
+                                    driver.carSwitchRound = firstRegisteredRaceId;
+
+                                    driver.raceResults.forEach(r => {
+                                        if (r.raceId < firstRegisteredRaceId) {
+                                            r.pointsBeforeSwitch = r.points;
+                                            r.points = 0;
+                                        }
+                                    });
+                                } else {
+                                    driver.carSwitched = false;
+                                }
                             }
                         }
 

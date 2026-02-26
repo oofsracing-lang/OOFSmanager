@@ -277,21 +277,67 @@ function calculateChampionship(seasonData) {
                     }
                 }
 
+                // CAR-SWITCH RESET RULE (unconditional — applies to all seasons with per-race car data)
+                // Registered car = the car from their LATEST race result (most recent round).
+                // Any round before the switch is zeroed. The switch round keeps full points.
+                // Self-activates: only fires when at least two rounds have different car values.
+                // Old results without a `car` field are safely ignored in detection but zeroed if a switch is found.
+                const carRules = data.config && data.config.rules ? data.config.rules : {};
+                {
+                    const sortedByRace = [...driver.raceResults].sort((a, b) => a.raceId - b.raceId);
+
+                    // Find registered car: walk backwards to find most recent result with a car value
+                    let registeredCar = null;
+                    for (let i = sortedByRace.length - 1; i >= 0; i--) {
+                        if (sortedByRace[i].car) {
+                            registeredCar = sortedByRace[i].car;
+                            break;
+                        }
+                    }
+
+                    if (registeredCar) {
+                        // Find the earliest round where they drove the registered car
+                        const firstRegisteredRound = sortedByRace.find(r => r.car === registeredCar);
+                        const firstRegisteredRaceId = firstRegisteredRound ? firstRegisteredRound.raceId : null;
+
+                        // Check if any earlier round had a different (non-empty) car
+                        const hasCarSwitch = sortedByRace.some(
+                            r => r.car && r.car !== registeredCar && r.raceId < firstRegisteredRaceId
+                        );
+
+                        if (hasCarSwitch) {
+                            driver.carSwitched = true;
+                            driver.registeredCar = registeredCar;
+                            driver.carSwitchRound = firstRegisteredRaceId;
+
+                            // Zero out points for ALL rounds before the switch round.
+                            // This includes older rounds that may not have a `car` field (imported before tracking was added).
+                            // Once a switch is confirmed, everything before the new car's first round is reset.
+                            driver.raceResults.forEach(r => {
+                                if (r.raceId < firstRegisteredRaceId) {
+                                    r.pointsBeforeSwitch = r.points;
+                                    r.points = 0;
+                                }
+                            });
+                        } else {
+                            driver.carSwitched = false;
+                        }
+                    }
+                }
+
                 driver.totalPoints = validResults.reduce((sum, r) => sum + (r.points || 0), 0);
 
                 let runningBallast = 0;
                 const sortedResults = [...driver.raceResults].sort((a, b) => a.raceId - b.raceId);
 
-                const rules = data.config && data.config.rules ? data.config.rules : {};
-
                 // Determine Max for this driver's class
                 let maxBallast = 45; // Default
-                if (rules.ballastType === 'custom_class' && rules.ballastRules && rules.ballastRules[driver.class]) {
-                    if (typeof rules.ballastRules[driver.class].max === 'number') {
-                        maxBallast = rules.ballastRules[driver.class].max;
+                if (carRules.ballastType === 'custom_class' && carRules.ballastRules && carRules.ballastRules[driver.class]) {
+                    if (typeof carRules.ballastRules[driver.class].max === 'number') {
+                        maxBallast = carRules.ballastRules[driver.class].max;
                     }
-                } else if (typeof rules.maxBallast === 'number') {
-                    maxBallast = rules.maxBallast;
+                } else if (typeof carRules.maxBallast === 'number') {
+                    maxBallast = carRules.maxBallast;
                 }
 
                 sortedResults.forEach(r => {

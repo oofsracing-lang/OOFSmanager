@@ -38,7 +38,8 @@
         }
       },
       "dropRounds": true,
-      "participationRequirement": "must_complete_lap"
+      "participationRequirement": "must_complete_lap",
+      "carSwitchResetsPoints": true
     },
     "driverRoster": [
       {
