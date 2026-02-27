@@ -439,9 +439,9 @@ const Admin = () => {
                                 let count = 0;
                                 for (let d of snapshot.docs) {
                                     const data = d.data();
-                                    if (!data.driverName || data.driverName.trim() === '') {
+                                    if (data.driverName === 'David Carter' || !data.driverName || data.driverName.trim() === '') {
                                         const docRef = doc(db, 'licensePoints', d.id);
-                                        await updateDoc(docRef, { driverName: 'David Carter' });
+                                        await updateDoc(docRef, { driverName: 'Dave Carter' });
                                         count++;
                                     }
                                 }
