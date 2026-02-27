@@ -44,7 +44,7 @@ const LicensePointsTab = () => {
 
         // Find driver in roster by name
         const rosterEntry = seasonData?.config?.driverRoster?.find(
-            d => d.name.toLowerCase() === newDriverName.toLowerCase()
+            d => (d.name || '').toLowerCase() === (newDriverName || '').toLowerCase()
         );
 
         if (!rosterEntry) {
@@ -54,7 +54,7 @@ const LicensePointsTab = () => {
 
         // Find driver ID from drivers list
         const driver = championshipData?.drivers?.find(
-            d => d.name.toLowerCase() === rosterEntry.name.toLowerCase()
+            d => (d.name || '').toLowerCase() === (rosterEntry.name || '').toLowerCase()
         );
 
         if (!driver) {
@@ -189,8 +189,8 @@ const LicensePointsTab = () => {
     const participants = championshipData?.drivers || [];
 
     const availableDrivers = roster.filter(rosterEntry => {
-        const isAlreadyTracked = licenseRecords.find(r => r.driverName.toLowerCase() === rosterEntry.name.toLowerCase());
-        const hasRaced = participants.find(p => p.name.toLowerCase() === rosterEntry.name.toLowerCase());
+        const isAlreadyTracked = licenseRecords.find(r => (r.driverName || '').toLowerCase() === (rosterEntry.name || '').toLowerCase());
+        const hasRaced = participants.find(p => (p.name || '').toLowerCase() === (rosterEntry.name || '').toLowerCase());
         return !isAlreadyTracked && hasRaced;
     });
 

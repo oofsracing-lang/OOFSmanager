@@ -178,7 +178,7 @@ const Standings = () => {
                                     )}
                                     {(() => {
                                         const lpData = (licensePoints || []).find(lp =>
-                                            lp.driverName.toLowerCase() === driver.name.toLowerCase()
+                                            (lp.driverName || '').toLowerCase() === (driver?.name || '').toLowerCase()
                                         );
                                         const points = lpData ? lpData.totalPoints : 0;
                                         const status = lpData?.currentStatus || 'OK';
