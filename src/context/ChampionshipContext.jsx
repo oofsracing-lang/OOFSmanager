@@ -535,7 +535,7 @@ export const ChampionshipProvider = ({ children }) => {
             // We must do this before deleting the source, just to be clean, 
             // though we already captured the object.
             if (targetDriver.id && sourceDriver.id) {
-                await mergeDriverLicensePoints(currentSeasonId, targetDriver.id, sourceDriver.id);
+                await mergeDriverLicensePoints(currentSeasonId, targetDriver.id, sourceDriver.id, targetDriver.name);
             }
 
             // 4. Update Roster Logic

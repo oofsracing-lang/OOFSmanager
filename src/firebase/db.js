@@ -592,7 +592,7 @@ export const markPenaltyServed = async (seasonId, driverId, penaltyType, note, a
  * @param {number} targetDriverId 
  * @param {number} sourceDriverId 
  */
-export const mergeDriverLicensePoints = async (seasonId, targetDriverId, sourceDriverId) => {
+export const mergeDriverLicensePoints = async (seasonId, targetDriverId, sourceDriverId, targetDriverName = null) => {
     try {
         const sourceDocRef = doc(db, LICENSE_POINTS_COLLECTION, `${seasonId}_driver-${sourceDriverId}`);
         const sourceSnap = await getDocs(query(collection(db, LICENSE_POINTS_COLLECTION), where('seasonId', '==', String(seasonId)), where('driverId', '==', Number(sourceDriverId))));
@@ -638,11 +638,6 @@ export const mergeDriverLicensePoints = async (seasonId, targetDriverId, sourceD
         const payload = {
             seasonId: String(seasonId),
             driverId: Number(targetDriverId),
-            // We don't have driver Name readily available unless passed, but updateDriverLicensePoints usually handles it. 
-            // We assume target doc might exist. If not, we might lack the name. 
-            // Ideally we'd pass names too, but let's assume if target exists it has name. 
-            // If target is new (0 pts), we might need to be careful. 
-            // For now, let's just update the numeric fields and history.
             totalPoints: newTotal,
             highestServedThreshold: newThreshold,
             currentStatus: status.status,
@@ -650,6 +645,11 @@ export const mergeDriverLicensePoints = async (seasonId, targetDriverId, sourceD
             pointHistory: newHistory,
             updatedAt: new Date().toISOString()
         };
+
+        // If we have a name provided, ensure it's written or updated
+        if (targetDriverName) {
+            payload.driverName = targetDriverName;
+        }
 
         if (targetSnap.empty) {
             // If creating new, we really needed the name. 

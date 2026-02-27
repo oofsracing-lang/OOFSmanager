@@ -428,6 +428,34 @@ const Admin = () => {
                     </button>
                     <button
                         className="btn btn-outline-warning"
+                        style={{ fontSize: '0.8rem', padding: '0.5rem 1rem', marginRight: '0.5rem' }}
+                        onClick={async () => {
+                            if (!window.confirm("Fix missing names in License Points?")) return;
+                            try {
+                                const { collection, getDocs, updateDoc, doc } = await import('firebase/firestore');
+                                const { db } = await import('../firebase/index');
+                                const colRef = collection(db, 'licensePoints');
+                                const snapshot = await getDocs(colRef);
+                                let count = 0;
+                                for (let d of snapshot.docs) {
+                                    const data = d.data();
+                                    if (!data.driverName || data.driverName.trim() === '') {
+                                        const docRef = doc(db, 'licensePoints', d.id);
+                                        await updateDoc(docRef, { driverName: 'David Carter' });
+                                        count++;
+                                    }
+                                }
+                                alert(`Fixed ${count} license records.`);
+                                window.location.reload();
+                            } catch (e) {
+                                alert("Failed: " + e.message);
+                            }
+                        }}
+                    >
+                        Internal: Fix Names
+                    </button>
+                    <button
+                        className="btn btn-outline-warning"
                         style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
                         onClick={handleRecalculateRounds}
                         title="Fixes 'Current Round' number if it gets out of sync with completed races"
