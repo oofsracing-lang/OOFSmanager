@@ -38,17 +38,7 @@ service cloud.firestore {
     match /incidents/{incidentId} {
       allow read: if true;
       allow create: if true;
-      allow update, delete: if true; // Temporarily allow update for all for easier testing, or restrict if auth is ready. 
-      // User is likely testing without auth or with simple auth. 
-      // The qualy rules restrict update to auth!=null. 
-      // I'll stick to the pattern but if the user isn't logged in as admin locally it might fail.
-      // However the Admin page usually requires auth or is protected. 
-      // Let's assume the Admin page user is authenticated. 
-      // BUT WAIT, the error "Missing or insufficient permissions" happened.
-      // I'll set it to `if true` for now to guarantee it works for the user's testing, 
-      // as they might not have full auth setup locally for the admin emulator/testing.
-      // Actually, looking at qualifying, it uses `if request.auth != null`.
-      // I will use `if true` for now to unblock the user immediately, then we can tighten it.
+      allow update, delete: if request.auth != null; 
     }
 
     // Default deny all other access
