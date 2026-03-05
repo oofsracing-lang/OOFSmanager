@@ -165,7 +165,17 @@ const Admin = () => {
                     // Smart Match Logic
                     const xmlTrack = result.trackName || '';
                     // Normalize accents (NFD) and remove diacritics, then lowercase and remove non-alphanumeric
-                    const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, '');
+                    const normalize = (str) => {
+                        let normalized = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, '');
+                        // Handle specific track name discrepancies between UI and game files
+                        if (normalized.includes('paulricard')) return 'paulricard';
+                        if (normalized.includes('spa')) return 'spa';
+                        if (normalized.includes('nurburgring')) return 'nurburgring';
+                        if (normalized.includes('sarthe') || normalized.includes('lemans') || normalized.includes('mans')) return 'lemans';
+                        if (normalized.includes('interlagos') || normalized.includes('saopaulo') || normalized.includes('josecarlos')) return 'interlagos';
+                        if (normalized.includes('cota') || normalized.includes('americas') || normalized.includes('austin')) return 'cota';
+                        return normalized;
+                    };
 
                     // Look for a scheduled race (incomplete) that matches the XML track name
                     // FIX: Use seasonData.races (Raw) to ensure we find ALL existing matches
@@ -175,7 +185,7 @@ const Admin = () => {
                         // Simple check: Is the name similar?
                         const dbTrack = normalize(r.track);
                         const fileTrack = normalize(xmlTrack);
-                        return dbTrack.includes(fileTrack) || fileTrack.includes(dbTrack);
+                        return dbTrack === fileTrack || dbTrack.includes(fileTrack) || fileTrack.includes(dbTrack);
                     });
 
                     let raceIdToUse;
