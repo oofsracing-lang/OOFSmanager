@@ -162,52 +162,61 @@ const Admin = () => {
 
                     // Import Logic
 
-                    // Smart Match Logic
+                    // Track Name from XML
                     const xmlTrack = result.trackName || '';
-                    // Normalize accents (NFD) and remove diacritics, then lowercase and remove non-alphanumeric
-                    const normalize = (str) => {
-                        let normalized = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, '');
-                        // Handle specific track name discrepancies between UI and game files
-                        if (normalized.includes('paulricard')) return 'paulricard';
-                        if (normalized.includes('spa')) return 'spa';
-                        if (normalized.includes('nurburgring')) return 'nurburgring';
-                        if (normalized.includes('sarthe') || normalized.includes('lemans') || normalized.includes('mans')) return 'lemans';
-                        if (normalized.includes('interlagos') || normalized.includes('saopaulo') || normalized.includes('josecarlos')) return 'interlagos';
-                        if (normalized.includes('cota') || normalized.includes('americas') || normalized.includes('austin')) return 'cota';
-                        return normalized;
-                    };
-
-                    // Look for a scheduled race (incomplete) that matches the XML track name
-                    // FIX: Use seasonData.races (Raw) to ensure we find ALL existing matches
-                    // Use fallback to empty array if undefined
-                    const matchingRace = (seasonData?.races || []).find(r => {
-                        // Only look at future/current races, or races deemed "Scheduled"
-                        // Simple check: Is the name similar?
-                        const dbTrack = normalize(r.track);
-                        const fileTrack = normalize(xmlTrack);
-                        return dbTrack === fileTrack || dbTrack.includes(fileTrack) || fileTrack.includes(dbTrack);
-                    });
-
                     let raceIdToUse;
-                    if (matchingRace) {
-                        raceIdToUse = matchingRace.id;
-                    } else {
-                        // Confirm with user if they want to create a new round or cancel
-                        const confirmNew = window.confirm(
-                            `No matching scheduled race found for "${xmlTrack}".\n\n` +
-                            `Do you want to create a NEW Round (id: ${(seasonData?.races?.length || 0) + 1})?\n\n` +
-                            `Click OK to Create New Round.\n` +
-                            `Click Cancel to Abort (and check the track name).`
+
+                    // Feature: Allow forcing upload to the currently selected race
+                    const selectedRaceObj = selectedRace ? (seasonData?.races || []).find(r => r.id === selectedRace) : null;
+                    
+                    if (selectedRaceObj) {
+                        const forceConfirm = window.confirm(
+                            `Upload Strategy:\n\nYou have "${selectedRaceObj.track}" selected in the admin panel.\n\nThe XML file says the track is "${xmlTrack}".\n\nClick OK to FORCE IMPORT to "${selectedRaceObj.track}" (Round ${selectedRaceObj.id}).\n\nClick Cancel to use the automatic track matching logic instead. (Useful if the game output the wrong track name in the file).`
                         );
-
-                        if (!confirmNew) {
-                            return; // User cancelled
+                        if (forceConfirm) {
+                            raceIdToUse = selectedRaceObj.id;
                         }
+                    }
 
-                        const maxId = (seasonData && seasonData.races && seasonData.races.length > 0)
-                            ? Math.max(...seasonData.races.map(r => r.id))
-                            : 0;
-                        raceIdToUse = maxId + 1;
+                    if (!raceIdToUse) {
+                        // Smart Match Logic
+                        const normalize = (str) => {
+                            let normalized = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, '');
+                            if (normalized.includes('paulricard')) return 'paulricard';
+                            if (normalized.includes('interlagos') || normalized.includes('saopaulo') || normalized.includes('josecarlos')) return 'interlagos';
+                            if (normalized.includes('spa') && !normalized.includes('josecarlos')) return 'spa';
+                            if (normalized.includes('nurburgring')) return 'nurburgring';
+                            if (normalized.includes('sarthe') || normalized.includes('lemans') || normalized.includes('mans')) return 'lemans';
+                            if (normalized.includes('cota') || normalized.includes('americas') || normalized.includes('austin')) return 'cota';
+                            return normalized;
+                        };
+
+                        const matchingRace = (seasonData?.races || []).find(r => {
+                            if (r.status === 'Completed') return false; // Don't match already completed races
+                            const dbTrack = normalize(r.track);
+                            const fileTrack = normalize(xmlTrack);
+                            if (!fileTrack || !dbTrack) return false;
+                            return dbTrack === fileTrack || dbTrack.includes(fileTrack) || fileTrack.includes(dbTrack);
+                        });
+
+                        if (matchingRace) {
+                            raceIdToUse = matchingRace.id;
+                        } else {
+                            const confirmNew = window.confirm(
+                                `No matching scheduled race found for "${xmlTrack}".\n\n` +
+                                `Do you want to create a NEW Round (id: ${(seasonData?.races?.length || 0) + 1})?\n\n` +
+                                `Click OK to Create New Round.\n` +
+                                `Click Cancel to Abort.`
+                            );
+
+                            if (!confirmNew) {
+                                return;
+                            }
+                            const maxId = (seasonData && seasonData.races && seasonData.races.length > 0)
+                                ? Math.max(...seasonData.races.map(r => r.id))
+                                : 0;
+                            raceIdToUse = maxId + 1;
+                        }
                     }
 
                     // Update Context

@@ -121,7 +121,7 @@ export const processRaceResults = (results, penalties = []) => {
  * @param {string} className 
  * @returns {number} Adjustment value (e.g. +15, -10)
  */
-export const getBallastAdjustment = (position, isDnf, rules = {}, className = "LMGT3") => {
+export const getBallastAdjustment = (position, isDnf, isDns, rules = {}, className = "LMGT3") => {
     // 1. None Check
     if (rules.ballastType === 'none') return 0;
 
@@ -133,6 +133,9 @@ export const getBallastAdjustment = (position, isDnf, rules = {}, className = "L
             adjustments = rules.ballastRules[className];
         }
     }
+
+    // Check DNS FIRST
+    if (isDns) return 0;
 
     // 3. Return Adjustment
     if (!isDnf && adjustments[position] !== undefined) {

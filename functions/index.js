@@ -38,7 +38,7 @@ function parseTime(timeStr) {
 }
 
 // Helper: Get Ballast Adjustment (Delta)
-function getBallastAdjustment(position, isDnf, rules = {}, className = "LMGT3") {
+function getBallastAdjustment(position, isDnf, isDns, rules = {}, className = "LMGT3") {
     // 1. None Check
     if (rules.ballastType === 'none') return 0;
 
@@ -53,6 +53,9 @@ function getBallastAdjustment(position, isDnf, rules = {}, className = "LMGT3") 
             adjustments = rules.ballastRules[className];
         }
     }
+
+    // Check DNS FIRST
+    if (isDns) return 0;
 
     // 3. Return Adjustment
     if (!isDnf && adjustments[position] !== undefined) {
@@ -219,8 +222,10 @@ function calculateChampionship(seasonData) {
                 const { result } = entry;
                 // Use Helper with Config
                 const rules = data.config && data.config.rules ? data.config.rules : {};
-                const isFinished = true; // Race is completed if we're calculating standings
-                const bChange = getBallastAdjustment(pos, !isFinished, rules, className);
+                const validStatuses = ['Finished', 'Finished Normally', 'Completed'];
+                const isFinished = result ? validStatuses.includes(result.status) : false;
+                const isDns = result ? (result.attendance === 'DNS' || result.laps === 0) : true;
+                const bChange = getBallastAdjustment(pos, !isFinished, isDns, rules, className);
                 ballastMap[entry.driver.id] = bChange;
             });
 

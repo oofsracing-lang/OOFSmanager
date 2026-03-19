@@ -624,6 +624,7 @@ export const ChampionshipProvider = ({ children }) => {
 
         // Explicitly Find index based on the PASSED raceId
         existingRaceIndex = newData.races.findIndex(r => String(r.id) === String(raceIdToUse));
+        console.log("IMPORT RACE RUNNING FOR ID:", raceIdToUse, "Found:", existingRaceIndex);
 
         let raceDate = new Date().toISOString().split('T')[0];
         try {
@@ -777,6 +778,11 @@ export const ChampionshipProvider = ({ children }) => {
         newData.id = String(currentSeasonId);
 
         // Save to Cloud
+        const newRacesCount = newData.races.length;
+        const checkR8 = newData.races.find(r => String(r.id) === String(raceIdToUse));
+        let resultsCount = 0;
+        newData.drivers.forEach(d => { if (d.raceResults.find(r => String(r.raceId) === String(raceIdToUse))) resultsCount++; });
+        console.log("Preparing to save. Races count:", newRacesCount, "Round 8 present:", !!checkR8, "Results for ID " + raceIdToUse + ":", resultsCount);
         return await saveSeasonData(currentSeasonId, newData);
     };
 
@@ -990,6 +996,7 @@ export const ChampionshipProvider = ({ children }) => {
                             // Check valid finish statuses
                             const validStatuses = ['Finished', 'Finished Normally', 'Completed'];
                             const isFinished = validStatuses.includes(result.status);
+                            const isDns = result.attendance === 'DNS' || result.laps === 0;
 
                             // Use Helper with Config
                             const rules = data.config && data.config.rules ? data.config.rules : {};
@@ -997,7 +1004,7 @@ export const ChampionshipProvider = ({ children }) => {
                             // Derive class from result or driver
                             const className = result.drivenClass || driver.class || 'LMGT3';
 
-                            const bChange = getBallastAdjustment(pos, !isFinished, rules, className);
+                            const bChange = getBallastAdjustment(pos, !isFinished, isDns, rules, className);
                             result.ballastChange = bChange;
                         }
                     });
