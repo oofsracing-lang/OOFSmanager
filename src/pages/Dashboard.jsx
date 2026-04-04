@@ -5,6 +5,15 @@ const Dashboard = () => {
     const { championshipData, seasonConfig } = useChampionship();
     const classesToShow = seasonConfig.classes || ['LMP2', 'LMGT3'];
 
+    const seasonDisplayNames = {
+        's4-multi': 'Season 4 Multiclass',
+        's4-sprint': 'Season 4 Sprint',
+        's3-sprint': 'Season 3 Sprint',
+        '3': 'Season 3 Multiclass',
+        '2': 'Season 2',
+    };
+    const seasonLabel = seasonDisplayNames[seasonConfig?.id] || championshipData.season;
+
     // 1. Upcoming Schedule
     const upcomingRaces = championshipData.races
         .filter(r => r.id > championshipData.currentRound)
@@ -45,7 +54,7 @@ const Dashboard = () => {
 
     return (
         <div>
-            <h2 style={{ marginBottom: '2rem' }}>Dashboard - {championshipData.season}</h2>
+            <h2 style={{ marginBottom: '2rem' }}>Dashboard - {seasonLabel}</h2>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
 
