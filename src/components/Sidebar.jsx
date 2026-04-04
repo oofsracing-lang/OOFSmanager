@@ -9,6 +9,15 @@ const Sidebar = ({ isOpen, onClose }) => {
     const { seasonId } = useParams();
     const showQualifying = seasonConfig?.ui?.showQualifying !== false;
 
+    const seasonDisplayNames = {
+        's4-multi': 'Season 4 Multiclass',
+        's4-sprint': 'Season 4 Sprint',
+        's3-sprint': 'Season 3 Sprint',
+        '3': 'Season 3 Multiclass',
+        '2': 'Season 2',
+    };
+    const seasonLabel = championshipData?.season || seasonDisplayNames[seasonId] || seasonConfig?.name || `Season ${seasonId}`;
+
     // Helper for generating season-specific paths
     const getPath = (subPath) => `/season/${seasonId}${subPath}`;
 
@@ -79,7 +88,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     letterSpacing: '1px',
                     marginTop: '-2rem' // Pull nicely under logo
                 }}>
-                    {championshipData.season || seasonConfig?.name || `Season ${seasonId}`}
+                    {seasonLabel}
                 </div>
             )}
 
