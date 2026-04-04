@@ -202,14 +202,14 @@ const Stewarding = () => {
                                     </td>
                                 </tr>
                             ) : (
-                                incidents.filter(incident => currentUser || incident.isFinal).length === 0 ? (
+                                incidents.filter(incident => incident.isFinal).length === 0 ? (
                                     <tr>
                                         <td colSpan="8" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
                                             No finalized incidents to display.
                                         </td>
                                     </tr>
                                 ) : (
-                                    incidents.filter(incident => currentUser || incident.isFinal).map(incident => (
+                                    incidents.filter(incident => incident.isFinal).map(incident => (
                                     <tr key={incident.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                                         <td style={{ padding: '1rem' }}>
                                             <span
