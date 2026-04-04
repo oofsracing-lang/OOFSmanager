@@ -8,9 +8,9 @@ export const seasons = {
     "2": season2,
     "3": season3_multiclass,
     "s3-sprint": season3_sprint,
-    "4": season4_multiclass,
+    "s4-multi": season4_multiclass,
     "s4-sprint": season4_sprint
 };
 
-// Default expert for backward compatibility if needed, though we will switch to using the map
+// Default export for backward compatibility if needed, though we will switch to using the map
 export const latestSeason = season4_multiclass;

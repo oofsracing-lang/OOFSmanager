@@ -25,7 +25,7 @@ const Home = () => {
                     {/* Season 4 Multiclass */}
                     <div
                         className="home-card"
-                        onClick={() => handleSeasonSelect('4')}
+                        onClick={() => handleSeasonSelect('s4-multi')}
                     >
                         <div
                             className="home-card-line"
