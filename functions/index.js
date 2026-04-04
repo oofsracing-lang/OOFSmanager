@@ -702,6 +702,7 @@ exports.submitQualifying = functions.https.onCall(async (data, context) => {
     const seasonDoc = await db.collection('seasons').doc(targetSeasonId).get();
     let settings = {
         'LMP2-UR': { consecutiveLaps: 5, maxAvgTime: 120.0 }, // fallback
+        'Hypercar': { consecutiveLaps: 7, maxAvgTime: 95.5 }, // fallback
         'LMGT3': { consecutiveLaps: 5, maxAvgTime: 140.0 }
     };
 

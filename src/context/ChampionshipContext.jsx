@@ -32,6 +32,7 @@ export const ChampionshipProvider = ({ children }) => {
     const [exclusions, setExclusions] = useState({});
     const [qualifyingSettings, setQualifyingSettings] = useState({
         'LMP2-UR': { consecutiveLaps: 5, maxAvgTime: 120.0 },
+        'Hypercar': { consecutiveLaps: 7, maxAvgTime: 95.5 },
         'LMGT3': { consecutiveLaps: 5, maxAvgTime: 140.0 }
     });
     // Store submissions in state for Admin view
@@ -70,6 +71,7 @@ export const ChampionshipProvider = ({ children }) => {
                 setExclusions(defaultData.exclusions || {});
                 setQualifyingSettings(defaultData.qualifyingSettings || {
                     'LMP2-UR': { consecutiveLaps: 5, maxAvgTime: 120.0 },
+                    'Hypercar': { consecutiveLaps: 7, maxAvgTime: 95.5 },
                     'LMGT3': { consecutiveLaps: 5, maxAvgTime: 140.0 }
                 });
             }

@@ -22,23 +22,34 @@ const Admin = () => {
 
 
 
+    const protoKey = (currentSeasonId === 's4-multi' || currentSeasonId === '4') ? 'Hypercar' : 'LMP2-UR';
+    const protoDefLaps = protoKey === 'Hypercar' ? 7 : 5;
+    const protoDefTime = protoKey === 'Hypercar' ? 95.5 : 120;
+
     // Local state ...
-    const [lmp2Laps, setLmp2Laps] = useState(qualifyingSettings?.['LMP2-UR']?.consecutiveLaps || 5);
+    const [protoLaps, setProtoLaps] = useState(qualifyingSettings?.[protoKey]?.consecutiveLaps || protoDefLaps);
     const [lmgt3Laps, setLmgt3Laps] = useState(qualifyingSettings?.LMGT3?.consecutiveLaps || 5);
-    const [lmp2MaxTimeStr, setLmp2MaxTimeStr] = useState(formatTimeHelper(qualifyingSettings?.['LMP2-UR']?.maxAvgTime || 120));
+    const [protoMaxTimeStr, setProtoMaxTimeStr] = useState(formatTimeHelper(qualifyingSettings?.[protoKey]?.maxAvgTime || protoDefTime));
     const [lmgt3MaxTimeStr, setLmgt3MaxTimeStr] = useState(formatTimeHelper(qualifyingSettings?.LMGT3?.maxAvgTime || 140));
 
     // Sync local state when Firestore updates
     useEffect(() => {
-        if (qualifyingSettings?.['LMP2-UR']?.consecutiveLaps !== undefined) {
-            setLmp2Laps(qualifyingSettings['LMP2-UR'].consecutiveLaps);
-            setLmp2MaxTimeStr(formatTimeHelper(qualifyingSettings['LMP2-UR'].maxAvgTime || 120));
+        const key = (currentSeasonId === 's4-multi' || currentSeasonId === '4') ? 'Hypercar' : 'LMP2-UR';
+        const dLaps = key === 'Hypercar' ? 7 : 5;
+        const dTime = key === 'Hypercar' ? 95.5 : 120;
+
+        if (qualifyingSettings?.[key]?.consecutiveLaps !== undefined) {
+            setProtoLaps(qualifyingSettings[key].consecutiveLaps);
+            setProtoMaxTimeStr(formatTimeHelper(qualifyingSettings[key].maxAvgTime || dTime));
+        } else {
+            setProtoLaps(dLaps);
+            setProtoMaxTimeStr(formatTimeHelper(dTime));
         }
         if (qualifyingSettings?.LMGT3?.consecutiveLaps !== undefined) {
             setLmgt3Laps(qualifyingSettings.LMGT3.consecutiveLaps);
             setLmgt3MaxTimeStr(formatTimeHelper(qualifyingSettings.LMGT3.maxAvgTime || 140));
         }
-    }, [qualifyingSettings]);
+    }, [qualifyingSettings, currentSeasonId]);
 
     // Safety Check
     if (!championshipData || !championshipData.races) {
@@ -671,10 +682,10 @@ const Admin = () => {
                                             {selectedRaceName} (ID: {selectedRace}) - Results: {results.length}
                                         </h3>
 
-                                        {/* LMP2 Results */}
-                                        {results.filter(r => r.class === 'LMP2-UR' || r.class === 'LMP2').length > 0 && (
+                                        {/* Prototype Results */}
+                                        {results.filter(r => r.class === 'Hypercar' || r.class === 'LMP2-UR' || r.class === 'LMP2').length > 0 && (
                                             <div style={{ marginBottom: '2rem' }}>
-                                                <h4 style={{ color: 'var(--info)', marginBottom: '1rem' }}>LMP2-UR</h4>
+                                                <h4 style={{ color: 'var(--info)', marginBottom: '1rem' }}>{protoKey}</h4>
                                                 <div style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
                                                     <div style={{ overflowX: 'auto' }}>
                                                         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
@@ -690,7 +701,7 @@ const Admin = () => {
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                {results.filter(r => r.class === 'LMP2-UR' || r.class === 'LMP2').map(result => (
+                                                                {results.filter(r => r.class === 'Hypercar' || r.class === 'LMP2-UR' || r.class === 'LMP2').map(result => (
                                                                     <tr key={result.driverId} style={{ borderBottom: '1px solid var(--border-color)', opacity: result.isExcluded ? 0.5 : 1, textDecoration: result.isExcluded ? 'line-through' : 'none' }}>
                                                                         <td style={{ padding: '0.5rem' }}>
                                                                             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -1138,9 +1149,9 @@ const Admin = () => {
                             <h3 style={{ marginBottom: '1.5rem' }}>Qualifying Criteria</h3>
 
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-                                {/* LMP2-UR Criteria */}
+                                {/* Prototype Criteria */}
                                 <div style={{ padding: '1.5rem', backgroundColor: 'var(--bg-tertiary)', borderRadius: '8px' }}>
-                                    <h4 style={{ color: '#3b82f6', marginBottom: '1rem' }}>LMP2-UR Criteria</h4>
+                                    <h4 style={{ color: '#3b82f6', marginBottom: '1rem' }}>{protoKey} Criteria</h4>
 
                                     <div style={{ marginBottom: '1rem' }}>
                                         <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem' }}>
@@ -1150,8 +1161,8 @@ const Admin = () => {
                                             type="number"
                                             min="1"
                                             max="10"
-                                            value={lmp2Laps}
-                                            onChange={(e) => setLmp2Laps(parseInt(e.target.value))}
+                                            value={protoLaps}
+                                            onChange={(e) => setProtoLaps(parseInt(e.target.value))}
                                             className="form-control"
                                             style={{ width: '100px' }}
                                         />
@@ -1163,33 +1174,33 @@ const Admin = () => {
                                         </label>
                                         <input
                                             type="text"
-                                            value={lmp2MaxTimeStr}
-                                            onChange={(e) => setLmp2MaxTimeStr(e.target.value)}
+                                            value={protoMaxTimeStr}
+                                            onChange={(e) => setProtoMaxTimeStr(e.target.value)}
                                             className="form-control"
                                             style={{ width: '150px' }}
                                             placeholder="01:30.000"
                                         />
                                         <small style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>
-                                            Saved: {formatTimeHelper(qualifyingSettings?.['LMP2-UR']?.maxAvgTime || 120)} ({(qualifyingSettings?.['LMP2-UR']?.maxAvgTime || 120).toFixed(3)}s)
+                                            Saved: {formatTimeHelper(qualifyingSettings?.[protoKey]?.maxAvgTime || protoDefTime)} ({(qualifyingSettings?.[protoKey]?.maxAvgTime || protoDefTime).toFixed(3)}s)
                                         </small>
                                     </div>
 
                                     <button
                                         className="btn btn-primary"
                                         onClick={() => {
-                                            const seconds = parseTimeInput(lmp2MaxTimeStr);
+                                            const seconds = parseTimeInput(protoMaxTimeStr);
                                             if (seconds === null) {
                                                 alert("Invalid Time Format (MM:ss.sss)");
                                                 return;
                                             }
-                                            updateQualifyingSettings('LMP2-UR', {
-                                                consecutiveLaps: lmp2Laps,
+                                            updateQualifyingSettings(protoKey, {
+                                                consecutiveLaps: protoLaps,
                                                 maxAvgTime: seconds
                                             });
                                         }}
                                         style={{ fontSize: '0.9rem' }}
                                     >
-                                        Save LMP2-UR Settings
+                                        Save {protoKey} Settings
                                     </button>
                                 </div>
 
@@ -1316,7 +1327,7 @@ const Admin = () => {
                                                         padding: '0.25rem 0.5rem',
                                                         borderRadius: '4px',
                                                         fontSize: '0.75rem',
-                                                        backgroundColor: submission.carClass === 'LMP2-UR' ? '#3b82f6' : '#8b5cf6',
+                                                        backgroundColor: (submission.carClass === 'LMP2-UR' || submission.carClass === 'Hypercar') ? '#3b82f6' : '#8b5cf6',
                                                         color: 'white',
                                                         whiteSpace: 'nowrap'
                                                     }}>
