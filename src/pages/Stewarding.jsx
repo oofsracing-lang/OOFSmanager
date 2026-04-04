@@ -202,14 +202,7 @@ const Stewarding = () => {
                                     </td>
                                 </tr>
                             ) : (
-                                incidents.filter(incident => incident.isFinal).length === 0 ? (
-                                    <tr>
-                                        <td colSpan="8" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-                                            No finalized incidents to display.
-                                        </td>
-                                    </tr>
-                                ) : (
-                                    incidents.filter(incident => incident.isFinal).map(incident => (
+                                incidents.map(incident => (
                                     <tr key={incident.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                                         <td style={{ padding: '1rem' }}>
                                             <span
@@ -228,46 +221,64 @@ const Stewarding = () => {
                                             </span>
                                         </td>
                                         <td style={{ padding: '1rem', fontWeight: 'bold' }}>{getRaceName(incident.raceId)}</td>
-                                        <td style={{ padding: '1rem' }}>{incident.carNumbers}</td>
+                                        <td style={{ padding: '1rem' }}>
+                                            {incident.isFinal ? incident.carNumbers : <span style={{ color: 'var(--text-muted)' }}>-</span>}
+                                        </td>
                                         <td style={{ padding: '1rem', fontSize: '0.9rem', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-                                            {incident.stewardNotes ? (
-                                                <>
-                                                    <div style={{ color: 'white', marginBottom: '0.5rem' }}>{incident.stewardNotes}</div>
-                                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', borderLeft: '2px solid var(--border-color)', paddingLeft: '0.5rem' }}>
-                                                        Original: {incident.description}
-                                                    </div>
-                                                </>
+                                            {incident.isFinal ? (
+                                                incident.stewardNotes ? (
+                                                    <>
+                                                        <div style={{ color: 'white', marginBottom: '0.5rem' }}>{incident.stewardNotes}</div>
+                                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', borderLeft: '2px solid var(--border-color)', paddingLeft: '0.5rem' }}>
+                                                            Original: {incident.description}
+                                                        </div>
+                                                    </>
+                                                ) : (
+                                                    <span style={{ color: 'var(--text-muted)' }}>{incident.description}</span>
+                                                )
                                             ) : (
-                                                <span style={{ color: 'var(--text-muted)' }}>{incident.description}</span>
+                                                <span style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>Pending stewarding review...</span>
                                             )}
                                         </td>
-                                        <td style={{ padding: '1rem', wordBreak: 'break-word' }}>{incident.timestamp}</td>
+                                        <td style={{ padding: '1rem', wordBreak: 'break-word' }}>
+                                            {incident.isFinal ? incident.timestamp : <span style={{ color: 'var(--text-muted)' }}>-</span>}
+                                        </td>
                                         <td style={{ padding: '1rem' }}>
-                                            <div style={{ fontWeight: 'bold', color: 'var(--accent)', fontSize: '1.2rem' }}>
-                                                {getPenalizedDriverNumber(incident.penalizedDriverId)}
-                                            </div>
-                                            {incident.penalizedDriverId && (
-                                                <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
-                                                    {(() => {
-                                                        const d = championshipData?.drivers?.find(driver => driver.id === Number(incident.penalizedDriverId));
-                                                        return d ? formatDriverName(d.name) : '';
-                                                    })()}
-                                                </div>
+                                            {incident.isFinal ? (
+                                                <>
+                                                    <div style={{ fontWeight: 'bold', color: 'var(--accent)', fontSize: '1.2rem' }}>
+                                                        {getPenalizedDriverNumber(incident.penalizedDriverId)}
+                                                    </div>
+                                                    {incident.penalizedDriverId && (
+                                                        <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+                                                            {(() => {
+                                                                const d = championshipData?.drivers?.find(driver => driver.id === Number(incident.penalizedDriverId));
+                                                                return d ? formatDriverName(d.name) : '';
+                                                            })()}
+                                                        </div>
+                                                    )}
+                                                </>
+                                            ) : (
+                                                <span style={{ color: 'var(--text-muted)' }}>-</span>
                                             )}
                                         </td>
                                         <td style={{ padding: '1rem', fontWeight: 'bold', color: 'var(--primary)' }}>
-                                            {incident.decision || '-'}
+                                            {incident.isFinal ? (incident.decision || '-') : <span style={{ color: 'var(--text-muted)' }}>-</span>}
                                         </td>
                                         <td style={{ padding: '1rem' }}>
-                                            {incident.decision ? (
-                                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                                    {incident.timePenalty > 0 && <span style={{ color: 'var(--danger)' }}>+{incident.timePenalty}s</span>}
-                                                </div>
-                                            ) : '-'}
+                                            {incident.isFinal ? (
+                                                incident.decision ? (
+                                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                        {incident.timePenalty > 0 && <span style={{ color: 'var(--danger)' }}>+{incident.timePenalty}s</span>}
+                                                    </div>
+                                                ) : '-'
+                                            ) : (
+                                                <span style={{ color: 'var(--text-muted)' }}>-</span>
+                                            )}
                                         </td>
                                     </tr>
                                 ))
-                            ))}
+                            )}
                         </tbody>
                     </table>
                 </div>
