@@ -29,7 +29,7 @@ const Home = () => {
                     >
                         <div
                             className="home-card-line"
-                            style={{ background: 'linear-gradient(90deg, #E53935, #FFCDD2)' }}
+                            style={{ background: 'linear-gradient(90deg, #7B1FA2, #E1BEE7)' }}
                         ></div>
                         <span className="home-card-type">Season 4</span>
                         <h2 className="home-card-title">Multiclass</h2>
