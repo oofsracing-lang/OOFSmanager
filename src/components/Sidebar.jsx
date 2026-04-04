@@ -16,7 +16,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         '3': 'Season 3 Multiclass',
         '2': 'Season 2',
     };
-    const seasonLabel = championshipData?.season || seasonDisplayNames[seasonId] || seasonConfig?.name || `Season ${seasonId}`;
+    const seasonLabel = seasonDisplayNames[seasonId] || championshipData?.season || seasonConfig?.name || `Season ${seasonId}`;
 
     // Helper for generating season-specific paths
     const getPath = (subPath) => `/season/${seasonId}${subPath}`;
