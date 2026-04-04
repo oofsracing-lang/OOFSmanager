@@ -34,7 +34,7 @@ const Home = () => {
                         <span className="home-card-type">Season 4</span>
                         <h2 className="home-card-title">Multiclass</h2>
                         <p className="home-card-desc">
-                            The main event.
+                            Endurance Simulation.
                             <br />
                             <strong>HYPERCAR • LMGT3</strong>
                         </p>

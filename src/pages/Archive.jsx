@@ -64,7 +64,7 @@ const Archive = () => {
                             style={{ background: 'linear-gradient(90deg, #1976D2, #BBDEFB)' }}
                         ></div>
                         <span className="home-card-type">Season 2</span>
-                        <h2 className="home-card-title">Championship</h2>
+                        <h2 className="home-card-title">Multiclass</h2>
                         <p className="home-card-desc">
                             The previous season.
                             <br />
