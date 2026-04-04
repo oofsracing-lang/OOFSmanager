@@ -12,6 +12,7 @@ import Login from './pages/Login';
 import Qualifying from './pages/Qualifying';
 import Stewarding from './pages/Stewarding';
 import Home from './pages/Home';
+import Archive from './pages/Archive';
 import { ChampionshipProvider } from './context/ChampionshipContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -32,6 +33,9 @@ function App() {
             <Routes>
               {/* Landing Page */}
               <Route path="/" element={<Home />} />
+              
+              {/* Archive Page */}
+              <Route path="/archive" element={<Archive />} />
 
               {/* Login Page */}
               <Route path="/login" element={<Login />} />

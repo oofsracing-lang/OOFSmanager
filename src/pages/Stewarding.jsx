@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { useChampionship } from '../context/ChampionshipContext';
 import { saveIncident, subscribeToIncidents } from '../firebase/db';
 import { formatDriverName } from '../utils/formatting';
+import { useAuth } from '../context/AuthContext';
 
 const Stewarding = () => {
+    const { currentUser } = useAuth();
     const { championshipData, currentSeasonId } = useChampionship();
     const [incidents, setIncidents] = useState([]);
 
@@ -200,7 +202,14 @@ const Stewarding = () => {
                                     </td>
                                 </tr>
                             ) : (
-                                incidents.map(incident => (
+                                incidents.filter(incident => currentUser || incident.isFinal).length === 0 ? (
+                                    <tr>
+                                        <td colSpan="8" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                                            No finalized incidents to display.
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    incidents.filter(incident => currentUser || incident.isFinal).map(incident => (
                                     <tr key={incident.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                                         <td style={{ padding: '1rem' }}>
                                             <span
@@ -258,7 +267,7 @@ const Stewarding = () => {
                                         </td>
                                     </tr>
                                 ))
-                            )}
+                            ))}
                         </tbody>
                     </table>
                 </div>

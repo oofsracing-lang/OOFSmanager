@@ -315,15 +315,29 @@ function calculateChampionship(seasonData) {
                             driver.registeredCar = registeredCar;
                             driver.carSwitchRound = firstRegisteredRaceId;
 
-                            // Zero out points for ALL rounds before the switch round.
-                            // This includes older rounds that may not have a `car` field (imported before tracking was added).
-                            // Once a switch is confirmed, everything before the new car's first round is reset.
-                            driver.raceResults.forEach(r => {
-                                if (r.raceId < firstRegisteredRaceId) {
-                                    r.pointsBeforeSwitch = r.points;
-                                    r.points = 0;
+                            if (carRules.carSwitchPenaltyType === 'zero_best_finish') {
+                                // Find their single best finish (highest points) across all their races and zero it out
+                                let bestRace = null;
+                                let maxPoints = -1;
+                                driver.raceResults.forEach(r => {
+                                    if ((r.points || 0) > maxPoints) {
+                                        maxPoints = r.points || 0;
+                                        bestRace = r;
+                                    }
+                                });
+                                if (bestRace && maxPoints > 0) {
+                                    bestRace.pointsBeforeSwitch = bestRace.points;
+                                    bestRace.points = 0;
                                 }
-                            });
+                            } else {
+                                // Default behavior (zero_all_previous like in Season 3)
+                                driver.raceResults.forEach(r => {
+                                    if (r.raceId < firstRegisteredRaceId) {
+                                        r.pointsBeforeSwitch = r.points;
+                                        r.points = 0;
+                                    }
+                                });
+                            }
                         } else {
                             driver.carSwitched = false;
                         }
@@ -554,6 +568,8 @@ const analyzeQualifyingXml = (xmlContent, criteriaSettings, targetDriverName = n
     const rawClass = (driver.CarClass || '').toUpperCase();
     if (rawClass.includes('LMP2') || rawClass.includes('P2') || rawClass.includes('ORECA')) {
         criteriaClass = 'LMP2-UR';
+    } else if (rawClass.includes('HYPERCAR') || rawClass.includes('LMDH') || rawClass.includes('LMH')) {
+        criteriaClass = 'Hypercar';
     }
 
     const criteria = criteriaSettings[criteriaClass] || { consecutiveLaps: 5, maxAvgTime: 999 };

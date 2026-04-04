@@ -22,34 +22,34 @@ const Home = () => {
                 <p className="home-subtitle">Championship Portal</p>
 
                 <div className="home-grid">
-                    {/* Season 3 Multiclass */}
+                    {/* Season 4 Multiclass */}
                     <div
                         className="home-card"
-                        onClick={() => handleSeasonSelect('3')}
+                        onClick={() => handleSeasonSelect('4')}
                     >
                         <div
                             className="home-card-line"
-                            style={{ background: 'linear-gradient(90deg, #7B1FA2, #E1BEE7)' }}
+                            style={{ background: 'linear-gradient(90deg, #E53935, #FFCDD2)' }}
                         ></div>
-                        <span className="home-card-type">Season 3</span>
+                        <span className="home-card-type">Season 4</span>
                         <h2 className="home-card-title">Multiclass</h2>
                         <p className="home-card-desc">
                             The main event.
                             <br />
-                            <strong>LMP2-UR • LMGT3</strong>
+                            <strong>HYPERCAR • LMGT3</strong>
                         </p>
                     </div>
 
-                    {/* Season 3 Sprint */}
+                    {/* Season 4 Sprint */}
                     <div
                         className="home-card"
-                        onClick={() => handleSeasonSelect('s3-sprint')}
+                        onClick={() => handleSeasonSelect('s4-sprint')}
                     >
                         <div
                             className="home-card-line"
                             style={{ background: 'linear-gradient(90deg, #64DD17, #CCFF90)' }}
                         ></div>
-                        <span className="home-card-type">Season 3</span>
+                        <span className="home-card-type">Season 4</span>
                         <h2 className="home-card-title">Sprint Series</h2>
                         <p className="home-card-desc">
                             High intensity, short format.
@@ -103,7 +103,7 @@ const Home = () => {
 
                 <button
                     className="archive-btn"
-                    onClick={() => handleSeasonSelect('2')} // Simulating going to archived season 2
+                    onClick={() => navigate('/archive')}
                 >
                     View Archived Seasons
                 </button>

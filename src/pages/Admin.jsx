@@ -1081,6 +1081,21 @@ const Admin = () => {
                                                         {incident.status === 'Complete' ? '✓' : '⚡'}
                                                     </button>
                                                     <button
+                                                        className="btn btn-icon"
+                                                        style={{
+                                                            backgroundColor: incident.isFinal ? '#3b82f6' : 'transparent',
+                                                            border: '1px solid #3b82f6',
+                                                            color: incident.isFinal ? 'white' : '#3b82f6',
+                                                            cursor: 'pointer'
+                                                        }}
+                                                        onClick={async () => {
+                                                            await updateIncident(incident.id, { isFinal: !incident.isFinal });
+                                                        }}
+                                                        title={incident.isFinal ? "Hide from Public" : "Make Decision Public"}
+                                                    >
+                                                        👁
+                                                    </button>
+                                                    <button
                                                         className="btn btn-icon btn-danger"
                                                         onClick={async (e) => {
                                                             e.stopPropagation();
