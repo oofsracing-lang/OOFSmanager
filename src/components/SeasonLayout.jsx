@@ -15,7 +15,6 @@ const SeasonLayout = () => {
     // Synchronization: Ensure Context matches URL
     useEffect(() => {
         if (seasonId && seasonId !== currentSeasonId) {
-            console.log(`[SeasonLayout] Syncing URL season (${seasonId}) to Context`);
             changeSeason(seasonId);
         }
     }, [seasonId, currentSeasonId, changeSeason]);

@@ -88,15 +88,6 @@ export const ChampionshipProvider = ({ children }) => {
         // Debug: Log when legacy data would have been loaded
         // const unsubSeason = subscribeToSeason... (existing code)
         const unsubStandings = subscribeToStandings(currentSeasonId, (data) => {
-            console.log("Cloud Standings Received for Season", currentSeasonId, ":", data ? "Found" : "Empty");
-            if (data) {
-                console.log("Cloud Standings Data:", {
-                    season: data.season,
-                    drivers: data.drivers?.length,
-                    races: data.races?.length,
-                    calculationSource: data.calculationSource
-                });
-            }
             setCloudStandings(data);
         });
 
@@ -797,28 +788,15 @@ export const ChampionshipProvider = ({ children }) => {
         // EXCEPTION: IF USER IS LOGGED IN (Admin), we FORCE local calculation to see optimistic updates (e.g. penalties) instantly.
         const isProd = import.meta.env.PROD;
 
-        console.log("[processedData] Decision factors:", {
-            isProd,
-            currentUser: !!currentUser,
-            cloudStandings: !!cloudStandings,
-            cloudStandingsSeason: cloudStandings?.season,
-            seasonDataSeason: seasonData?.season,
-            cloudRaces: cloudStandings?.races?.length,
-            seasonRaces: seasonData?.races?.length
-        });
-
         // Use cloud standings in production if available and valid
         if (isProd && cloudStandings && cloudStandings.season === (seasonData?.season) &&
             (cloudStandings.currentRound || 0) >= (seasonData?.currentRound || 0)) {
 
-            console.log("[processedData] Using CLOUD STANDINGS");
             return {
                 ...cloudStandings,
                 calculationSource: 'Cloud Backend (Official)'
             };
         }
-
-        console.log("[processedData] Using LOCAL CALCULATION");
 
         // PRIORITY 2: Local Fallback (The original huge logic)
 
