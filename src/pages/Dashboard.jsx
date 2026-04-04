@@ -124,8 +124,11 @@ const Dashboard = () => {
                     // Skip if no drivers in this class? Or show empty table. 
                     // Showing empty is fine or checking length.
 
-                    // Determine Color based on class?
-                    const headerColor = className.includes('LMP2') ? 'var(--info)' : 'var(--warning)';
+                    // Determine Color based on class
+                    let headerColor = 'var(--text-main)';
+                    if (className.includes('LMP2')) headerColor = 'var(--info)';
+                    else if (className.includes('Hypercar')) headerColor = 'var(--danger)'; // RED
+                    else if (className.includes('LMGT3') || className.includes('GT3')) headerColor = 'var(--warning)';
 
                     return (
                         <div key={className} className="glass-panel" style={{ padding: '1.5rem' }}>

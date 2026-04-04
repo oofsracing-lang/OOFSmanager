@@ -685,7 +685,7 @@ const Admin = () => {
                                         {/* Prototype Results */}
                                         {results.filter(r => r.class === 'Hypercar' || r.class === 'LMP2-UR' || r.class === 'LMP2').length > 0 && (
                                             <div style={{ marginBottom: '2rem' }}>
-                                                <h4 style={{ color: 'var(--info)', marginBottom: '1rem' }}>{protoKey}</h4>
+                                                <h4 style={{ color: protoKey === 'Hypercar' ? '#ef4444' : 'var(--info)', marginBottom: '1rem' }}>{protoKey}</h4>
                                                 <div style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}>
                                                     <div style={{ overflowX: 'auto' }}>
                                                         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
@@ -1151,7 +1151,7 @@ const Admin = () => {
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                                 {/* Prototype Criteria */}
                                 <div style={{ padding: '1.5rem', backgroundColor: 'var(--bg-tertiary)', borderRadius: '8px' }}>
-                                    <h4 style={{ color: '#3b82f6', marginBottom: '1rem' }}>{protoKey} Criteria</h4>
+                                    <h4 style={{ color: protoKey === 'Hypercar' ? '#ef4444' : '#3b82f6', marginBottom: '1rem' }}>{protoKey} Criteria</h4>
 
                                     <div style={{ marginBottom: '1rem' }}>
                                         <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem' }}>
@@ -1327,7 +1327,7 @@ const Admin = () => {
                                                         padding: '0.25rem 0.5rem',
                                                         borderRadius: '4px',
                                                         fontSize: '0.75rem',
-                                                        backgroundColor: (submission.carClass === 'LMP2-UR' || submission.carClass === 'Hypercar') ? '#3b82f6' : '#8b5cf6',
+                                                        backgroundColor: submission.carClass === 'Hypercar' ? '#ef4444' : (submission.carClass === 'LMP2-UR' ? '#3b82f6' : '#8b5cf6'),
                                                         color: 'white',
                                                         whiteSpace: 'nowrap'
                                                     }}>
