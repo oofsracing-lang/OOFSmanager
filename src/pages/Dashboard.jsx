@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useChampionship } from '../context/ChampionshipContext';
 import { formatDriverName } from '../utils/formatting';
 const Dashboard = () => {
-    const { championshipData, seasonConfig } = useChampionship();
+    const { championshipData, seasonConfig, currentSeasonId } = useChampionship();
     const classesToShow = seasonConfig.classes || ['LMP2', 'LMGT3'];
 
     const seasonDisplayNames = {
@@ -12,7 +12,7 @@ const Dashboard = () => {
         '3': 'Season 3 Multiclass',
         '2': 'Season 2',
     };
-    const seasonLabel = seasonDisplayNames[seasonConfig?.id] || championshipData.season;
+    const seasonLabel = seasonDisplayNames[currentSeasonId] || championshipData.season;
 
     // 1. Upcoming Schedule
     const upcomingRaces = championshipData.races
