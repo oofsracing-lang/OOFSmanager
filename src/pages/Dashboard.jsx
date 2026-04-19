@@ -71,7 +71,7 @@ const Dashboard = () => {
                                         <div style={{ fontWeight: 'bold' }}>{race.name}</div>
                                         <div style={{ fontSize: '0.9rem', marginBottom: '0.25rem' }}>{race.track}</div>
                                         <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                                            {new Date(race.date + 'T12:00:00').toLocaleDateString()}
+                                            {race.date === 'TBD' ? 'TBD' : new Date(race.date + (race.date.includes('/') ? '' : 'T12:00:00')).toLocaleDateString()}
                                         </div>
                                     </div>
                                     <div style={{
