@@ -68,7 +68,7 @@ const Races = () => {
                                         </div>
                                         <div style={{ textAlign: 'right' }}>
                                             <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                                                {new Date(race.date + 'T12:00:00').toLocaleDateString('en-US', {
+                                                {race.date === 'TBD' ? 'TBD' : new Date(race.date + (race.date.includes('/') ? '' : 'T12:00:00')).toLocaleDateString('en-US', {
                                                     month: 'short',
                                                     day: 'numeric',
                                                     year: 'numeric'

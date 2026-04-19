@@ -175,7 +175,7 @@ const AttendanceTab = () => {
                     style={{ width: 'auto' }}
                 >
                     <option value="all">All Classes</option>
-                    <option value="LMP2-UR">LMP2-UR</option>
+                    <option value="Hypercar">Hypercar</option>
                     <option value="LMGT3">LMGT3</option>
                 </select>
 
@@ -218,7 +218,7 @@ const AttendanceTab = () => {
                                     onChange={e => setNewDriver({ ...newDriver, class: e.target.value })}
                                 >
                                     <option value="LMGT3">LMGT3</option>
-                                    <option value="LMP2-UR">LMP2-UR</option>
+                                    <option value="Hypercar">Hypercar</option>
                                 </select>
                             </div>
                             <div>
@@ -354,8 +354,8 @@ const AttendanceTab = () => {
                                         padding: '0.25rem 0.5rem',
                                         borderRadius: '4px',
                                         fontSize: '0.7rem',
-                                        backgroundColor: driver.class === 'LMP2-UR' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(139, 92, 246, 0.2)',
-                                        color: driver.class === 'LMP2-UR' ? '#60a5fa' : '#a78bfa',
+                                        backgroundColor: driver.class === 'Hypercar' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(139, 92, 246, 0.2)',
+                                        color: driver.class === 'Hypercar' ? '#ef4444' : '#a78bfa',
                                         border: '1px solid transparent'
                                     }}>
                                         {driver.class}
