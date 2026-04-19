@@ -22,14 +22,49 @@
     "driverRoster": []
   },
   "currentRound": 0,
-  "totalRounds": 8,
+  "totalRounds": 6,
   "drivers": [],
   "races": [
     {
       "id": 1,
       "name": "Round 1",
-      "track": "TBD",
-      "date": "TBD",
+      "track": "Autodromo Internazionale Enzo e Dino Ferrari",
+      "date": "4/22/26",
+      "status": "Scheduled"
+    },
+    {
+      "id": 2,
+      "name": "Round 2",
+      "track": "Circuit de Barcelona-Catalunya",
+      "date": "4/29/26",
+      "status": "Scheduled"
+    },
+    {
+      "id": 3,
+      "name": "Round 3",
+      "track": "Silverstone Circuit",
+      "date": "5/6/26",
+      "status": "Scheduled"
+    },
+    {
+      "id": 4,
+      "name": "Round 4",
+      "track": "Fuji International Speedway",
+      "date": "5/20/26",
+      "status": "Scheduled"
+    },
+    {
+      "id": 5,
+      "name": "Round 5",
+      "track": "Bahrain International Circuit",
+      "date": "5/27/26",
+      "status": "Scheduled"
+    },
+    {
+      "id": 6,
+      "name": "Round 6",
+      "track": "Circuit de Spa-Francorchamps",
+      "date": "6/3/26",
       "status": "Scheduled"
     }
   ],
