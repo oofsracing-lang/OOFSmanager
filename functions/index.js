@@ -564,15 +564,41 @@ const analyzeQualifyingXml = (xmlContent, criteriaSettings, targetDriverName = n
     }
 
     // Class Determination
+    // Resolve the raw CarClass string from the XML to one of the known criteria keys.
     let criteriaClass = 'LMGT3';
     const rawClass = (driver.CarClass || '').toUpperCase();
-    if (rawClass.includes('LMP2') || rawClass.includes('P2') || rawClass.includes('ORECA')) {
-        criteriaClass = 'LMP2-UR';
-    } else if (rawClass.includes('HYPERCAR') || rawClass.includes('LMDH') || rawClass.includes('LMH')) {
+    const rawCarType = (driver.CarType || '').toUpperCase();
+
+    console.log(`[Class Detection] CarClass="${driver.CarClass}", CarType="${driver.CarType}"`);
+
+    if (rawClass.includes('HYPER') || rawClass.includes('LMDH') || rawClass.includes('LMH')
+        || rawCarType.includes('HYPER') || rawCarType.includes('LMDH') || rawCarType.includes('LMH')
+        // Common Hypercar model keywords
+        || rawCarType.includes('499P') || rawCarType.includes('GR010') || rawCarType.includes('963')
+        || rawCarType.includes('GLICKENHAUS') || rawCarType.includes('PEUGEOT') || rawCarType.includes('9X8')
+        || rawCarType.includes('ACURA') || rawCarType.includes('PORSCHE 963')
+        || rawCarType.includes('ALPINE') || rawCarType.includes('A424')
+        || rawClass.includes('PROTOTYPE') && (rawCarType.includes('FERRARI') || rawCarType.includes('TOYOTA') || rawCarType.includes('BMW'))
+    ) {
         criteriaClass = 'Hypercar';
+    } else if (rawClass.includes('LMP2') || rawClass.includes('P2') || rawClass.includes('ORECA')) {
+        criteriaClass = 'LMP2-UR';
+    }
+    // GT3 / GTE / LMGT3 all map to LMGT3 (already the default)
+
+    // Resolve criteria — if the detected class isn't in settings, try sensible fallbacks
+    let criteria = criteriaSettings[criteriaClass];
+    if (!criteria) {
+        // e.g. Season may store 'Hypercar' but not 'LMP2-UR' — pick whatever key is available
+        const availableKeys = Object.keys(criteriaSettings);
+        const fallbackKey = availableKeys.find(k => k.toLowerCase() === criteriaClass.toLowerCase())
+            || availableKeys.find(k => k !== 'LMGT3' && k !== 'GT3')
+            || availableKeys[0];
+        criteria = criteriaSettings[fallbackKey] || { consecutiveLaps: 5, maxAvgTime: 999 };
+        console.warn(`[Class Detection] No criteria found for "${criteriaClass}", falling back to "${fallbackKey}"`);
     }
 
-    const criteria = criteriaSettings[criteriaClass] || { consecutiveLaps: 5, maxAvgTime: 999 };
+    console.log(`[Class Detection] Resolved criteriaClass="${criteriaClass}", criteria=${JSON.stringify(criteria)}`);
 
     // 2. Extract Laps from Driver.Lap (qualifying/practice format)
     const validLaps = [];

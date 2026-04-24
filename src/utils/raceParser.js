@@ -65,6 +65,7 @@ export const parseRaceXml = (xmlContent) => {
 
     // Structure: purpleHolders = { "LMP2": {1: "Name", 2: "Name", 3: "Name"}, "LMGT3": ... }
     const purpleHolders = {
+        "Hypercar": { 1: null, 2: null, 3: null },
         "LMP2": { 1: null, 2: null, 3: null },
         "LMGT3": { 1: null, 2: null, 3: null }
     };
@@ -73,6 +74,7 @@ export const parseRaceXml = (xmlContent) => {
     const normalizeClass = (rawClass) => {
         if (!rawClass) return "LMGT3";
         const upper = rawClass.toUpperCase();
+        if (upper.includes('HYPERCAR') || upper.includes('HYPER') || upper.includes('LMH') || upper.includes('LMDH')) return 'Hypercar';
         if (upper.includes('LMP2') || upper.includes('P2') || upper.includes('ORECA')) return "LMP2";
         return "LMGT3";
     };

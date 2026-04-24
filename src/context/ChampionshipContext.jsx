@@ -677,8 +677,10 @@ export const ChampionshipProvider = ({ children }) => {
             // Better Class Mapping
             let determinedClass = 'LMGT3'; // Default
             const rawClass = (pResult.carClass || '').toUpperCase();
-            // Check for generic LMP2 indicators
-            if (rawClass.includes('LMP2') || rawClass.includes('P2') || rawClass.includes('ORECA')) {
+            // Check for class indicators
+            if (rawClass.includes('HYPERCAR') || rawClass.includes('HYPER') || rawClass.includes('LMH') || rawClass.includes('LMDH')) {
+                determinedClass = 'Hypercar';
+            } else if (rawClass.includes('LMP2') || rawClass.includes('P2') || rawClass.includes('ORECA')) {
                 determinedClass = 'LMP2-UR';
             }
 
