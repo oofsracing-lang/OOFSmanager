@@ -114,9 +114,20 @@ const Home = () => {
                     </a>
                 </div>
 
+                <a
+                    href="https://nitin95.github.io/oofs_analytics/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="archive-btn"
+                    style={{ textDecoration: 'none', display: 'inline-block', marginBottom: '0.25rem' }}
+                >
+                    OOFS Driver Analytics
+                </a>
+
                 <button
                     className="archive-btn"
                     onClick={() => navigate('/archive')}
+                    style={{ marginTop: '1rem' }}
                 >
                     View Archived Seasons
                 </button>

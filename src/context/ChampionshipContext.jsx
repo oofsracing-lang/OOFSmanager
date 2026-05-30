@@ -56,7 +56,6 @@ export const ChampionshipProvider = ({ children }) => {
                 setSeasonData(data);
                 setPenalties(data.penalties || {});
                 setManualPositions(data.manualPositions || {});
-                setManualPositions(data.manualPositions || {});
                 setExclusions(data.exclusions || {});
                 if (data.qualifyingSettings) {
                     setQualifyingSettings(data.qualifyingSettings);
@@ -112,8 +111,6 @@ export const ChampionshipProvider = ({ children }) => {
         const payload = {
             ...newData,
             penalties: newPenalties || penalties,
-            manualPositions: newManualPositions || manualPositions,
-            manualPositions: newManualPositions || manualPositions,
             manualPositions: newManualPositions || manualPositions,
             exclusions: exclusions,
             qualifyingSettings: qualifyingSettings,
