@@ -532,6 +532,7 @@ h1 {
   letter-spacing: 1px;
   text-transform: uppercase;
   backdrop-filter: blur(5px);
+  text-align: center;
 }
 
 .archive-btn:hover {
@@ -579,6 +580,12 @@ h1 {
     width: 100%;
     justify-content: center;
     max-width: 300px;
+  }
+
+  .archive-btn {
+    width: 100%;
+    max-width: 300px;
+    margin-top: 1.5rem;
   }
 }
 
