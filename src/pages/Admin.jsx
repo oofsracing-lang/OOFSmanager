@@ -22,7 +22,8 @@ const Admin = () => {
 
 
 
-    const protoKey = (currentSeasonId === 's4-multi' || currentSeasonId === '4') ? 'Hypercar' : 'LMP2-UR';
+    const classes = championshipData?.config?.classes || seasonData?.config?.classes || ['LMP2-UR', 'LMGT3'];
+    const protoKey = classes.find(c => c !== 'LMGT3') || 'LMP2-UR';
     const protoDefLaps = protoKey === 'Hypercar' ? 7 : 5;
     const protoDefTime = protoKey === 'Hypercar' ? 95.5 : 120;
 
@@ -34,7 +35,8 @@ const Admin = () => {
 
     // Sync local state when Firestore updates
     useEffect(() => {
-        const key = (currentSeasonId === 's4-multi' || currentSeasonId === '4') ? 'Hypercar' : 'LMP2-UR';
+        const classesList = championshipData?.config?.classes || seasonData?.config?.classes || ['LMP2-UR', 'LMGT3'];
+        const key = classesList.find(c => c !== 'LMGT3') || 'LMP2-UR';
         const dLaps = key === 'Hypercar' ? 7 : 5;
         const dTime = key === 'Hypercar' ? 95.5 : 120;
 
@@ -49,7 +51,7 @@ const Admin = () => {
             setLmgt3Laps(qualifyingSettings.LMGT3.consecutiveLaps);
             setLmgt3MaxTimeStr(formatTimeHelper(qualifyingSettings.LMGT3.maxAvgTime || 140));
         }
-    }, [qualifyingSettings, currentSeasonId]);
+    }, [qualifyingSettings, currentSeasonId, championshipData, seasonData]);
 
     // Safety Check
     if (!championshipData || !championshipData.races) {
