@@ -117,7 +117,7 @@ const DriverProfile = () => {
                 {/* Driver Header */}
                 <div style={{ marginBottom: '2rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '2rem' }}>
                     <span style={{
-                        background: driver.class === 'LMP2' ? 'var(--primary)' : 'var(--info)',
+                        background: (driver.class === 'LMP2' || driver.class === 'LMP2-UR' || driver.class === 'Hypercar' || driver.class === 'LMP3') ? 'var(--primary)' : 'var(--info)',
                         color: 'white',
                         padding: '0.25rem 0.75rem',
                         borderRadius: 'var(--radius-sm)',
@@ -126,7 +126,7 @@ const DriverProfile = () => {
                         marginBottom: '1rem',
                         display: 'inline-block'
                     }}>
-                        {driver.class === 'LMP2' ? 'LMP2-UR' : 'LMGT3'}
+                        {driver.class || 'LMGT3'}
                     </span>
                     <h2 style={{ marginBottom: '0.5rem' }}>{formatDriverName(driver.name)}</h2>
                     <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.25rem' }}>
@@ -197,6 +197,7 @@ const DriverProfile = () => {
                                 <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--primary)' }}>
                                     <th style={{ padding: '0.75rem 0.5rem' }}>Round</th>
                                     <th style={{ padding: '0.75rem 0.5rem' }}>Track</th>
+                                    <th style={{ padding: '0.75rem 0.5rem' }}>Car</th>
                                     <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Start</th>
                                     <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Pos</th>
                                     <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Points</th>
@@ -210,8 +211,11 @@ const DriverProfile = () => {
                                     // Sort results by race ID to ensure correct history calculation
                                     const sortedResults = [...driver.raceResults].sort((a, b) => a.raceId - b.raceId);
 
-                                    return sortedResults.map((result) => {
+                                    return sortedResults.map((result, idx) => {
                                         const race = championshipData.races.find(r => r.id === result.raceId);
+                                        const previousResult = idx > 0 ? sortedResults[idx - 1] : null;
+                                        const isCarSwapped = previousResult && previousResult.car && result.car && result.car !== previousResult.car;
+                                        const hasPenalty = result.pointsBeforeSwitch !== undefined;
 
                                         // Calculate effective ballast change
                                         let effectiveChange = result.ballastChange;
@@ -290,14 +294,45 @@ const DriverProfile = () => {
                                                         {race?.track || race?.name || 'Unknown'}
                                                     </Link>
                                                 </td>
+                                                <td style={{ padding: '0.75rem 0.5rem', color: 'var(--text-main)' }}>
+                                                    {result.car || '-'}
+                                                    {isCarSwapped && (
+                                                        <span style={{ 
+                                                            display: 'inline-flex',
+                                                            alignItems: 'center',
+                                                            gap: '0.25rem',
+                                                            background: 'rgba(234, 179, 8, 0.15)',
+                                                            color: '#eab308', 
+                                                            fontSize: '0.75rem',
+                                                            marginLeft: '0.5rem',
+                                                            padding: '0.1rem 0.4rem',
+                                                            borderRadius: '4px',
+                                                            fontWeight: 'bold',
+                                                            border: '1px solid rgba(234, 179, 8, 0.3)'
+                                                        }}>
+                                                            ⚠️ Swap
+                                                        </span>
+                                                    )}
+                                                </td>
                                                 <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', color: 'var(--text-muted)' }}>
                                                     {result.startPosition ? `P${result.startPosition}` : '-'}
                                                 </td>
                                                 <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', fontWeight: 'bold' }}>
                                                     {positionDisplay}
                                                 </td>
-                                                <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', fontWeight: 'bold', color: 'var(--success)' }}>
+                                                <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', fontWeight: 'bold', color: hasPenalty ? 'var(--danger)' : 'var(--success)' }}>
                                                     +{result.points}
+                                                    {hasPenalty && (
+                                                        <span style={{ 
+                                                            display: 'block', 
+                                                            fontSize: '0.7rem', 
+                                                            color: 'var(--danger)',
+                                                            fontWeight: 'normal',
+                                                            marginTop: '0.25rem'
+                                                        }}>
+                                                            Swap Penalty (Was +{result.pointsBeforeSwitch})
+                                                        </span>
+                                                    )}
                                                 </td>
                                                 <td style={{
                                                     padding: '0.75rem 0.5rem',

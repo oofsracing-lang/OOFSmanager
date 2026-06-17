@@ -31,19 +31,24 @@ const Standings = () => {
             .map(driver => {
                 // Calculate Drop Round Data
                 const results = driver.raceResults || [];
-                const roundsCompleted = results.length;
                 const roundsHeld = championshipData.currentRound;
 
-                // If they missed a race, their lowest score is 0.
-                // If they did every race, lowest is min(points).
-                let droppedPoints = 0;
-
-                if (roundsCompleted < roundsHeld) {
-                    droppedPoints = 0;
-                } else if (results.length > 0) {
-                    droppedPoints = Math.min(...results.map(r => r.points || 0));
+                // Build a pool of droppable round scores (exclude zeroed car switch penalties)
+                const pool = [];
+                for (let rId = 1; rId <= roundsHeld; rId++) {
+                    const res = results.find(r => String(r.raceId) === String(rId));
+                    if (res) {
+                        const isCarSwitchPenalized = res.pointsBeforeSwitch !== undefined;
+                        if (!isCarSwitchPenalized) {
+                            pool.push(res.points || 0);
+                        }
+                    } else {
+                        // Missed round counts as a 0 in the droppable pool
+                        pool.push(0);
+                    }
                 }
 
+                const droppedPoints = pool.length > 0 ? Math.min(...pool) : 0;
                 const adjustedPoints = (driver.totalPoints || 0) - droppedPoints;
 
                 return {
