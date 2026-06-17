@@ -348,19 +348,22 @@ h1 {
   display: flex;
   flex-direction: column;
   font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-app);
 }
 
 .home-bg-layer {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("/assets/home_bg_v9.jpg");
+  top: -10vh;
+  left: -10vw;
+  width: 120vw;
+  height: 120vh;
+  background-image: url("/assets/home_bg_v11.png");
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   z-index: -1;
-  /* Removed filters to maintain original image quality */
+  /* Zoom out to 68% and translate down to align side cars with red brackets */
+  transform: scale(0.68) translateY(30px);
 }
 
 .home-overlay {
