@@ -33,19 +33,18 @@ const SeasonLayout = () => {
 
     const bgLayerStyle = {
         position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
+        top: '-10vh',
+        left: '-10vw',
+        width: '120vw',
+        height: '120vh',
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        // Zoom out (scale 0.88) and move down (translateY 40px)
-        transform: 'scale(0.88) translateY(40px)',
-        // Smoothly fade out the edges to transparent to prevent any black lines/borders
-        maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 95%)',
-        WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 95%)',
+        // Zoom out (scale 0.86) and move down (translateY 45px)
+        // Since the div is 120% size, scaling to 0.86 makes the image content look zoomed out,
+        // while the div size (120% * 0.86 = 103.2%) remains larger than the viewport, leaving ZERO black edges.
+        transform: 'scale(0.86) translateY(45px)',
         zIndex: 0,
         pointerEvents: 'none'
     };
@@ -56,7 +55,7 @@ const SeasonLayout = () => {
         left: 0,
         right: 0,
         bottom: 0,
-        background: 'rgba(10, 10, 15, 0.82)', // Dark overlay for readability
+        background: 'rgba(10, 10, 15, 0.85)', // Dark overlay for readability
         zIndex: 0,
         pointerEvents: 'none'
     };
