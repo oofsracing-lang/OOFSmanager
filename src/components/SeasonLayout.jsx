@@ -5,7 +5,7 @@ import { useChampionship } from '../context/ChampionshipContext';
 import Sidebar from './Sidebar';
 
 import multiclassBg from '../assets/multiclass_wec_bg.jpg';
-import sprintBg from '../assets/gt3_sprint_wec_bg.jpg';
+import sprintBg from '../assets/gt3_sprint_wec_bg.png';
 
 const SeasonLayout = () => {
     const { seasonId } = useParams();
