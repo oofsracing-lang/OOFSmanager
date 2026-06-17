@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oxanium:ital,wght@0,700;0,800;1,700;1,800;1,900&display=swap');
 
 :root {
   /* Colors - Le Mans Ultimate / WEC Inspired */
@@ -392,31 +392,32 @@ h1 {
 }
 
 .home-title {
-  font-size: 4.5rem;
-  font-weight: 800;
+  font-family: 'Oxanium', sans-serif;
+  font-size: 5rem;
+  font-weight: 900;
+  font-style: italic;
   margin-bottom: 0.5rem;
-  background: linear-gradient(45deg, #fff, #e0e0e0);
+  background: linear-gradient(135deg, #e0f7fa 0%, #b0d039 50%, #64dd17 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  letter-spacing: -2px;
-  /* Added stronger shadow for contrast against complex backgrounds */
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
+  letter-spacing: -1px;
   text-transform: uppercase;
   text-align: center;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9));
 }
 
 .home-subtitle {
-  font-size: 1.1rem;
-  color: #ccc;
-  /* Lightened from #aaa for better visibility */
+  font-family: 'Oxanium', sans-serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  font-weight: 700;
+  color: #b0b3c7;
   margin-bottom: 4rem;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  font-weight: 500;
   text-align: center;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-  /* Added contrast shadow */
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
 }
 
 .home-grid {
