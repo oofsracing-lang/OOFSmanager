@@ -353,17 +353,17 @@ h1 {
 
 .home-bg-layer {
   position: fixed;
-  top: -10vh;
-  left: -10vw;
-  width: 120vw;
-  height: 120vh;
+  top: -4vh;
+  left: 0;
+  width: 100vw;
+  height: 108vh;
   background-image: url("/assets/home_bg_v11.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   z-index: 0;
-  /* Zoom out to 68% and translate down to align side cars with red brackets */
-  transform: scale(0.68) translateY(30px);
+  /* Shift down to place the cars perfectly below/behind the buttons */
+  transform: translateY(40px);
 }
 
 .home-overlay {
