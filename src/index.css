@@ -361,7 +361,7 @@ h1 {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  z-index: -1;
+  z-index: 0;
   /* Zoom out to 68% and translate down to align side cars with red brackets */
   transform: scale(0.68) translateY(30px);
 }
