@@ -23,26 +23,49 @@ const SeasonLayout = () => {
     const isSprint = seasonId?.includes('sprint');
     const backgroundImage = isSprint ? sprintBg : multiclassBg;
 
-    // We keep the dynamic background logic here, but delegating layout structure to CSS
     const containerStyle = {
         display: 'flex',
         minHeight: '100vh',
-        background: `url(${backgroundImage}) center/cover fixed no-repeat`,
-        position: 'relative'
+        backgroundColor: '#0a0b10', // Theme dark background
+        position: 'relative',
+        overflowX: 'hidden'
+    };
+
+    const bgLayerStyle = {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        // Zoom out (scale 0.88) and move down (translateY 40px)
+        transform: 'scale(0.88) translateY(40px)',
+        // Smoothly fade out the edges to transparent to prevent any black lines/borders
+        maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 95%)',
+        WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 95%)',
+        zIndex: 0,
+        pointerEvents: 'none'
     };
 
     const overlayStyle = {
-        position: 'absolute',
+        position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        background: 'rgba(10, 10, 15, 0.85)', // Dark overlay for readability
-        zIndex: 0
+        background: 'rgba(10, 10, 15, 0.82)', // Dark overlay for readability
+        zIndex: 0,
+        pointerEvents: 'none'
     };
 
     return (
         <div style={containerStyle}>
+            {/* Background Image Layer */}
+            <div style={bgLayerStyle} />
+
             {/* Background Overlay */}
             <div style={overlayStyle} />
 
