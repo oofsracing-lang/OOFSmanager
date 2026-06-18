@@ -411,12 +411,13 @@ h1 {
 
 .home-title {
   font-family: 'Classic Cobra Condensed', sans-serif;
-  font-size: clamp(4rem, 10.5vw, 8.8rem); /* Bigger to fill screen space */
+  font-size: clamp(2.5rem, 7.8vw, 6.2rem); /* Adjusted size to fit on one line */
+  white-space: nowrap; /* Force one line */
   font-style: normal; /* Don't have it italicized */
   font-weight: normal; /* Maps to classiccobracond.ttf */
   margin-bottom: 0.5rem;
   color: var(--brand-green); /* Exact brand green */
-  -webkit-text-stroke: 7px #190b31; /* Thicker dark outline */
+  -webkit-text-stroke: 6px #190b31; /* Bold dark outline */
   paint-order: stroke fill;
   letter-spacing: -0.01em;
   text-transform: uppercase;
@@ -432,14 +433,12 @@ h1 {
     7px 7px 0px #190b31,
     8px 8px 0px #190b31,
     9px 9px 0px #190b31,
-    10px 10px 0px #190b31,
-    11px 11px 0px #190b31,
-    12px 12px 0px #190b31;
+    10px 10px 0px #190b31;
 }
 
 .home-subtitle {
   font-family: 'Classic Cobra Condensed', 'Oxanium', sans-serif;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-style: normal; /* Don't have it italicized */
   font-weight: normal; /* Maps to classiccobracond.ttf */
   color: var(--brand-green); /* Exact brand green */
@@ -532,38 +531,53 @@ h1 {
   justify-content: center;
 }
 
-.social-btn,
-.archive-btn {
-  display: inline-flex;
+.social-btn {
+  display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 1.1rem 2.2rem;
-  border-radius: 12px; /* Rectangular-blocky look like cards */
-  background: rgba(0, 0, 0, 0.6); /* Dark glass */
+  padding: 0.75rem 1.75rem;
+  border-radius: 50px; /* Capsule pill shape */
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
   color: var(--brand-green); /* Brand green text */
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.3s ease;
   text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  font-size: 0.9rem;
+  font-weight: 600;
+  min-width: 180px;
+  justify-content: center;
 }
 
-.social-btn:hover,
-.archive-btn:hover {
-  background: rgba(0, 0, 0, 0.75); /* Darker glass on hover */
-  border-color: rgba(206, 255, 0, 0.55); /* Brand green border */
-  color: var(--brand-green);
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(206, 255, 0, 0.2); /* Brand green glow */
+.social-btn:hover {
+  background: var(--brand-green); /* Fill with brand green on hover */
+  color: #190b31; /* Dark text on hover */
+  border-color: var(--brand-green);
+  box-shadow: 0 0 20px rgba(206, 255, 0, 0.3);
 }
 
 .archive-btn {
   margin-top: 3rem;
+  font-size: 0.9rem;
+  color: var(--brand-green); /* Brand green text */
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.75rem 2rem;
+  border-radius: 30px; /* Capsule pill shape */
+  transition: all 0.3s ease;
+  background: rgba(0, 0, 0, 0.5);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  backdrop-filter: blur(5px);
+  text-align: center;
+}
+
+.archive-btn:hover {
+  background: var(--brand-green); /* Fill with brand green on hover */
+  color: #190b31; /* Dark text on hover */
+  border-color: var(--brand-green);
+  box-shadow: 0 0 20px rgba(206, 255, 0, 0.3);
 }
 
 /* Home Page Responsive Tweaks */
