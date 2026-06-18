@@ -14,27 +14,30 @@
 }
 
 :root {
-  /* Colors - Le Mans Ultimate / WEC Inspired */
-  --bg-app: #0a0b10;
-  /* Very dark blue-black */
-  --bg-surface: #14161f;
-  --bg-card: #1a1d29;
+  /* Brand Colors */
+  --brand-purple: #512f89; /* Exact brand purple (RGB 81, 47, 137) */
+  --brand-green: #ceff00;  /* Exact brand green (RGB 206, 255, 0) */
 
-  /* Brand Purple Accent (replaces electric blue) */
-  --primary: #5c25b8;
-  --primary-hover: #733cd1;
-  --primary-glow: rgba(92, 37, 184, 0.4);
+  /* Colors - Brand Purple Unified */
+  --bg-app: #07050d; /* Very dark purple-black app background */
+  --bg-surface: #181126; /* Dark purple surface */
+  --bg-card: #211735; /* Card background purple */
+
+  /* Brand Purple Accent (bright violet-purple for readability) */
+  --primary: #8d5ee3;
+  --primary-hover: #a275f0;
+  --primary-glow: rgba(141, 94, 227, 0.4);
   --primary-color: var(--primary);
 
   --text-main: #ffffff;
   --text-muted: #b0b3c7;
   --text-dim: #6b6e85;
 
-  --border-color: #2a2d3d;
-  --border-active: #40445c;
+  --border-color: rgba(81, 47, 137, 0.35); /* Subtle purple borders */
+  --border-active: rgba(206, 255, 0, 0.45); /* Brand green active borders */
 
   /* Status Colors */
-  --success: #00e676;
+  --success: var(--brand-green);
   --warning: #ffea00;
   --danger: #ff1744;
   --info: #00b0ff;
@@ -108,15 +111,16 @@ body {
 }
 
 .glass-panel {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
+  background: rgba(24, 17, 38, 0.85); /* Rich dark purple glass */
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(81, 47, 137, 0.45); /* Brand purple borders */
   border-radius: var(--radius-lg);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   position: relative;
   overflow: hidden;
 }
 
-/* Subtle top highlight for depth */
+/* Subtle brand green top highlight for racing HUD depth */
 .glass-panel::before {
   content: '';
   position: absolute;
@@ -124,7 +128,7 @@ body {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(206, 255, 0, 0.25), transparent);
 }
 
 .btn {
@@ -407,14 +411,14 @@ h1 {
 
 .home-title {
   font-family: 'Classic Cobra Condensed', sans-serif;
-  font-size: clamp(3rem, 7.5vw, 5.8rem);
-  font-style: italic;
-  font-weight: 900;
+  font-size: clamp(4rem, 10.5vw, 8.8rem); /* Bigger to fill screen space */
+  font-style: normal; /* Don't have it italicized */
+  font-weight: normal; /* Maps to classiccobracond.ttf */
   margin-bottom: 0.5rem;
-  color: #cdff00; /* Neon yellow-green from logo */
-  -webkit-text-stroke: 6px #190b31; /* Bold dark outline */
+  color: var(--brand-green); /* Exact brand green */
+  -webkit-text-stroke: 7px #190b31; /* Thicker dark outline */
   paint-order: stroke fill;
-  letter-spacing: -0.01em; /* Adjusted for Classic Cobra Condensed Italic */
+  letter-spacing: -0.01em;
   text-transform: uppercase;
   text-align: center;
   /* Solid 3D extruded shadow using the dark logo color */
@@ -428,17 +432,19 @@ h1 {
     7px 7px 0px #190b31,
     8px 8px 0px #190b31,
     9px 9px 0px #190b31,
-    10px 10px 0px #190b31;
+    10px 10px 0px #190b31,
+    11px 11px 0px #190b31,
+    12px 12px 0px #190b31;
 }
 
 .home-subtitle {
   font-family: 'Classic Cobra Condensed', 'Oxanium', sans-serif;
-  font-size: 1.4rem;
-  font-style: italic;
-  font-weight: 700;
-  color: #cdff00; /* Matching neon yellow-green color pallet */
+  font-size: 1.6rem;
+  font-style: normal; /* Don't have it italicized */
+  font-weight: normal; /* Maps to classiccobracond.ttf */
+  color: var(--brand-green); /* Exact brand green */
   margin-bottom: 4rem;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   text-transform: uppercase;
   text-align: center;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
@@ -526,56 +532,38 @@ h1 {
   justify-content: center;
 }
 
-.social-btn {
-  display: flex;
+.social-btn,
+.archive-btn {
+  display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 50px;
-  /* Darker background for legibility */
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1.1rem 2.2rem;
+  border-radius: 12px; /* Rectangular-blocky look like cards */
+  background: rgba(0, 0, 0, 0.6); /* Dark glass */
+  color: var(--brand-green); /* Brand green text */
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 600;
-  min-width: 180px;
-  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
-.social-btn:hover {
-  background: #cdff00;
-  color: #190b31;
-  border-color: #cdff00;
-  box-shadow: 0 0 20px rgba(205, 255, 0, 0.3);
+.social-btn:hover,
+.archive-btn:hover {
+  background: rgba(0, 0, 0, 0.75); /* Darker glass on hover */
+  border-color: rgba(206, 255, 0, 0.55); /* Brand green border */
+  color: var(--brand-green);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(206, 255, 0, 0.2); /* Brand green glow */
 }
 
 .archive-btn {
   margin-top: 3rem;
-  font-size: 0.9rem;
-  color: #ccc;
-  /* Improved contrast */
-  cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0.75rem 2rem;
-  border-radius: 30px;
-  transition: all 0.3s ease;
-  background: rgba(0, 0, 0, 0.5);
-  /* Darkened background */
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  backdrop-filter: blur(5px);
-  text-align: center;
-}
-
-.archive-btn:hover {
-  background: #cdff00;
-  color: #190b31;
-  border-color: #cdff00;
-  box-shadow: 0 0 20px rgba(205, 255, 0, 0.3);
 }
 
 /* Home Page Responsive Tweaks */

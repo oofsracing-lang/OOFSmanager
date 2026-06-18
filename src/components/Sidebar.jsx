@@ -29,11 +29,11 @@ const Sidebar = ({ isOpen, onClose }) => {
     const styles = {
         logoArea: {
             fontFamily: "'Classic Cobra Condensed', sans-serif",
-            fontStyle: 'italic',
+            fontStyle: 'normal', /* Don't have it italicized */
+            fontWeight: 'normal', /* Maps to classiccobracond.ttf */
             marginBottom: '3rem',
             fontSize: '1.8rem',
-            fontWeight: 900,
-            color: '#cdff00',
+            color: '#ceff00', /* Exact brand green */
             textDecoration: 'none',
             display: 'block',
             textTransform: 'uppercase',
