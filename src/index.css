@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oxanium:ital,wght@0,700;0,800;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anybody:ital,wdth,wght@0,50..150,100..900;1,50..150,100..900&family=Inter:wght@400;500;600;700;800&family=Oxanium:ital,wght@0,700;0,800;1,700;1,800;1,900&display=swap');
 
 :root {
   /* Colors - Le Mans Ultimate / WEC Inspired */
@@ -392,18 +392,30 @@ h1 {
 }
 
 .home-title {
-  font-family: 'Oxanium', sans-serif;
-  font-size: 5.5rem;
-  font-weight: 900;
+  font-family: 'Anybody', sans-serif;
+  font-size: clamp(3rem, 7.5vw, 5.8rem);
   font-style: italic;
+  font-weight: 900;
+  font-variation-settings: 'wdth' 150, 'wght' 900, 'ital' 1;
   margin-bottom: 0.5rem;
-  color: #cdff00; /* Solid high-visibility green-yellow */
-  -webkit-text-stroke: 3px #080510; /* Bold dark outline */
-  letter-spacing: -2px; /* Pull letters tightly together */
+  color: #cdff00; /* Neon yellow-green from logo */
+  -webkit-text-stroke: 6px #190b31; /* Bold dark outline */
+  paint-order: stroke fill;
+  letter-spacing: -0.04em; /* Tight spacing like original logo */
   text-transform: uppercase;
   text-align: center;
-  /* Strong offset 3D drop shadow */
-  filter: drop-shadow(8px 8px 0px rgba(0, 0, 0, 0.85));
+  /* Solid 3D extruded shadow using the dark logo color */
+  text-shadow: 
+    1px 1px 0px #190b31,
+    2px 2px 0px #190b31,
+    3px 3px 0px #190b31,
+    4px 4px 0px #190b31,
+    5px 5px 0px #190b31,
+    6px 6px 0px #190b31,
+    7px 7px 0px #190b31,
+    8px 8px 0px #190b31,
+    9px 9px 0px #190b31,
+    10px 10px 0px #190b31;
 }
 
 .home-subtitle {
