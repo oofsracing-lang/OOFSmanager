@@ -15,7 +15,7 @@ const Navbar = () => {
             padding: 'var(--space-md) 0',
             borderBottom: '1px solid var(--border-color)',
             marginBottom: 'var(--space-lg)',
-            background: 'rgba(20, 22, 31, 0.8)', // Semi-transparent background
+            background: 'rgba(53, 24, 101, 0.85)', // Purple semi-transparent background
             backdropFilter: 'blur(10px)',
             position: 'sticky',
             top: 0,

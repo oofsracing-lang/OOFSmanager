@@ -14,7 +14,7 @@ const Layout = () => {
                 alignItems: 'center'
             }}>
                 <div>
-                    <h1 style={{ color: 'white', margin: 0 }}>
+                    <h1 style={{ color: '#cdff00', margin: 0 }}>
                         Out of Fuel Sim Racing League
                     </h1>
                 </div>

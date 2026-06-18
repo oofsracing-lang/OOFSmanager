@@ -1,4 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Anybody:ital,wdth,wght@0,50..150,100..900;1,50..150,100..900&family=Inter:wght@400;500;600;700;800&family=Oxanium:ital,wght@0,700;0,800;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oxanium:ital,wght@0,700;0,800;1,700;1,800;1,900&display=swap');
+
+@font-face {
+  font-family: 'Classic Cobra Condensed';
+  src: url('/assets/fonts/classiccobracondital.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Classic Cobra Condensed';
+  src: url('/assets/fonts/classiccobracond.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 :root {
   /* Colors - Le Mans Ultimate / WEC Inspired */
@@ -7,10 +20,11 @@
   --bg-surface: #14161f;
   --bg-card: #1a1d29;
 
-  /* Electric Blue Accent */
-  --primary: #2962ff;
-  --primary-hover: #448aff;
-  --primary-glow: rgba(41, 98, 255, 0.4);
+  /* Brand Purple Accent (replaces electric blue) */
+  --primary: #5c25b8;
+  --primary-hover: #733cd1;
+  --primary-glow: rgba(92, 37, 184, 0.4);
+  --primary-color: var(--primary);
 
   --text-main: #ffffff;
   --text-muted: #b0b3c7;
@@ -261,7 +275,7 @@ h1 {
   position: fixed;
   left: 0;
   top: 0;
-  background: rgba(20, 22, 31, 0.95);
+  background: rgba(53, 24, 101, 0.95);
   backdrop-filter: blur(10px);
   border-right: 1px solid var(--border-color);
   z-index: 1000;
@@ -392,16 +406,15 @@ h1 {
 }
 
 .home-title {
-  font-family: 'Anybody', sans-serif;
+  font-family: 'Classic Cobra Condensed', sans-serif;
   font-size: clamp(3rem, 7.5vw, 5.8rem);
   font-style: italic;
   font-weight: 900;
-  font-variation-settings: 'wdth' 150, 'wght' 900, 'ital' 1;
   margin-bottom: 0.5rem;
   color: #cdff00; /* Neon yellow-green from logo */
   -webkit-text-stroke: 6px #190b31; /* Bold dark outline */
   paint-order: stroke fill;
-  letter-spacing: -0.04em; /* Tight spacing like original logo */
+  letter-spacing: -0.01em; /* Adjusted for Classic Cobra Condensed Italic */
   text-transform: uppercase;
   text-align: center;
   /* Solid 3D extruded shadow using the dark logo color */
@@ -419,13 +432,13 @@ h1 {
 }
 
 .home-subtitle {
-  font-family: 'Oxanium', sans-serif;
-  font-size: 1.2rem;
+  font-family: 'Classic Cobra Condensed', 'Oxanium', sans-serif;
+  font-size: 1.4rem;
   font-style: italic;
   font-weight: 700;
-  color: #b0b3c7;
+  color: #cdff00; /* Matching neon yellow-green color pallet */
   margin-bottom: 4rem;
-  letter-spacing: 4px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   text-align: center;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
@@ -464,9 +477,9 @@ h1 {
 .home-card:hover {
   background: rgba(0, 0, 0, 0.7);
   /* Even darker on hover */
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(205, 255, 0, 0.5); /* Brand green border */
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(205, 255, 0, 0.15); /* Brand green glow */
 }
 
 .home-card-line {
@@ -481,13 +494,15 @@ h1 {
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 2px;
-  opacity: 0.7;
+  color: #cdff00; /* Neon yellow-green from logo */
+  opacity: 0.95;
   margin-bottom: 1.5rem;
 }
 
 .home-card-title {
   font-size: 1.8rem;
   font-weight: 700;
+  color: #cdff00; /* Neon yellow-green from logo */
   margin-bottom: 0.5rem;
   margin-top: 1rem;
 }
@@ -497,6 +512,10 @@ h1 {
   color: #ddd;
   /* Lightened for better contrast on dark glass */
   line-height: 1.6;
+}
+
+.home-card-desc strong {
+  color: #cdff00; /* Neon yellow-green highlights for series categories */
 }
 
 .social-container {
@@ -528,8 +547,10 @@ h1 {
 }
 
 .social-btn:hover {
-  background: rgba(255, 255, 255, 1);
-  color: black;
+  background: #cdff00;
+  color: #190b31;
+  border-color: #cdff00;
+  box-shadow: 0 0 20px rgba(205, 255, 0, 0.3);
 }
 
 .archive-btn {
@@ -551,9 +572,10 @@ h1 {
 }
 
 .archive-btn:hover {
-  border-color: rgba(255, 255, 255, 0.4);
-  background: rgba(0, 0, 0, 0.7);
-  color: #fff;
+  background: #cdff00;
+  color: #190b31;
+  border-color: #cdff00;
+  box-shadow: 0 0 20px rgba(205, 255, 0, 0.3);
 }
 
 /* Home Page Responsive Tweaks */

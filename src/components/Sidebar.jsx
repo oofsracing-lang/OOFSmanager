@@ -28,13 +28,16 @@ const Sidebar = ({ isOpen, onClose }) => {
 
     const styles = {
         logoArea: {
+            fontFamily: "'Classic Cobra Condensed', sans-serif",
+            fontStyle: 'italic',
             marginBottom: '3rem',
-            fontSize: '1.5rem',
-            fontWeight: 800,
-            letterSpacing: '-1px',
-            color: '#fff',
+            fontSize: '1.8rem',
+            fontWeight: 900,
+            color: '#cdff00',
             textDecoration: 'none',
-            display: 'block'
+            display: 'block',
+            textTransform: 'uppercase',
+            textShadow: '0 2px 4px rgba(0,0,0,0.5)'
         },
         navGroup: {
             display: 'flex',
@@ -81,7 +84,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             {championshipData && (
                 <div style={{
                     padding: '0 0 2rem 0',
-                    color: 'var(--primary-color)',
+                    color: '#cdff00', // Neon green for high contrast on purple background
                     fontSize: '0.85rem',
                     fontWeight: '600',
                     textTransform: 'uppercase',
