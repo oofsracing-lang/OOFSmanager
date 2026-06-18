@@ -393,18 +393,17 @@ h1 {
 
 .home-title {
   font-family: 'Oxanium', sans-serif;
-  font-size: 5rem;
+  font-size: 5.5rem;
   font-weight: 900;
   font-style: italic;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #e0f7fa 0%, #b0d039 50%, #64dd17 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -1px;
+  color: #cdff00; /* Solid high-visibility green-yellow */
+  -webkit-text-stroke: 3px #080510; /* Bold dark outline */
+  letter-spacing: -2px; /* Pull letters tightly together */
   text-transform: uppercase;
   text-align: center;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9));
+  /* Strong offset 3D drop shadow */
+  filter: drop-shadow(8px 8px 0px rgba(0, 0, 0, 0.85));
 }
 
 .home-subtitle {
