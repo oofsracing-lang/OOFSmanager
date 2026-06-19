@@ -519,9 +519,34 @@ h1 {
 .home-card:hover {
   background: rgba(0, 0, 0, 0.7);
   /* Even darker on hover */
-  border-color: rgba(205, 255, 0, 0.5); /* Brand green border */
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(205, 255, 0, 0.15); /* Brand green glow */
+}
+
+/* Theme-specific card colors & hover states */
+.home-card.multiclass-card .home-card-line {
+  background: var(--brand-green); /* Exact brand green #ceff00 */
+}
+.home-card.multiclass-card .home-card-type,
+.home-card.multiclass-card .home-card-title,
+.home-card.multiclass-card .home-card-desc strong {
+  color: var(--brand-green); /* Exact brand green #ceff00 */
+}
+.home-card.multiclass-card:hover {
+  border-color: rgba(206, 255, 0, 0.55);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(206, 255, 0, 0.2);
+}
+
+.home-card.sprint-card .home-card-line {
+  background: #f5901d; /* Sprint Orange */
+}
+.home-card.sprint-card .home-card-type,
+.home-card.sprint-card .home-card-title,
+.home-card.sprint-card .home-card-desc strong {
+  color: #f5901d; /* Sprint Orange */
+}
+.home-card.sprint-card:hover {
+  border-color: rgba(245, 144, 29, 0.55);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(245, 144, 29, 0.2);
 }
 
 .home-card-line {

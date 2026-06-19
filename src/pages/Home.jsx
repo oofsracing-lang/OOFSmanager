@@ -24,13 +24,10 @@ const Home = () => {
                 <div className="home-grid">
                     {/* Season 5 Multiclass */}
                     <div
-                        className="home-card"
+                        className="home-card multiclass-card"
                         onClick={() => handleSeasonSelect('s5-multi')}
                     >
-                        <div
-                            className="home-card-line"
-                            style={{ background: 'linear-gradient(90deg, #7B1FA2, #E1BEE7)' }}
-                        ></div>
+                        <div className="home-card-line"></div>
                         <span className="home-card-type">Season 5</span>
                         <h2 className="home-card-title">Multiclass</h2>
                         <p className="home-card-desc">
@@ -42,13 +39,10 @@ const Home = () => {
 
                     {/* Season 5 Sprint */}
                     <div
-                        className="home-card"
+                        className="home-card sprint-card"
                         onClick={() => handleSeasonSelect('s5-sprint')}
                     >
-                        <div
-                            className="home-card-line"
-                            style={{ background: 'linear-gradient(90deg, #64DD17, #CCFF90)' }}
-                        ></div>
+                        <div className="home-card-line"></div>
                         <span className="home-card-type">Season 5</span>
                         <h2 className="home-card-title">Sprint Series</h2>
                         <p className="home-card-desc">
