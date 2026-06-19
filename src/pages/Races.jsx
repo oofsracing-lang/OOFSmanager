@@ -44,23 +44,13 @@ const Races = () => {
                                 >
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <div>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
-                                                <span style={{
-                                                    background: isCompleted ? 'var(--success)' : isCurrent ? 'var(--primary)' : 'var(--text-dim)',
-                                                    color: 'white',
-                                                    padding: '0.25rem 0.75rem',
-                                                    borderRadius: 'var(--radius-sm)',
-                                                    fontSize: '0.8rem',
-                                                    fontWeight: 'bold'
-                                                }}>
-                                                    Round {race.id}
-                                                </span>
-                                                {isCurrent && (
+                                            {isCurrent && (
+                                                <div style={{ marginBottom: '0.5rem' }}>
                                                     <span style={{ color: 'var(--primary)', fontSize: '0.9rem', fontWeight: 'bold' }}>
                                                         NEXT RACE
                                                     </span>
-                                                )}
-                                            </div>
+                                                </div>
+                                            )}
                                             <h3 style={{ marginBottom: '0.5rem' }}>{race.name}</h3>
                                             <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
                                                 {race.track}
