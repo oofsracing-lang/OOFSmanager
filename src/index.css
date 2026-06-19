@@ -82,6 +82,22 @@
   color: #f5901d !important;
 }
 
+/* Scoped overrides to replace white text with volt green #ceff00 on Multiclass Series pages */
+.multiclass-theme {
+  --text-main: #ceff00; /* Override all default white text with brand green */
+}
+
+/* Force override for elements that use inline styles to hardcode white text inside the multiclass theme */
+.multiclass-theme [style*="color: white"],
+.multiclass-theme [style*="color: 'white'"],
+.multiclass-theme [style*="color: \"white\""],
+.multiclass-theme [style*="color: #fff"],
+.multiclass-theme [style*="color: #ffffff"],
+.multiclass-theme [style*="color: rgb(255, 255, 255)"],
+.multiclass-theme .layout-sidebar a.active {
+  color: #ceff00 !important;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
