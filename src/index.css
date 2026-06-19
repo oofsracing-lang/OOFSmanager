@@ -35,6 +35,7 @@
 
   --border-color: rgba(81, 47, 137, 0.35); /* Subtle purple borders */
   --border-active: rgba(206, 255, 0, 0.45); /* Brand green active borders */
+  --panel-highlight: rgba(206, 255, 0, 0.25); /* Subtle green highlight gradient */
 
   /* Status Colors */
   --success: var(--brand-green);
@@ -59,6 +60,13 @@
   /* Transitions */
   --transition-fast: 0.15s ease;
   --transition-normal: 0.2s ease-in-out;
+}
+
+/* Scoped overrides to replace brand green/volt with orange #f5901d on Sprint Series pages */
+.sprint-theme {
+  --brand-green: #f5901d; /* Orange picker R:245 G:144 B:29 */
+  --border-active: rgba(245, 144, 29, 0.45);
+  --panel-highlight: rgba(245, 144, 29, 0.25);
 }
 
 * {
@@ -120,7 +128,7 @@ body {
   overflow: hidden;
 }
 
-/* Subtle brand green top highlight for racing HUD depth */
+/* Subtle top highlight for racing HUD depth */
 .glass-panel::before {
   content: '';
   position: absolute;
@@ -128,7 +136,7 @@ body {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(206, 255, 0, 0.25), transparent);
+  background: linear-gradient(90deg, transparent, var(--panel-highlight), transparent);
 }
 
 .btn {

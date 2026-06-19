@@ -33,7 +33,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             fontWeight: 'normal', /* Maps to classiccobracond.ttf */
             marginBottom: '3rem',
             fontSize: '1.8rem',
-            color: '#ceff00', /* Exact brand green */
+            color: 'var(--brand-green)', /* Inherits brand green/orange variables dynamically */
             textDecoration: 'none',
             display: 'block',
             textTransform: 'uppercase',
@@ -84,7 +84,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             {championshipData && (
                 <div style={{
                     padding: '0 0 2rem 0',
-                    color: '#cdff00', // Neon green for high contrast on purple background
+                    color: 'var(--brand-green)', // Inherits green/orange variables dynamically
                     fontSize: '0.85rem',
                     fontWeight: '600',
                     textTransform: 'uppercase',

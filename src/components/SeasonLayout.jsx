@@ -61,7 +61,7 @@ const SeasonLayout = () => {
     };
 
     return (
-        <div style={containerStyle}>
+        <div style={containerStyle} className={isSprint ? 'sprint-theme' : 'multiclass-theme'}>
             {/* Background Image Layer */}
             <div style={bgLayerStyle} />
 
