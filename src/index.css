@@ -65,35 +65,34 @@
 /* Scoped overrides to replace brand green/volt with orange #f5901d on Sprint Series pages */
 .sprint-theme {
   --brand-green: #f5901d; /* Orange picker R:245 G:144 B:29 */
-  --success: #f5901d; /* Direct success color override for orange highlights */
+  --success: #ceff00;     /* Keep clean license and success states green */
   --border-active: rgba(245, 144, 29, 0.45);
   --panel-highlight: rgba(245, 144, 29, 0.25);
-  --text-main: #f5901d; /* Override all default white text with brand orange */
 }
 
-/* Force override for elements that use inline styles to hardcode white text inside the sprint theme */
-.sprint-theme [style*="color: white"],
-.sprint-theme [style*="color: 'white'"],
-.sprint-theme [style*="color: \"white\""],
-.sprint-theme [style*="color: #fff"],
-.sprint-theme [style*="color: #ffffff"],
-.sprint-theme [style*="color: rgb(255, 255, 255)"],
+.sprint-theme h1,
+.sprint-theme h2,
+.sprint-theme h3,
+.sprint-theme h4,
+.sprint-theme h5,
+.sprint-theme h6 {
+  color: #f5901d;
+}
+
 .sprint-theme .layout-sidebar a.active {
   color: #f5901d !important;
 }
 
-/* Scoped overrides to replace white text with volt green #ceff00 on Multiclass Series pages */
-.multiclass-theme {
-  --text-main: #ceff00; /* Override all default white text with brand green */
+/* Scoped overrides for Multiclass Series pages */
+.multiclass-theme h1,
+.multiclass-theme h2,
+.multiclass-theme h3,
+.multiclass-theme h4,
+.multiclass-theme h5,
+.multiclass-theme h6 {
+  color: #ceff00;
 }
 
-/* Force override for elements that use inline styles to hardcode white text inside the multiclass theme */
-.multiclass-theme [style*="color: white"],
-.multiclass-theme [style*="color: 'white'"],
-.multiclass-theme [style*="color: \"white\""],
-.multiclass-theme [style*="color: #fff"],
-.multiclass-theme [style*="color: #ffffff"],
-.multiclass-theme [style*="color: rgb(255, 255, 255)"],
 .multiclass-theme .layout-sidebar a.active {
   color: #ceff00 !important;
 }
