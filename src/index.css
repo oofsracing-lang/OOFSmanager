@@ -68,6 +68,18 @@
   --success: #f5901d; /* Direct success color override for orange highlights */
   --border-active: rgba(245, 144, 29, 0.45);
   --panel-highlight: rgba(245, 144, 29, 0.25);
+  --text-main: #f5901d; /* Override all default white text with brand orange */
+}
+
+/* Force override for elements that use inline styles to hardcode white text inside the sprint theme */
+.sprint-theme [style*="color: white"],
+.sprint-theme [style*="color: 'white'"],
+.sprint-theme [style*="color: \"white\""],
+.sprint-theme [style*="color: #fff"],
+.sprint-theme [style*="color: #ffffff"],
+.sprint-theme [style*="color: rgb(255, 255, 255)"],
+.sprint-theme .layout-sidebar a.active {
+  color: #f5901d !important;
 }
 
 * {
