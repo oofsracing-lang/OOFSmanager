@@ -149,8 +149,11 @@ const RaceDetail = () => {
                         {classesToShow.map(className => {
                             const classResults = getClassResults(className);
                             if (classResults.length === 0) return null;
-                            const isHypercar = className === 'Hypercar';
-                            const titleColor = isHypercar ? '#ef4444' : (className.includes('LMP2') ? 'var(--primary)' : 'var(--warning)');
+                            let titleColor = 'var(--text-main)';
+                            if (className.includes('Hypercar')) titleColor = 'var(--danger)';
+                            else if (className.includes('LMP2')) titleColor = 'var(--info)';
+                            else if (className.includes('LMGT3') || className.includes('GT3')) titleColor = '#f08c00';
+                            else if (className.includes('LMP3')) titleColor = '#a855f7';
 
                             return (
                                 <div key={className} style={{ marginBottom: '3rem' }}>
