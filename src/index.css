@@ -65,6 +65,7 @@
 /* Scoped overrides to replace brand green/volt with orange #f5901d on Sprint Series pages */
 .sprint-theme {
   --brand-green: #f5901d; /* Orange picker R:245 G:144 B:29 */
+  --success: #f5901d; /* Direct success color override for orange highlights */
   --border-active: rgba(245, 144, 29, 0.45);
   --panel-highlight: rgba(245, 144, 29, 0.25);
 }
