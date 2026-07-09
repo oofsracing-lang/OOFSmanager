@@ -581,6 +581,8 @@ const analyzeQualifyingXml = (xmlContent, criteriaSettings, targetDriverName = n
         || rawClass.includes('PROTOTYPE') && (rawCarType.includes('FERRARI') || rawCarType.includes('TOYOTA') || rawCarType.includes('BMW'))
     ) {
         criteriaClass = 'Hypercar';
+    } else if ((rawClass.includes('LMP3') || rawClass.includes('P3')) && criteriaSettings['LMP3']) {
+        criteriaClass = 'LMP3';
     } else if (rawClass.includes('LMP2') || rawClass.includes('P2') || rawClass.includes('ORECA')) {
         criteriaClass = 'LMP2-UR';
     }
@@ -729,6 +731,7 @@ exports.submitQualifying = functions.https.onCall(async (data, context) => {
     let settings = {
         'LMP2-UR': { consecutiveLaps: 5, maxAvgTime: 120.0 }, // fallback
         'Hypercar': { consecutiveLaps: 7, maxAvgTime: 95.5 }, // fallback
+        'LMP3': { consecutiveLaps: 5, maxAvgTime: 120.0 }, // fallback
         'LMGT3': { consecutiveLaps: 5, maxAvgTime: 140.0 }
     };
 

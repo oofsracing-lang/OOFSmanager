@@ -354,8 +354,20 @@ const AttendanceTab = () => {
                                         padding: '0.25rem 0.5rem',
                                         borderRadius: '4px',
                                         fontSize: '0.7rem',
-                                        backgroundColor: driver.class === 'Hypercar' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(139, 92, 246, 0.2)',
-                                        color: driver.class === 'Hypercar' ? '#ef4444' : '#a78bfa',
+                                        backgroundColor: driver.class === 'Hypercar'
+                                            ? 'rgba(239, 68, 68, 0.2)'
+                                            : (driver.class.includes('LMP2')
+                                                ? 'rgba(59, 130, 246, 0.2)'
+                                                : (driver.class.includes('LMP3')
+                                                    ? 'rgba(168, 85, 247, 0.2)'
+                                                    : 'rgba(139, 92, 246, 0.2)')),
+                                        color: driver.class === 'Hypercar'
+                                            ? '#ef4444'
+                                            : (driver.class.includes('LMP2')
+                                                ? '#3b82f6'
+                                                : (driver.class.includes('LMP3')
+                                                    ? '#a855f7'
+                                                    : '#a78bfa')),
                                         border: '1px solid transparent'
                                     }}>
                                         {driver.class}

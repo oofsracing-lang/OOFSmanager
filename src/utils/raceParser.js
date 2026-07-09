@@ -67,6 +67,7 @@ export const parseRaceXml = (xmlContent) => {
     const purpleHolders = {
         "Hypercar": { 1: null, 2: null, 3: null },
         "LMP2": { 1: null, 2: null, 3: null },
+        "LMP3": { 1: null, 2: null, 3: null },
         "LMGT3": { 1: null, 2: null, 3: null }
     };
 
@@ -76,8 +77,10 @@ export const parseRaceXml = (xmlContent) => {
         const upper = rawClass.toUpperCase();
         if (upper.includes('HYPERCAR') || upper.includes('HYPER') || upper.includes('LMH') || upper.includes('LMDH')) return 'Hypercar';
         if (upper.includes('LMP2') || upper.includes('P2') || upper.includes('ORECA')) return "LMP2";
+        if (upper.includes('LMP3') || upper.includes('P3')) return "LMP3";
         return "LMGT3";
     };
+
 
     sectors.forEach(s => {
         const driver = s['@_Driver'];

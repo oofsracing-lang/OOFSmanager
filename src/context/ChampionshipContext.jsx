@@ -33,6 +33,7 @@ export const ChampionshipProvider = ({ children }) => {
     const [qualifyingSettings, setQualifyingSettings] = useState({
         'LMP2-UR': { consecutiveLaps: 5, maxAvgTime: 120.0 },
         'Hypercar': { consecutiveLaps: 7, maxAvgTime: 95.5 },
+        'LMP3': { consecutiveLaps: 5, maxAvgTime: 120.0 },
         'LMGT3': { consecutiveLaps: 5, maxAvgTime: 140.0 }
     });
     // Store submissions in state for Admin view
@@ -71,6 +72,7 @@ export const ChampionshipProvider = ({ children }) => {
                 setQualifyingSettings(defaultData.qualifyingSettings || {
                     'LMP2-UR': { consecutiveLaps: 5, maxAvgTime: 120.0 },
                     'Hypercar': { consecutiveLaps: 7, maxAvgTime: 95.5 },
+                    'LMP3': { consecutiveLaps: 5, maxAvgTime: 120.0 },
                     'LMGT3': { consecutiveLaps: 5, maxAvgTime: 140.0 }
                 });
             }
@@ -679,6 +681,8 @@ export const ChampionshipProvider = ({ children }) => {
                 determinedClass = 'Hypercar';
             } else if (rawClass.includes('LMP2') || rawClass.includes('P2') || rawClass.includes('ORECA')) {
                 determinedClass = 'LMP2-UR';
+            } else if ((rawClass.includes('LMP3') || rawClass.includes('P3')) && newData.config?.classes?.includes('LMP3')) {
+                determinedClass = 'LMP3';
             }
 
             if (!rosterEntry) {
