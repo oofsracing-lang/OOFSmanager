@@ -4,6 +4,7 @@ import { useChampionship } from '../context/ChampionshipContext';
 import { formatTime as formatTimeHelper, parseTimeInput } from '../utils/timeHelpers';
 import { parseRaceXml, extractContactsFromXml } from '../utils/raceParser';
 import { uploadXmlBackup, subscribeToIncidents, updateIncident, deleteIncident, saveIncident, saveSeasonData, overwriteSeasonData } from '../firebase/db';
+import AttendanceTab from '../components/AttendanceTab';
 import LicensePointsTab from '../components/LicensePointsTab';
 import { httpsCallable } from 'firebase/functions';
 import { functions } from '../firebase';
