@@ -189,3 +189,88 @@ export const parseRaceXml = (xmlContent) => {
         dramaLog // Expose for AI Sportscaster
     };
 };
+
+export const extractContactsFromXml = (xmlContent, raceId, seasonId) => {
+    const parser = new XMLParser({
+        ignoreAttributes: false,
+        attributeNamePrefix: "@_"
+    });
+    const parsed = parser.parse(xmlContent);
+
+    if (!parsed.rFactorXML || !parsed.rFactorXML.RaceResults) {
+        return [];
+    }
+
+    const stream = parsed.rFactorXML.RaceResults.Race?.Stream || {};
+    const toArray = (item) => Array.isArray(item) ? item : (item ? [item] : []);
+    const incidents = toArray(stream.Incident);
+
+    const rawContacts = [];
+    incidents.forEach(inc => {
+        const et = parseFloat(inc['@_et']);
+        const text = inc['#text'] || '';
+        const m = text.match(/^(.+?)\((\d+)\)\s+reported contact\s+\(([\d.]+)\)\s+with another vehicle\s+(.+?)\((\d+)\)/i);
+        if (m && !isNaN(et)) {
+            rawContacts.push({
+                et,
+                driver1: m[1].trim(),
+                car1: m[2].trim(),
+                force: parseFloat(m[3]),
+                driver2: m[4].trim(),
+                car2: m[5].trim()
+            });
+        }
+    });
+
+    const paired = [];
+    const processed = new Set();
+
+    for (let i = 0; i < rawContacts.length; i++) {
+        if (processed.has(i)) continue;
+        const c1 = rawContacts[i];
+        let matchIdx = -1;
+
+        for (let j = i + 1; j < rawContacts.length; j++) {
+            if (processed.has(j)) continue;
+            const c2 = rawContacts[j];
+            if (Math.abs(c2.et - c1.et) <= 1.5) {
+                const isSamePair = (c1.driver1 === c2.driver2 && c1.driver2 === c2.driver1) ||
+                                   (c1.driver1 === c2.driver1 && c1.driver2 === c2.driver2);
+                if (isSamePair) {
+                    matchIdx = j;
+                    break;
+                }
+            }
+        }
+
+        const mins = Math.floor(c1.et / 60);
+        const secs = Math.floor(c1.et % 60).toString().padStart(2, '0');
+        const formattedTime = `${mins}:${secs} elapsed`;
+
+        const maxForce = matchIdx !== -1 ? Math.max(c1.force, rawContacts[matchIdx].force) : c1.force;
+        const driver2Name = matchIdx !== -1 ? rawContacts[matchIdx].driver1 : c1.driver2;
+        const car2Num = matchIdx !== -1 ? rawContacts[matchIdx].car1 : c1.car2;
+
+        paired.push({
+            seasonId: String(seasonId),
+            raceId: raceId,
+            carNumbers: `#${c1.car1}, #${car2Num}`,
+            timestamp: formattedTime,
+            description: `Auto-detected contact between ${c1.driver1} (#${c1.car1}) and ${driver2Name} (#${car2Num}) [Impact Force: ${maxForce.toFixed(1)}]`,
+            driver1: c1.driver1,
+            car1: c1.car1,
+            driver2: driver2Name,
+            car2: car2Num,
+            impactForce: maxForce,
+            status: 'Pending',
+            isFinal: false,
+            isAuto: true
+        });
+
+        processed.add(i);
+        if (matchIdx !== -1) processed.add(matchIdx);
+    }
+
+    return paired;
+};
+

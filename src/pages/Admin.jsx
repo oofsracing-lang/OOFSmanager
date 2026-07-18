@@ -2,9 +2,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { useChampionship } from '../context/ChampionshipContext';
 import { formatTime as formatTimeHelper, parseTimeInput } from '../utils/timeHelpers';
-import { parseRaceXml } from '../utils/raceParser';
-import { uploadXmlBackup, subscribeToIncidents, updateIncident, deleteIncident, saveSeasonData, overwriteSeasonData } from '../firebase/db';
-import AttendanceTab from '../components/AttendanceTab';
+import { parseRaceXml, extractContactsFromXml } from '../utils/raceParser';
+import { uploadXmlBackup, subscribeToIncidents, updateIncident, deleteIncident, saveIncident, saveSeasonData, overwriteSeasonData } from '../firebase/db';
 import LicensePointsTab from '../components/LicensePointsTab';
 import { httpsCallable } from 'firebase/functions';
 import { functions } from '../firebase';
@@ -239,10 +238,27 @@ const Admin = () => {
                         dramaLog: result.dramaLog || []
                     });
 
+                    // Auto-extract vehicle contacts for Season 5 going forward
+                    let autoContactsExtracted = 0;
+                    if (String(currentSeasonId).includes('5')) {
+                        try {
+                            const contacts = extractContactsFromXml(text, raceIdToUse, currentSeasonId);
+                            if (contacts && contacts.length > 0) {
+                                for (const contact of contacts) {
+                                    await saveIncident(contact);
+                                }
+                                autoContactsExtracted = contacts.length;
+                            }
+                        } catch (contactErr) {
+                            console.error("Auto contact extraction error:", contactErr);
+                        }
+                    }
+
                     // Success Feedback
                     const driverCount = result.results ? result.results.length : 0;
                     const track = result.trackName || 'Unknown Track';
-                    alert(`Success! Imported ${driverCount} drivers for ${track} (Round ${raceIdToUse}).`);
+                    const contactMsg = autoContactsExtracted > 0 ? `\nAuto-extracted ${autoContactsExtracted} vehicle contacts for Stewarding review.` : '';
+                    alert(`Success! Imported ${driverCount} drivers for ${track} (Round ${raceIdToUse}).${contactMsg}`);
 
                 } catch (err) {
                     console.error("Error parsing/importing XML", err);
@@ -930,6 +946,18 @@ const Admin = () => {
                                         <tr key={incident.id} style={{ borderBottom: '1px solid var(--border-color)', backgroundColor: incident.status === 'Complete' ? 'rgba(16, 185, 129, 0.05)' : 'transparent' }}>
                                             <td style={{ padding: '1rem', verticalAlign: 'top', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                                                 {incident.createdAt ? new Date(incident.createdAt).toLocaleString() : '-'}
+                                                {incident.isAuto && (
+                                                    <div style={{ marginTop: '0.4rem' }}>
+                                                        <span style={{ background: '#3b82f6', color: 'white', padding: '0.15rem 0.45rem', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 'bold' }}>
+                                                            Auto-Extracted
+                                                        </span>
+                                                        {incident.impactForce !== undefined && (
+                                                            <div style={{ fontSize: '0.75rem', color: '#60a5fa', marginTop: '0.25rem', fontWeight: '500' }}>
+                                                                Force: {typeof incident.impactForce === 'number' ? incident.impactForce.toFixed(1) : incident.impactForce}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                )}
                                             </td>
                                             <td style={{ padding: '1rem', verticalAlign: 'top' }}>
                                                 <select
