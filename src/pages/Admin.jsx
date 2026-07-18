@@ -561,7 +561,7 @@ const Admin = () => {
             }
 
             {/* Sub-Tab Navigation */}
-            <div style={{
+            <div className="admin-sub-tabs" style={{
                 display: 'flex',
                 gap: '0.5rem',
                 marginBottom: '2rem',
@@ -594,9 +594,6 @@ const Admin = () => {
                 activeTab === 'results' && (
                     <div>
 
-
-
-                        {/* Standard XML Ingestion */}
                         {/* Standard XML Ingestion */}
                         <div className="glass-panel" style={{ padding: '2rem', marginBottom: '2rem', textAlign: 'center' }}>
                             <h3 style={{ marginBottom: '1rem', color: 'var(--text-main)' }}>Upload Race Results</h3>
@@ -621,9 +618,7 @@ const Admin = () => {
                         </div>
                         {/* End XML Zone */}
 
-
-
-                        <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: '2rem' }}>
+                        <div className="admin-grid-layout" style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: '2rem' }}>
                             {/* Race Selection & Management */}
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                                 <div className="glass-panel" style={{ padding: '1.5rem' }}>

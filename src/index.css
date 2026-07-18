@@ -270,6 +270,18 @@ h1 {
   color: var(--primary);
 }
 
+/* --- Touch Horizontal Scrolling & Responsive Table Utilities --- */
+.table-wrapper,
+.table-container,
+div[style*="overflowX"],
+div[style*="overflow-x"] {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-x pan-y !important;
+  max-width: 100%;
+  width: 100%;
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   :root {
@@ -278,12 +290,17 @@ h1 {
     --space-2xl: 32px;
   }
 
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+  }
+
   h1 {
     font-size: 1.75rem;
   }
 
   h2 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .container {
@@ -291,18 +308,61 @@ h1 {
   }
 
   .glass-panel {
-    padding: 1rem !important;
+    padding: 1.25rem 0.75rem !important;
   }
 
-  /* Force table scrolling on mobile */
-  .table-container {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+  /* Allow glass panels containing tables to scroll horizontally cleanly without clipping touch swipes */
+  .glass-panel:has(.table-wrapper),
+  .glass-panel:has(.table-container),
+  .glass-panel:has(div[style*="overflowX"]),
+  .glass-panel:has(table) {
+    overflow: visible !important;
   }
 
+  /* Force table horizontal touch scrolling on mobile */
   table {
-    min-width: 600px;
-    /* Ensure table keeps shape and scrolls */
+    min-width: 650px !important;
+  }
+
+  /* Give table scrollbar visual presence on mobile screens */
+  .table-wrapper::-webkit-scrollbar,
+  .table-container::-webkit-scrollbar,
+  div[style*="overflowX"]::-webkit-scrollbar,
+  div[style*="overflow-x"]::-webkit-scrollbar {
+    height: 5px !important;
+    display: block !important;
+  }
+
+  .table-wrapper::-webkit-scrollbar-thumb,
+  .table-container::-webkit-scrollbar-thumb,
+  div[style*="overflowX"]::-webkit-scrollbar-thumb,
+  div[style*="overflow-x"]::-webkit-scrollbar-thumb {
+    background: var(--primary) !important;
+    border-radius: 3px !important;
+  }
+
+  /* Admin & Page Sub-tabs on mobile: scrollable horizontal pill bar */
+  .admin-sub-tabs,
+  div[style*="borderBottom"][style*="flex"],
+  div[style*="border-bottom"][style*="flex"] {
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-x pan-y !important;
+    flex-wrap: nowrap !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  .admin-sub-tabs button {
+    flex-shrink: 0 !important;
+  }
+
+  /* Mobile grids: Collapse 2-column grids into 1 column on phones */
+  .admin-grid-layout,
+  .stewarding-form-grid,
+  div[style*="gridTemplateColumns: '300px 1fr'"],
+  div[style*="grid-template-columns: 300px 1fr"] {
+    grid-template-columns: 1fr !important;
   }
 }
 
