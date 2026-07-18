@@ -211,13 +211,23 @@ export const extractContactsFromXml = (xmlContent, raceId, seasonId) => {
         const text = inc['#text'] || '';
         const m = text.match(/^(.+?)\((\d+)\)\s+reported contact\s+\(([\d.]+)\)\s+with another vehicle\s+(.+?)\((\d+)\)/i);
         if (m && !isNaN(et)) {
+            const d1 = m[1].trim();
+            const c1 = m[2].trim();
+            const d2 = m[4].trim();
+            const c2 = m[5].trim();
+
+            // Restrict / filter out self-contacts where driver 1 and driver 2 are the same
+            if (d1.toLowerCase() === d2.toLowerCase() || c1 === c2) {
+                return;
+            }
+
             rawContacts.push({
                 et,
-                driver1: m[1].trim(),
-                car1: m[2].trim(),
+                driver1: d1,
+                car1: c1,
                 force: parseFloat(m[3]),
-                driver2: m[4].trim(),
-                car2: m[5].trim()
+                driver2: d2,
+                car2: c2
             });
         }
     });
@@ -243,13 +253,21 @@ export const extractContactsFromXml = (xmlContent, raceId, seasonId) => {
             }
         }
 
+        const driver2Name = matchIdx !== -1 ? rawContacts[matchIdx].driver1 : c1.driver2;
+        const car2Num = matchIdx !== -1 ? rawContacts[matchIdx].car1 : c1.car2;
+
+        // Extra check: ignore if driver 1 and driver 2 ended up being the same
+        if (c1.driver1.toLowerCase() === driver2Name.toLowerCase() || c1.car1 === car2Num) {
+            processed.add(i);
+            if (matchIdx !== -1) processed.add(matchIdx);
+            continue;
+        }
+
         const mins = Math.floor(c1.et / 60);
         const secs = Math.floor(c1.et % 60).toString().padStart(2, '0');
         const formattedTime = `${mins}:${secs} elapsed`;
 
         const maxForce = matchIdx !== -1 ? Math.max(c1.force, rawContacts[matchIdx].force) : c1.force;
-        const driver2Name = matchIdx !== -1 ? rawContacts[matchIdx].driver1 : c1.driver2;
-        const car2Num = matchIdx !== -1 ? rawContacts[matchIdx].car1 : c1.car2;
 
         paired.push({
             seasonId: String(seasonId),
