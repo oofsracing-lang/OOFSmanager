@@ -201,8 +201,29 @@ export const extractContactsFromXml = (xmlContent, raceId, seasonId) => {
         return [];
     }
 
-    const stream = parsed.rFactorXML.RaceResults.Race?.Stream || {};
     const toArray = (item) => Array.isArray(item) ? item : (item ? [item] : []);
+
+    // Build Driver Name -> Actual Race Car Number map from <Driver> tags in XML
+    let driversData = parsed.rFactorXML.RaceResults.Driver;
+    if (!driversData && parsed.rFactorXML.RaceResults.Race) {
+        driversData = parsed.rFactorXML.RaceResults.Race.Driver;
+    }
+    const driversList = toArray(driversData);
+
+    const driverCarMap = {};
+    driversList.forEach(d => {
+        if (d.Name && d.CarNumber !== undefined && d.CarNumber !== null) {
+            driverCarMap[String(d.Name).trim().toLowerCase()] = String(d.CarNumber).trim();
+        }
+    });
+
+    const getCarNumber = (driverName, fallbackSlot) => {
+        if (!driverName) return fallbackSlot;
+        const norm = String(driverName).trim().toLowerCase();
+        return driverCarMap[norm] || fallbackSlot;
+    };
+
+    const stream = parsed.rFactorXML.RaceResults.Race?.Stream || {};
     const incidents = toArray(stream.Incident);
 
     const rawContacts = [];
@@ -254,10 +275,10 @@ export const extractContactsFromXml = (xmlContent, raceId, seasonId) => {
         }
 
         const driver2Name = matchIdx !== -1 ? rawContacts[matchIdx].driver1 : c1.driver2;
-        const car2Num = matchIdx !== -1 ? rawContacts[matchIdx].car1 : c1.car2;
+        const car2Slot = matchIdx !== -1 ? rawContacts[matchIdx].car1 : c1.car2;
 
         // Extra check: ignore if driver 1 and driver 2 ended up being the same
-        if (c1.driver1.toLowerCase() === driver2Name.toLowerCase() || c1.car1 === car2Num) {
+        if (c1.driver1.toLowerCase() === driver2Name.toLowerCase() || c1.car1 === car2Slot) {
             processed.add(i);
             if (matchIdx !== -1) processed.add(matchIdx);
             continue;
@@ -269,16 +290,20 @@ export const extractContactsFromXml = (xmlContent, raceId, seasonId) => {
 
         const maxForce = matchIdx !== -1 ? Math.max(c1.force, rawContacts[matchIdx].force) : c1.force;
 
+        // Resolve actual race car numbers from driver names
+        const d1RaceNum = getCarNumber(c1.driver1, c1.car1);
+        const d2RaceNum = getCarNumber(driver2Name, car2Slot);
+
         paired.push({
             seasonId: String(seasonId),
             raceId: raceId,
-            carNumbers: `#${c1.car1}, #${car2Num}`,
+            carNumbers: `#${d1RaceNum}, #${d2RaceNum}`,
             timestamp: formattedTime,
-            description: `Auto-detected contact between ${c1.driver1} (#${c1.car1}) and ${driver2Name} (#${car2Num}) [Impact Force: ${maxForce.toFixed(1)}]`,
+            description: `Auto-detected contact between ${c1.driver1} (#${d1RaceNum}) and ${driver2Name} (#${d2RaceNum}) [Impact Force: ${maxForce.toFixed(1)}]`,
             driver1: c1.driver1,
-            car1: c1.car1,
+            car1: d1RaceNum,
             driver2: driver2Name,
-            car2: car2Num,
+            car2: d2RaceNum,
             impactForce: maxForce,
             status: 'Pending',
             isFinal: false,
