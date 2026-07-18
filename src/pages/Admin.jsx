@@ -200,22 +200,48 @@ const Admin = () => {
                             if (normalized.includes('nurburgring')) return 'nurburgring';
                             if (normalized.includes('sarthe') || normalized.includes('lemans') || normalized.includes('mans')) return 'lemans';
                             if (normalized.includes('cota') || normalized.includes('americas') || normalized.includes('austin')) return 'cota';
+                            if (normalized.includes('sebring')) return 'sebring';
                             return normalized;
                         };
 
-                        const matchingRace = (seasonData?.races || []).find(r => {
-                            if (r.status === 'Completed') return false; // Don't match already completed races
+                        // 1. Try matching an upcoming scheduled race first
+                        let matchingRace = (seasonData?.races || []).find(r => {
+                            if (r.status === 'Completed') return false;
                             const dbTrack = normalize(r.track);
                             const fileTrack = normalize(xmlTrack);
                             if (!fileTrack || !dbTrack) return false;
                             return dbTrack === fileTrack || dbTrack.includes(fileTrack) || fileTrack.includes(dbTrack);
                         });
 
+                        // 2. If no scheduled match, look for an existing completed race (for re-upload / stewarding updates)
+                        if (!matchingRace) {
+                            matchingRace = (seasonData?.races || []).find(r => {
+                                const dbTrack = normalize(r.track);
+                                const fileTrack = normalize(xmlTrack);
+                                if (!fileTrack || !dbTrack) return false;
+                                return dbTrack === fileTrack || dbTrack.includes(fileTrack) || fileTrack.includes(dbTrack);
+                            });
+                        }
+
                         if (matchingRace) {
-                            raceIdToUse = matchingRace.id;
-                        } else {
+                            if (matchingRace.status === 'Completed') {
+                                const confirmReimport = window.confirm(
+                                    `Found existing completed race: "${matchingRace.track}" (Round ${matchingRace.id}).\n\n` +
+                                    `Do you want to RE-IMPORT and update results/stewarding contacts for Round ${matchingRace.id}?\n\n` +
+                                    `Click OK to update Round ${matchingRace.id}.\n` +
+                                    `Click Cancel to create a new round instead.`
+                                );
+                                if (confirmReimport) {
+                                    raceIdToUse = matchingRace.id;
+                                }
+                            } else {
+                                raceIdToUse = matchingRace.id;
+                            }
+                        }
+
+                        if (!raceIdToUse) {
                             const confirmNew = window.confirm(
-                                `No matching scheduled race found for "${xmlTrack}".\n\n` +
+                                `No matching race found for "${xmlTrack}".\n\n` +
                                 `Do you want to create a NEW Round (id: ${(seasonData?.races?.length || 0) + 1})?\n\n` +
                                 `Click OK to Create New Round.\n` +
                                 `Click Cancel to Abort.`
