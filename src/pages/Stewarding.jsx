@@ -69,6 +69,14 @@ const Stewarding = () => {
         return driver ? `#${driver.number}` : '-';
     };
 
+    // Helper to format public description without exposing force factor
+    const formatPublicDescription = (desc) => {
+        if (!desc) return '';
+        return desc
+            .replace(/\s*\[Impact Force:\s*[\d.]+\]/gi, '')
+            .replace(/\s*\[Force:\s*[\d.]+\]/gi, '');
+    };
+
     return (
         <div className="fade-in">
             <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
@@ -230,11 +238,11 @@ const Stewarding = () => {
                                                     <>
                                                         <div style={{ color: 'white', marginBottom: '0.5rem' }}>{incident.stewardNotes}</div>
                                                         <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', borderLeft: '2px solid var(--border-color)', paddingLeft: '0.5rem' }}>
-                                                            Original: {incident.description}
+                                                            Original: {formatPublicDescription(incident.description)}
                                                         </div>
                                                     </>
                                                 ) : (
-                                                    <span style={{ color: 'var(--text-muted)' }}>{incident.description}</span>
+                                                    <span style={{ color: 'var(--text-muted)' }}>{formatPublicDescription(incident.description)}</span>
                                                 )
                                             ) : (
                                                 <span style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>Pending stewarding review...</span>

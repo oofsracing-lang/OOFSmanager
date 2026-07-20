@@ -299,7 +299,7 @@ export const extractContactsFromXml = (xmlContent, raceId, seasonId) => {
             raceId: raceId,
             carNumbers: `#${d1RaceNum}, #${d2RaceNum}`,
             timestamp: formattedTime,
-            description: `Auto-detected contact between ${c1.driver1} (#${d1RaceNum}) and ${driver2Name} (#${d2RaceNum}) [Impact Force: ${maxForce.toFixed(1)}]`,
+            description: `Auto-detected contact between ${c1.driver1} (#${d1RaceNum}) and ${driver2Name} (#${d2RaceNum})`,
             driver1: c1.driver1,
             car1: d1RaceNum,
             driver2: driver2Name,
