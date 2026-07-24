@@ -164,6 +164,7 @@ const RaceDetail = () => {
                                                 <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--primary)' }}>
                                                     <th style={{ padding: '0.75rem 0.5rem' }}>Pos</th>
                                                     <th style={{ padding: '0.75rem 0.5rem' }}>Driver</th>
+                                                    <th style={{ padding: '0.75rem 0.5rem' }}>Car #</th>
                                                     <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Status</th>
                                                     <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Points</th>
                                                     <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>Ballast Δ</th>
@@ -177,6 +178,9 @@ const RaceDetail = () => {
                                                             <Link to={`/season/${seasonId}/driver/${driver.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
                                                                 {formatDriverName(driver.name)}
                                                             </Link>
+                                                        </td>
+                                                        <td style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)' }}>
+                                                            {driver.number || driver.carNumber || '-'}
                                                         </td>
                                                         <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center' }}>
                                                             <span style={{
