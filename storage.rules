@@ -5,6 +5,9 @@ service firebase.storage {
     match /assets/{allPaths=**} {
       allow read: if true;
     }
+    match /Assets/{allPaths=**} {
+      allow read: if true;
+    }
     match /oofs_intro_2026.mp4 {
       allow read: if true;
     }

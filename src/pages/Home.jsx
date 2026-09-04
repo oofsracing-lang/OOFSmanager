@@ -12,7 +12,11 @@ const Home = () => {
     useEffect(() => {
         // Check for promo video in Firebase Storage (checks assets/ folder or root)
         const loadPromoVideo = async () => {
-            const possiblePaths = ['assets/oofs_intro_2026.mp4', 'oofs_intro_2026.mp4'];
+            const possiblePaths = [
+                'Assets/oofs_intro_2026.mp4',
+                'assets/oofs_intro_2026.mp4',
+                'oofs_intro_2026.mp4'
+            ];
             for (const path of possiblePaths) {
                 try {
                     const videoRef = ref(storage, path);
