@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ref, getDownloadURL } from 'firebase/storage';
 import { storage } from '../firebase';
@@ -8,6 +8,8 @@ import logo from '../assets/oofs_logo.png';
 const Home = () => {
     const navigate = useNavigate();
     const [videoUrl, setVideoUrl] = useState(null);
+    const [isMuted, setIsMuted] = useState(true);
+    const videoRef = useRef(null);
 
     useEffect(() => {
         // Check for promo video in Firebase Storage (checks assets/ folder or root)
@@ -19,8 +21,8 @@ const Home = () => {
             ];
             for (const path of possiblePaths) {
                 try {
-                    const videoRef = ref(storage, path);
-                    const url = await getDownloadURL(videoRef);
+                    const videoRefStorage = ref(storage, path);
+                    const url = await getDownloadURL(videoRefStorage);
                     if (url) {
                         setVideoUrl(url);
                         return;
@@ -34,6 +36,18 @@ const Home = () => {
         loadPromoVideo();
     }, []);
 
+    const toggleAudio = () => {
+        if (videoRef.current) {
+            const nextMuted = !isMuted;
+            videoRef.current.muted = nextMuted;
+            setIsMuted(nextMuted);
+            if (!nextMuted) {
+                videoRef.current.volume = 0.7;
+                videoRef.current.play().catch(e => console.log('Audio playback error:', e));
+            }
+        }
+    };
+
     const handleSeasonSelect = (seasonId) => {
         // Navigation drives the state now via SeasonLayout
         navigate(`/season/${seasonId}`);
@@ -44,6 +58,7 @@ const Home = () => {
             {/* Fixed Background Layers */}
             {videoUrl ? (
                 <video
+                    ref={videoRef}
                     autoPlay
                     loop
                     muted
@@ -57,6 +72,35 @@ const Home = () => {
                 <div className="home-bg-layer" />
             )}
             <div className="home-overlay" />
+
+            {/* Audio Toggle Button */}
+            {videoUrl && (
+                <button
+                    className={`home-audio-btn ${isMuted ? 'muted' : 'unmuted'}`}
+                    onClick={toggleAudio}
+                    aria-label={isMuted ? 'Enable Audio' : 'Mute Audio'}
+                    title={isMuted ? 'Click to enable audio' : 'Click to mute audio'}
+                >
+                    {isMuted ? (
+                        <>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                <line x1="23" y1="9" x2="17" y2="15"></line>
+                                <line x1="17" y1="9" x2="23" y2="15"></line>
+                            </svg>
+                            <span>Enable Audio</span>
+                        </>
+                    ) : (
+                        <>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            </svg>
+                            <span>Mute Audio</span>
+                        </>
+                    )}
+                </button>
+            )}
 
             {/* Scrollable Content */}
             <div className="home-content">
