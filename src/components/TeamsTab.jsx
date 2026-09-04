@@ -389,10 +389,10 @@ const TeamsTab = () => {
                                             {team.name}
                                         </td>
                                         <td style={{ padding: '0.85rem 1rem' }}>
-                                            <span style={{ color: 'var(--primary-color)' }}>🏎️</span> {formatDriverName(team.driver1Name)}
+                                            {formatDriverName(team.driver1Name)}
                                         </td>
                                         <td style={{ padding: '0.85rem 1rem' }}>
-                                            <span style={{ color: 'var(--primary-color)' }}>🏎️</span> {formatDriverName(team.driver2Name)}
+                                            {formatDriverName(team.driver2Name)}
                                         </td>
                                         <td style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
                                             <button

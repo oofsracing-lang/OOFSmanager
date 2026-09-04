@@ -143,7 +143,7 @@ const Standings = () => {
                                 className={selectedClass === 'Teams' ? 'btn btn-primary' : 'btn btn-ghost'}
                                 onClick={() => setSelectedClass('Teams')}
                             >
-                                🏆 Teams
+                                Teams
                             </button>
                         )}
                     </div>
@@ -212,7 +212,7 @@ const Standings = () => {
                                                 </span>
                                             </td>
                                             <td style={{ padding: '1rem 0.5rem', fontWeight: 'bold', color: 'white', fontSize: '1.05rem' }}>
-                                                🛡️ {team.name}
+                                                {team.name}
                                             </td>
                                             <td style={{ padding: '1rem 0.5rem' }}>
                                                 {team.driver1Id ? (
