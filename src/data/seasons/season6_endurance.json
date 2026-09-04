@@ -1,0 +1,109 @@
+{
+  "season": "Season 6 - Endurance",
+  "id": "s6-endurance",
+  "config": {
+    "seriesName": "Season 6 Endurance",
+    "classes": [
+      "Hypercar",
+      "LMGT3"
+    ],
+    "ui": {
+      "theme": "modern",
+      "showTeamColumn": true,
+      "showQualifying": true,
+      "showCarColumn": true,
+      "showTeamChampionship": true
+    },
+    "rules": {
+      "ballastType": "custom_class",
+      "ballastRules": {
+        "LMGT3": {
+          "1": 15,
+          "2": 10,
+          "3": 5,
+          "4": 0,
+          "5": -5,
+          "6": -10,
+          "default": -15,
+          "max": 45
+        },
+        "Hypercar": {
+          "1": 10,
+          "2": 5,
+          "3": 2,
+          "4": 0,
+          "5": -2,
+          "6": -5,
+          "default": -10,
+          "max": 30
+        }
+      },
+      "dropRounds": true,
+      "participationRequirement": "must_complete_lap",
+      "carSwitchResetsPoints": true,
+      "carSwitchPenaltyType": "zero_best_finish"
+    },
+    "driverRoster": []
+  },
+  "currentRound": 0,
+  "totalRounds": 6,
+  "drivers": [],
+  "races": [
+    {
+      "id": 1,
+      "name": "Round 1",
+      "track": "Fuji Default (WEC)",
+      "date": "10/1/26",
+      "status": "Scheduled"
+    },
+    {
+      "id": 2,
+      "name": "Round 2",
+      "track": "Circuit de Barcelona",
+      "date": "10/8/26",
+      "status": "Scheduled"
+    },
+    {
+      "id": 3,
+      "name": "Round 3",
+      "track": "WeatherTech Raceway Laguna Seca",
+      "date": "10/15/26",
+      "status": "Scheduled"
+    },
+    {
+      "id": 4,
+      "name": "Round 4",
+      "track": "Bahrain Default (WEC)*",
+      "date": "10/29/26",
+      "status": "Scheduled"
+    },
+    {
+      "id": 5,
+      "name": "Round 5",
+      "track": "Qatar (WEC)",
+      "date": "11/5/26",
+      "status": "Scheduled"
+    },
+    {
+      "id": 6,
+      "name": "Round 6",
+      "track": "Monza Default (WEC)",
+      "date": "11/12/26",
+      "status": "Scheduled"
+    }
+  ],
+  "penalties": {},
+  "manualPositions": {},
+  "exclusions": {},
+  "qualifyingSettings": {
+    "Hypercar": {
+      "consecutiveLaps": 5,
+      "maxAvgTime": 120
+    },
+    "LMGT3": {
+      "consecutiveLaps": 5,
+      "maxAvgTime": 140
+    }
+  },
+  "teams": []
+}

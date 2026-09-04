@@ -5,6 +5,8 @@ import season4_multiclass from './seasons/season4_multiclass.json';
 import season4_sprint from './seasons/season4_sprint.json';
 import season5_multiclass from './seasons/season5_multiclass.json';
 import season5_sprint from './seasons/season5_sprint.json';
+import season6_endurance from './seasons/season6_endurance.json';
+import season6_sprint from './seasons/season6_sprint.json';
 
 export const seasons = {
     "2": season2,
@@ -13,8 +15,11 @@ export const seasons = {
     "s4-multi": season4_multiclass,
     "s4-sprint": season4_sprint,
     "s5-multi": season5_multiclass,
-    "s5-sprint": season5_sprint
+    "s5-sprint": season5_sprint,
+    "s6-endurance": season6_endurance,
+    "s6-sprint": season6_sprint
 };
 
 // Default export for backward compatibility if needed, though we will switch to using the map
-export const latestSeason = season5_multiclass;
+export const latestSeason = season6_endurance;
+

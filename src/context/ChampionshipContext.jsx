@@ -30,6 +30,7 @@ export const ChampionshipProvider = ({ children }) => {
     const [penalties, setPenalties] = useState({});
     const [manualPositions, setManualPositions] = useState({});
     const [exclusions, setExclusions] = useState({});
+    const [teams, setTeams] = useState([]);
     const [qualifyingSettings, setQualifyingSettings] = useState({
         'LMP2-UR': { consecutiveLaps: 5, maxAvgTime: 120.0 },
         'Hypercar': { consecutiveLaps: 7, maxAvgTime: 95.5 },
@@ -58,6 +59,7 @@ export const ChampionshipProvider = ({ children }) => {
                 setPenalties(data.penalties || {});
                 setManualPositions(data.manualPositions || {});
                 setExclusions(data.exclusions || {});
+                setTeams(data.teams || []);
                 if (data.qualifyingSettings) {
                     setQualifyingSettings(data.qualifyingSettings);
                 }
@@ -69,6 +71,7 @@ export const ChampionshipProvider = ({ children }) => {
                 setPenalties(defaultData.penalties || {});
                 setManualPositions(defaultData.manualPositions || {});
                 setExclusions(defaultData.exclusions || {});
+                setTeams(defaultData.teams || []);
                 setQualifyingSettings(defaultData.qualifyingSettings || {
                     'LMP2-UR': { consecutiveLaps: 5, maxAvgTime: 120.0 },
                     'Hypercar': { consecutiveLaps: 7, maxAvgTime: 95.5 },
@@ -242,6 +245,17 @@ export const ChampionshipProvider = ({ children }) => {
         setQualifyingSettings(nextSettings);
         updateSeasonFields(currentSeasonId, { qualifyingSettings: nextSettings })
             .catch(err => console.error("Failed to save Qual Settings:", err));
+    };
+
+    const updateSeasonTeams = async (nextTeams) => {
+        if (!currentUser) return;
+        setTeams(nextTeams);
+        try {
+            await updateSeasonFields(currentSeasonId, { teams: nextTeams });
+        } catch (err) {
+            console.error("Failed to save Teams:", err);
+            throw err;
+        }
     };
 
     const submitQualifyingResult = async (submission) => {
@@ -799,15 +813,13 @@ export const ChampionshipProvider = ({ children }) => {
 
             return {
                 ...cloudStandings,
+                teams: seasonData?.teams || teams || [],
                 calculationSource: 'Cloud Backend (Official)'
             };
         }
 
         // PRIORITY 2: Local Fallback (The original huge logic)
 
-        // PRIORITY 2: Local Fallback (The original huge logic)
-
-        // Guard Clause: Prevent crash if data is missing/corrupt
         // Guard Clause: Prevent crash if data is missing/corrupt
         if (!seasonData || !seasonData.races || !seasonData.drivers) {
             // console.debug("Waiting for seasonData...");
@@ -815,6 +827,7 @@ export const ChampionshipProvider = ({ children }) => {
                 season: seasonData?.season || `Season ${currentSeasonId}`,
                 races: [],
                 drivers: [],
+                teams: seasonData?.teams || teams || [],
                 currentRound: 0,
                 totalRounds: 0
             };
@@ -826,6 +839,7 @@ export const ChampionshipProvider = ({ children }) => {
             // console.log("[ChampionshipContext] seasonData.races:", seasonData?.races?.length);
 
             const data = JSON.parse(JSON.stringify(seasonData));
+            data.teams = seasonData?.teams || teams || [];
 
 
 
@@ -1107,7 +1121,7 @@ export const ChampionshipProvider = ({ children }) => {
                 error: err.message
             };
         }
-    }, [penalties, manualPositions, exclusions, seasonData, cloudStandings, qualifyingSettings, qualifyingSubmissions]);
+    }, [penalties, manualPositions, exclusions, seasonData, cloudStandings, qualifyingSettings, qualifyingSubmissions, teams, currentSeasonId]);
 
     const resetSeasonData = async () => {
         if (!currentUser) {
@@ -1139,6 +1153,7 @@ export const ChampionshipProvider = ({ children }) => {
         // Create an object that includes the current Race Data, Penalties, and Manual Positions
         const exportObj = {
             ...seasonData,
+            teams: teams,
             penalties: penalties,
             manualPositions: manualPositions,
             exclusions: exclusions
@@ -1176,6 +1191,8 @@ export const ChampionshipProvider = ({ children }) => {
         qualifyingSettings,
         qualifyingSubmissions,
         licensePoints, // Added licensePoints here
+        teams,
+        updateSeasonTeams,
         seasonData, // Expose raw data for Admin (Schedule Management)
         exportSeasonData,
         seasonConfig: (seasons[currentSeasonId]?.config)

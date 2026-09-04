@@ -22,14 +22,14 @@ const Home = () => {
                 <p className="home-subtitle">Championship Portal</p>
 
                 <div className="home-grid">
-                    {/* Season 5 Multiclass */}
+                    {/* Season 6 Endurance */}
                     <div
                         className="home-card multiclass-card"
-                        onClick={() => handleSeasonSelect('s5-multi')}
+                        onClick={() => handleSeasonSelect('s6-endurance')}
                     >
                         <div className="home-card-line"></div>
-                        <span className="home-card-type">Season 5</span>
-                        <h2 className="home-card-title">Multiclass</h2>
+                        <span className="home-card-type">Season 6</span>
+                        <h2 className="home-card-title">Endurance</h2>
                         <p className="home-card-desc">
                             Endurance Simulation.
                             <br />
@@ -37,13 +37,13 @@ const Home = () => {
                         </p>
                     </div>
 
-                    {/* Season 5 Sprint */}
+                    {/* Season 6 Sprint */}
                     <div
                         className="home-card sprint-card"
-                        onClick={() => handleSeasonSelect('s5-sprint')}
+                        onClick={() => handleSeasonSelect('s6-sprint')}
                     >
                         <div className="home-card-line"></div>
-                        <span className="home-card-type">Season 5</span>
+                        <span className="home-card-type">Season 6</span>
                         <h2 className="home-card-title">Sprint Series</h2>
                         <p className="home-card-desc">
                             High intensity multiclass.

@@ -18,6 +18,42 @@ const Archive = () => {
                 <p className="home-subtitle">Championship Archive</p>
 
                 <div className="home-grid">
+                    {/* Season 5 Multiclass */}
+                    <div
+                        className="home-card"
+                        onClick={() => handleSeasonSelect('s5-multi')}
+                    >
+                        <div
+                            className="home-card-line"
+                            style={{ background: 'linear-gradient(90deg, #7B1FA2, #E1BEE7)' }}
+                        ></div>
+                        <span className="home-card-type">Season 5</span>
+                        <h2 className="home-card-title">Multiclass</h2>
+                        <p className="home-card-desc">
+                            Endurance Simulation.
+                            <br />
+                            <strong>HYPERCAR • LMGT3</strong>
+                        </p>
+                    </div>
+
+                    {/* Season 5 Sprint */}
+                    <div
+                        className="home-card"
+                        onClick={() => handleSeasonSelect('s5-sprint')}
+                    >
+                        <div
+                            className="home-card-line"
+                            style={{ background: 'linear-gradient(90deg, #f5901d, #ffb74d)' }}
+                        ></div>
+                        <span className="home-card-type">Season 5</span>
+                        <h2 className="home-card-title">Sprint Series</h2>
+                        <p className="home-card-desc">
+                            High intensity multiclass.
+                            <br />
+                            <strong>LMP3 • LMGT3</strong>
+                        </p>
+                    </div>
+
                     {/* Season 4 Multiclass */}
                     <div
                         className="home-card"

@@ -6,6 +6,7 @@ import { parseRaceXml, extractContactsFromXml } from '../utils/raceParser';
 import { uploadXmlBackup, subscribeToIncidents, updateIncident, deleteIncident, saveIncident, saveSeasonData, overwriteSeasonData } from '../firebase/db';
 import AttendanceTab from '../components/AttendanceTab';
 import LicensePointsTab from '../components/LicensePointsTab';
+import TeamsTab from '../components/TeamsTab';
 import { httpsCallable } from 'firebase/functions';
 import { functions } from '../firebase';
 
@@ -265,9 +266,9 @@ const Admin = () => {
                         dramaLog: result.dramaLog || []
                     });
 
-                    // Auto-extract vehicle contacts for Season 5 going forward
+                    // Auto-extract vehicle contacts for Season 5 and Season 6 going forward
                     let autoContactsExtracted = 0;
-                    if (String(currentSeasonId).includes('5')) {
+                    if (String(currentSeasonId).includes('5') || String(currentSeasonId).includes('6')) {
                         try {
                             const contacts = extractContactsFromXml(text, raceIdToUse, currentSeasonId);
                             if (contacts && contacts.length > 0) {
@@ -568,7 +569,7 @@ const Admin = () => {
                 borderBottom: '2px solid var(--border-color)',
                 paddingBottom: '0'
             }}>
-                {['results', 'attendance', 'stewarding', 'qualifying', 'license points'].map(tab => (
+                {['results', 'attendance', 'stewarding', 'qualifying', 'license points', 'teams'].map(tab => (
                     <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
@@ -789,7 +790,7 @@ const Admin = () => {
                                                                                     step="0.1"
                                                                                     placeholder="0"
                                                                                     defaultValue={result.additionalPenalty || ''}
-                                                                                    id={`penalty - p2 - ${result.driverId} `}
+                                                                                    id={`penalty-p2-${result.driverId}`}
                                                                                     style={{
                                                                                         width: '60px',
                                                                                         padding: '0.25rem',
@@ -804,7 +805,7 @@ const Admin = () => {
                                                                                     className="btn btn-primary"
                                                                                     style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
                                                                                     onClick={() => {
-                                                                                        const input = document.getElementById(`penalty - p2 - ${result.driverId} `);
+                                                                                        const input = document.getElementById(`penalty-p2-${result.driverId}`);
                                                                                         const penalty = parseFloat(input.value);
                                                                                         updatePenalty(result.driverId, selectedRace, isNaN(penalty) ? 0 : penalty);
                                                                                     }}
@@ -1134,6 +1135,20 @@ const Admin = () => {
                                                                     console.error("Smart Stewarding Error:", err);
                                                                     alert("Error applying penalty logic. Check console.");
                                                                 }
+                                                            } else if (!isCompleting && incident.penalizedDriverId) {
+                                                                // If uncommitting, clear any applied penalty/points from standings and license history
+                                                                try {
+                                                                    await updatePenalty(
+                                                                        incident.penalizedDriverId,
+                                                                        incident.raceId,
+                                                                        0,
+                                                                        `Penalty removed due to Stewarding status revert (Race ${incident.raceId})`
+                                                                    );
+                                                                    alert(`Penalty Reset to 0s for Driver ID ${incident.penalizedDriverId}`);
+                                                                } catch (err) {
+                                                                    console.error("Smart Stewarding Error:", err);
+                                                                    alert("Error resetting penalty logic. Check console.");
+                                                                }
                                                             }
                                                         }}
                                                         title={incident.status === 'Complete' ? "Mark as Pending" : "Commit Decision (Apply Penalties)"}
@@ -1160,14 +1175,23 @@ const Admin = () => {
                                                         className="btn btn-icon btn-danger"
                                                         onClick={async (e) => {
                                                             e.stopPropagation();
-                                                            // Match Qualifying Logic: Immediate Delete (No Confirm) + Optimistic Update
-                                                            try {
-                                                                setIncidents(prev => prev.filter(i => i.id !== incident.id));
-                                                                await deleteIncident(incident.id);
-                                                            } catch (err) {
-                                                                console.error("Failed to delete:", err);
-                                                                alert("Failed to delete: " + err.message);
-                                                                // Optional: Revert optimistic update here if needed
+                                                            if (confirm("Are you sure you want to delete this incident?")) {
+                                                                try {
+                                                                    // If the incident was completed and had a penalty, clear it first
+                                                                    if (incident.status === 'Complete' && incident.penalizedDriverId) {
+                                                                        await updatePenalty(
+                                                                            incident.penalizedDriverId,
+                                                                            incident.raceId,
+                                                                            0,
+                                                                            `Penalty removed due to incident deletion (Race ${incident.raceId})`
+                                                                        );
+                                                                    }
+                                                                    setIncidents(prev => prev.filter(i => i.id !== incident.id));
+                                                                    await deleteIncident(incident.id);
+                                                                } catch (err) {
+                                                                    console.error("Failed to delete:", err);
+                                                                    alert("Failed to delete: " + err.message);
+                                                                }
                                                             }
                                                         }}
                                                         title="Delete"
@@ -1451,6 +1475,13 @@ const Admin = () => {
             {
                 activeTab === 'license points' && (
                     <LicensePointsTab />
+                )
+            }
+
+            {/* Teams Tab Content */}
+            {
+                activeTab === 'teams' && (
+                    <TeamsTab />
                 )
             }
 

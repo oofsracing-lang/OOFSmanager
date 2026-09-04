@@ -10,6 +10,10 @@ const Sidebar = ({ isOpen, onClose }) => {
     const showQualifying = seasonConfig?.ui?.showQualifying !== false;
 
     const seasonDisplayNames = {
+        's6-endurance': 'Season 6 Endurance',
+        's6-sprint': 'Season 6 Sprint',
+        's5-multi': 'Season 5 Multiclass',
+        's5-sprint': 'Season 5 Sprint',
         's4-multi': 'Season 4 Multiclass',
         's4-sprint': 'Season 4 Sprint',
         's3-sprint': 'Season 3 Sprint',
