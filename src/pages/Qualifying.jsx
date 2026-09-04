@@ -6,7 +6,10 @@ import { functions, storage } from '../firebase';
 import { ref, uploadBytes } from 'firebase/storage';
 
 const Qualifying = () => {
-    const { qualifyingSettings, submitQualifyingResult, currentSeasonId } = useChampionship();
+    const { qualifyingSettings, submitQualifyingResult, currentSeasonId, seasonConfig } = useChampionship();
+    const isSprintDefault = Boolean(currentSeasonId?.includes('sprint') || seasonConfig?.classes?.includes('LMP3'));
+    const [activeSeries, setActiveSeries] = useState(isSprintDefault ? 'sprint' : 'endurance');
+    const [copiedPath, setCopiedPath] = useState(false);
     const [status, setStatus] = useState('IDLE'); // IDLE, PROCESSING, SUCCESS, ERROR, SELECTING_DRIVER
     const [resultMessage, setResultMessage] = useState(null);
     const [lastSubmission, setLastSubmission] = useState(null);
@@ -206,6 +209,174 @@ const Qualifying = () => {
                     </div>
                 </div>
             )}
+
+            {/* Qualifying Instructions & Requirements */}
+            <div className="glass-panel" style={{ marginTop: '2.5rem', padding: '2.5rem', textAlign: 'left' }}>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '1.5rem',
+                    flexWrap: 'wrap',
+                    gap: '1rem',
+                    borderBottom: '1px solid var(--border-color)',
+                    paddingBottom: '1rem'
+                }}>
+                    <h2 style={{ fontSize: '1.4rem', margin: 0, color: 'var(--text-main)' }}>
+                        Qualifying Instructions
+                    </h2>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <button
+                            type="button"
+                            className={activeSeries === 'endurance' ? 'btn btn-primary' : 'btn btn-ghost'}
+                            onClick={() => setActiveSeries('endurance')}
+                            style={{ fontSize: '0.85rem', padding: '0.4rem 1rem' }}
+                        >
+                            Endurance
+                        </button>
+                        <button
+                            type="button"
+                            className={activeSeries === 'sprint' ? 'btn btn-primary' : 'btn btn-ghost'}
+                            onClick={() => setActiveSeries('sprint')}
+                            style={{ fontSize: '0.85rem', padding: '0.4rem 1rem' }}
+                        >
+                            Sprint
+                        </button>
+                    </div>
+                </div>
+
+                {activeSeries === 'endurance' ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', color: 'var(--text-secondary)', lineHeight: '1.7', fontSize: '0.95rem' }}>
+                        <div style={{
+                            background: 'rgba(255, 255, 255, 0.03)',
+                            borderLeft: '4px solid var(--primary)',
+                            padding: '1.25rem',
+                            borderRadius: '0 8px 8px 0'
+                        }}>
+                            <h3 style={{ color: 'var(--text-main)', marginBottom: '0.6rem', fontSize: '1.1rem' }}>
+                                Qualifying Requirements:
+                            </h3>
+                            <ul style={{ margin: 0, paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                                <li><strong>Track:</strong> Fuji Classic</li>
+                                <li><strong>Laps:</strong> 7 consecutive</li>
+                                <li><strong>Time:</strong> Average of 104% (1:32.00)</li>
+                                <li><strong>Only new Hypercar drivers need to complete this.</strong> Licenses carry over from the most recent season.</li>
+                            </ul>
+                        </div>
+
+                        <p style={{ margin: 0 }}>
+                            Run this in a private session (race weekend) or an OOFS qualifying session. Any track conditions or setups allowed (goldilocks temps and saturated grip).
+                        </p>
+
+                        <div>
+                            <p style={{ margin: '0 0 0.5rem 0' }}>
+                                Once laps are complete. close the session and navigate to:
+                            </p>
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                background: 'rgba(0, 0, 0, 0.45)',
+                                padding: '0.65rem 1rem',
+                                borderRadius: '6px',
+                                fontFamily: 'monospace',
+                                fontSize: '0.85rem',
+                                color: 'var(--text-main)',
+                                overflowX: 'auto',
+                                border: '1px solid rgba(255, 255, 255, 0.1)',
+                                justifyContent: 'space-between',
+                                gap: '1rem'
+                            }}>
+                                <span style={{ wordBreak: 'break-all' }}>C:\Program Files (x86)\Steam\steamapps\common\Le Mans Ultimate\UserData\Log\Results</span>
+                                <button
+                                    type="button"
+                                    className="btn btn-ghost"
+                                    style={{ padding: '0.2rem 0.6rem', fontSize: '0.75rem', flexShrink: 0, border: '1px solid var(--border-color)' }}
+                                    onClick={() => {
+                                        navigator.clipboard.writeText("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Le Mans Ultimate\\UserData\\Log\\Results");
+                                        setCopiedPath(true);
+                                        setTimeout(() => setCopiedPath(false), 2000);
+                                    }}
+                                >
+                                    {copiedPath ? 'Copied!' : 'Copy Path'}
+                                </button>
+                            </div>
+                        </div>
+
+                        <p style={{ margin: 0 }}>
+                            Verify the session practice file (ex <code>2026_01_02_21_29_45-78P1.xml</code>) is there.
+                        </p>
+
+                        <p style={{ margin: 0 }}>
+                            Submit the file above. A message will appear if you passed or failed upon submission. Admins will receive that information as well so no need to message after submission.
+                        </p>
+                    </div>
+                ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', color: 'var(--text-secondary)', lineHeight: '1.7', fontSize: '0.95rem' }}>
+                        <div style={{
+                            background: 'rgba(255, 255, 255, 0.03)',
+                            borderLeft: '4px solid var(--primary)',
+                            padding: '1.25rem',
+                            borderRadius: '0 8px 8px 0'
+                        }}>
+                            <h3 style={{ color: 'var(--text-main)', marginBottom: '0.6rem', fontSize: '1.1rem' }}>
+                                Qualifying Requirements:
+                            </h3>
+                            <ul style={{ margin: 0, paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                                <li><strong>Track:</strong> Fuji Classic</li>
+                                <li><strong>Laps:</strong> 7 consecutive</li>
+                                <li><strong>Time:</strong> Average of 104% (1:39.00)</li>
+                                <li><strong>Only new LMP3 drivers need to complete this.</strong> Licenses carry over from the most recent season.</li>
+                            </ul>
+                        </div>
+
+                        <p style={{ margin: 0 }}>
+                            Run this in a private session (race weekend) or an OOFS qualifying session. Any track conditions or setups allowed (goldilocks temps and saturated grip).
+                        </p>
+
+                        <div>
+                            <p style={{ margin: '0 0 0.5rem 0' }}>
+                                Once laps are complete. close the session and navigate to:
+                            </p>
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                background: 'rgba(0, 0, 0, 0.45)',
+                                padding: '0.65rem 1rem',
+                                borderRadius: '6px',
+                                fontFamily: 'monospace',
+                                fontSize: '0.85rem',
+                                color: 'var(--text-main)',
+                                overflowX: 'auto',
+                                border: '1px solid rgba(255, 255, 255, 0.1)',
+                                justifyContent: 'space-between',
+                                gap: '1rem'
+                            }}>
+                                <span style={{ wordBreak: 'break-all' }}>C:\Program Files (x86)\Steam\steamapps\common\Le Mans Ultimate\UserData\Log\Results</span>
+                                <button
+                                    type="button"
+                                    className="btn btn-ghost"
+                                    style={{ padding: '0.2rem 0.6rem', fontSize: '0.75rem', flexShrink: 0, border: '1px solid var(--border-color)' }}
+                                    onClick={() => {
+                                        navigator.clipboard.writeText("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Le Mans Ultimate\\UserData\\Log\\Results");
+                                        setCopiedPath(true);
+                                        setTimeout(() => setCopiedPath(false), 2000);
+                                    }}
+                                >
+                                    {copiedPath ? 'Copied!' : 'Copy Path'}
+                                </button>
+                            </div>
+                        </div>
+
+                        <p style={{ margin: 0 }}>
+                            Verify the session practice file (ex <code>2026_01_02_21_29_45-78P1.xml</code>) is there.
+                        </p>
+
+                        <p style={{ margin: 0 }}>
+                            Submit the file above. A message will appear if you passed or failed upon submission. Admins will receive that information as well so no need to message after submission.
+                        </p>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

@@ -68,7 +68,7 @@ const s6EnduranceData = {
     { id: 6, name: "Round 6", track: "Autodromo Nazionale Monza", date: "11/12/26", status: "Scheduled" }
   ],
   qualifyingSettings: {
-    "Hypercar": { consecutiveLaps: 5, maxAvgTime: 120 },
+    "Hypercar": { consecutiveLaps: 7, maxAvgTime: 92.0, track: "Fuji Classic" },
     "LMGT3": { consecutiveLaps: 5, maxAvgTime: 140 }
   }
 };
@@ -141,7 +141,7 @@ const s6SprintData = {
     { id: 6, name: "Round 6", track: "Autodromo Nazionale Monza", date: "11/11/26", status: "Scheduled" }
   ],
   qualifyingSettings: {
-    "LMP3": { consecutiveLaps: 5, maxAvgTime: 120 },
+    "LMP3": { consecutiveLaps: 7, maxAvgTime: 99.0, track: "Fuji Classic" },
     "LMGT3": { consecutiveLaps: 5, maxAvgTime: 140 }
   }
 };

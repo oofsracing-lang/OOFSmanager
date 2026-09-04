@@ -97,8 +97,9 @@
   "exclusions": {},
   "qualifyingSettings": {
     "LMP3": {
-      "consecutiveLaps": 5,
-      "maxAvgTime": 120
+      "consecutiveLaps": 7,
+      "maxAvgTime": 99,
+      "track": "Fuji Classic"
     },
     "LMGT3": {
       "consecutiveLaps": 5,
