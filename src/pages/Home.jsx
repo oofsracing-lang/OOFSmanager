@@ -9,6 +9,7 @@ const Home = () => {
     const navigate = useNavigate();
     const [videoUrl, setVideoUrl] = useState(null);
     const [isMuted, setIsMuted] = useState(true);
+    const [isPlaying, setIsPlaying] = useState(true);
     const videoRef = useRef(null);
 
     useEffect(() => {
@@ -48,6 +49,18 @@ const Home = () => {
         }
     };
 
+    const togglePlayPause = () => {
+        if (videoRef.current) {
+            if (videoRef.current.paused) {
+                videoRef.current.play().catch(e => console.log('Play error:', e));
+                setIsPlaying(true);
+            } else {
+                videoRef.current.pause();
+                setIsPlaying(false);
+            }
+        }
+    };
+
     const handleSeasonSelect = (seasonId) => {
         // Navigation drives the state now via SeasonLayout
         navigate(`/season/${seasonId}`);
@@ -63,6 +76,8 @@ const Home = () => {
                     loop
                     muted
                     playsInline
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
                     poster="/assets/home_bg_v11.png"
                     className="home-bg-video"
                 >
@@ -73,33 +88,59 @@ const Home = () => {
             )}
             <div className="home-overlay" />
 
-            {/* Audio Toggle Button */}
+            {/* Video Controls (Audio & Play/Pause) */}
             {videoUrl && (
-                <button
-                    className={`home-audio-btn ${isMuted ? 'muted' : 'unmuted'}`}
-                    onClick={toggleAudio}
-                    aria-label={isMuted ? 'Enable Audio' : 'Mute Audio'}
-                    title={isMuted ? 'Click to enable audio' : 'Click to mute audio'}
-                >
-                    {isMuted ? (
-                        <>
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                                <line x1="23" y1="9" x2="17" y2="15"></line>
-                                <line x1="17" y1="9" x2="23" y2="15"></line>
-                            </svg>
-                            <span>Enable Audio</span>
-                        </>
-                    ) : (
-                        <>
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                            </svg>
-                            <span>Mute Audio</span>
-                        </>
-                    )}
-                </button>
+                <div className="home-video-controls">
+                    <button
+                        className={`home-control-btn ${isMuted ? 'muted' : 'unmuted'}`}
+                        onClick={toggleAudio}
+                        aria-label={isMuted ? 'Enable Audio' : 'Mute Audio'}
+                        title={isMuted ? 'Click to enable audio' : 'Click to mute audio'}
+                    >
+                        {isMuted ? (
+                            <>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                    <line x1="23" y1="9" x2="17" y2="15"></line>
+                                    <line x1="17" y1="9" x2="23" y2="15"></line>
+                                </svg>
+                                <span>Enable Audio</span>
+                            </>
+                        ) : (
+                            <>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                </svg>
+                                <span>Mute Audio</span>
+                            </>
+                        )}
+                    </button>
+
+                    <button
+                        className={`home-control-btn ${isPlaying ? 'playing' : 'paused'}`}
+                        onClick={togglePlayPause}
+                        aria-label={isPlaying ? 'Pause Video' : 'Play Video'}
+                        title={isPlaying ? 'Click to pause video' : 'Click to play video'}
+                    >
+                        {isPlaying ? (
+                            <>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <rect x="6" y="4" width="4" height="16"></rect>
+                                    <rect x="14" y="4" width="4" height="16"></rect>
+                                </svg>
+                                <span>Pause Video</span>
+                            </>
+                        ) : (
+                            <>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                </svg>
+                                <span>Play Video</span>
+                            </>
+                        )}
+                    </button>
+                </div>
             )}
 
             {/* Scrollable Content */}
