@@ -60,12 +60,12 @@ const s6EnduranceData = {
   manualPositions: {},
   exclusions: {},
   races: [
-    { id: 1, name: "Round 1", track: "Fuji Default (WEC)", date: "10/1/26", status: "Scheduled" },
+    { id: 1, name: "Round 1", track: "Fuji Speedway", date: "10/1/26", status: "Scheduled" },
     { id: 2, name: "Round 2", track: "Circuit de Barcelona", date: "10/8/26", status: "Scheduled" },
     { id: 3, name: "Round 3", track: "WeatherTech Raceway Laguna Seca", date: "10/15/26", status: "Scheduled" },
-    { id: 4, name: "Round 4", track: "Bahrain Default (WEC)*", date: "10/29/26", status: "Scheduled" },
-    { id: 5, name: "Round 5", track: "Qatar (WEC)", date: "11/5/26", status: "Scheduled" },
-    { id: 6, name: "Round 6", track: "Monza Default (WEC)", date: "11/12/26", status: "Scheduled" }
+    { id: 4, name: "Round 4", track: "Bahrain International Circuit", date: "10/29/26", status: "Scheduled" },
+    { id: 5, name: "Round 5", track: "Lusail International Circuit", date: "11/5/26", status: "Scheduled" },
+    { id: 6, name: "Round 6", track: "Autodromo Nazionale Monza", date: "11/12/26", status: "Scheduled" }
   ],
   qualifyingSettings: {
     "Hypercar": { consecutiveLaps: 5, maxAvgTime: 120 },
@@ -133,12 +133,12 @@ const s6SprintData = {
   manualPositions: {},
   exclusions: {},
   races: [
-    { id: 1, name: "Round 1", track: "Fuji Default (WEC)", date: "9/30/26", status: "Scheduled" },
+    { id: 1, name: "Round 1", track: "Fuji Speedway", date: "9/30/26", status: "Scheduled" },
     { id: 2, name: "Round 2", track: "Circuit de Barcelona", date: "10/7/26", status: "Scheduled" },
     { id: 3, name: "Round 3", track: "WeatherTech Raceway Laguna Seca", date: "10/14/26", status: "Scheduled" },
-    { id: 4, name: "Round 4", track: "Bahrain Default (WEC)*", date: "10/28/26", status: "Scheduled" },
-    { id: 5, name: "Round 5", track: "Qatar (WEC)", date: "11/4/26", status: "Scheduled" },
-    { id: 6, name: "Round 6", track: "Monza Default (WEC)", date: "11/11/26", status: "Scheduled" }
+    { id: 4, name: "Round 4", track: "Bahrain International Circuit", date: "10/28/26", status: "Scheduled" },
+    { id: 5, name: "Round 5", track: "Lusail International Circuit", date: "11/4/26", status: "Scheduled" },
+    { id: 6, name: "Round 6", track: "Autodromo Nazionale Monza", date: "11/11/26", status: "Scheduled" }
   ],
   qualifyingSettings: {
     "LMP3": { consecutiveLaps: 5, maxAvgTime: 120 },

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useChampionship } from '../context/ChampionshipContext';
 import { formatDriverName, formatTeamName } from '../utils/formatting';
@@ -20,12 +20,12 @@ const Standings = () => {
     const seasonTeams = (teams && teams.length > 0) ? teams : (championshipData?.teams || []);
     const showTeamChampionship = seasonConfig.ui?.showTeamChampionship === true || seasonTeams.length > 0;
 
-    // Effect: Validate Selected Class
-    useState(() => {
+    // Effect: Validate Selected Class when switching seasons
+    useEffect(() => {
         if (!classesToShow.includes(selectedClass) && selectedClass !== 'Teams') {
-            setSelectedClass(classesToShow[0]);
+            setSelectedClass(classesToShow[0] || 'LMGT3');
         }
-    }, [seasonConfig, selectedClass]);
+    }, [classesToShow, selectedClass]);
 
     // Calculate individual driver points honoring drop round and car switch penalties
     const calculateDriverPoints = (driver) => {

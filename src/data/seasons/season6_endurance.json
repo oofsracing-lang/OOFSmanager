@@ -52,7 +52,7 @@
     {
       "id": 1,
       "name": "Round 1",
-      "track": "Fuji Default (WEC)",
+      "track": "Fuji Speedway",
       "date": "10/1/26",
       "status": "Scheduled"
     },
@@ -73,21 +73,21 @@
     {
       "id": 4,
       "name": "Round 4",
-      "track": "Bahrain Default (WEC)*",
+      "track": "Bahrain International Circuit",
       "date": "10/29/26",
       "status": "Scheduled"
     },
     {
       "id": 5,
       "name": "Round 5",
-      "track": "Qatar (WEC)",
+      "track": "Lusail International Circuit",
       "date": "11/5/26",
       "status": "Scheduled"
     },
     {
       "id": 6,
       "name": "Round 6",
-      "track": "Monza Default (WEC)",
+      "track": "Autodromo Nazionale Monza",
       "date": "11/12/26",
       "status": "Scheduled"
     }

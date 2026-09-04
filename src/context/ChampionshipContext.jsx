@@ -54,19 +54,31 @@ export const ChampionshipProvider = ({ children }) => {
         setLoading(true);
         // Subscribe to input data (Races, Drivers List, etc - needed for Admin/Input)
         const unsubSeason = subscribeToSeason(currentSeasonId, (data, isLoading) => {
+            const defaultData = JSON.parse(JSON.stringify(seasons[currentSeasonId] || latestSeason));
+
             if (data) {
-                setSeasonData(data);
-                setPenalties(data.penalties || {});
-                setManualPositions(data.manualPositions || {});
-                setExclusions(data.exclusions || {});
-                setTeams(data.teams || []);
-                if (data.qualifyingSettings) {
-                    setQualifyingSettings(data.qualifyingSettings);
+                // Merge data over defaultData so partial Firestore docs don't lose races/config/drivers
+                const merged = {
+                    ...defaultData,
+                    ...data,
+                    config: {
+                        ...(defaultData.config || {}),
+                        ...(data.config || {})
+                    },
+                    races: (data.races && data.races.length > 0) ? data.races : (defaultData.races || []),
+                    drivers: (data.drivers !== undefined) ? data.drivers : (defaultData.drivers || [])
+                };
+                setSeasonData(merged);
+                setPenalties(merged.penalties || {});
+                setManualPositions(merged.manualPositions || {});
+                setExclusions(merged.exclusions || {});
+                setTeams(merged.teams || []);
+                if (merged.qualifyingSettings) {
+                    setQualifyingSettings(merged.qualifyingSettings);
                 }
             } else {
                 // Legacy: Do NOT load qualifyingSubmissions from seasonData anymore (ghost data)
                 // Fallback to local default
-                const defaultData = JSON.parse(JSON.stringify(seasons[currentSeasonId] || latestSeason));
                 setSeasonData(defaultData);
                 setPenalties(defaultData.penalties || {});
                 setManualPositions(defaultData.manualPositions || {});
