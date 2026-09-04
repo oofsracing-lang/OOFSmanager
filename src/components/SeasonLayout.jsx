@@ -1,16 +1,21 @@
 
 import { Outlet, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { ref, getDownloadURL } from 'firebase/storage';
+import { storage } from '../firebase';
 import { useChampionship } from '../context/ChampionshipContext';
 import Sidebar from './Sidebar';
 
 import multiclassBg from '../assets/multiclass_wec_bg.jpg';
 import sprintBg from '../assets/gt3_sprint_wec_bg.png';
 
+const bgCache = {};
+
 const SeasonLayout = () => {
     const { seasonId } = useParams();
     const { currentSeasonId, changeSeason } = useChampionship();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [customBg, setCustomBg] = useState(null);
 
     // Synchronization: Ensure Context matches URL
     useEffect(() => {
@@ -19,9 +24,65 @@ const SeasonLayout = () => {
         }
     }, [seasonId, currentSeasonId, changeSeason]);
 
-    // Determine Background
+    // Determine Background (Firebase Storage Assets/ with bundled fallback)
     const isSprint = seasonId?.includes('sprint');
-    const backgroundImage = isSprint ? sprintBg : multiclassBg;
+    const defaultBg = isSprint ? sprintBg : multiclassBg;
+
+    useEffect(() => {
+        const cacheKey = seasonId || (isSprint ? 'sprint' : 'endurance');
+        if (bgCache[cacheKey]) {
+            setCustomBg(bgCache[cacheKey]);
+            return;
+        }
+
+        const candidates = isSprint
+            ? [
+                `Assets/${seasonId}_bg.png`,
+                `Assets/${seasonId}_bg.jpg`,
+                'Assets/sprint_bg.png',
+                'Assets/sprint_bg.jpg',
+                'Assets/gt3_sprint_wec_bg.png',
+                'Assets/gt3_sprint_wec_bg.jpg',
+                'assets/sprint_bg.png',
+                'assets/sprint_bg.jpg'
+            ]
+            : [
+                `Assets/${seasonId}_bg.png`,
+                `Assets/${seasonId}_bg.jpg`,
+                'Assets/endurance_bg.png',
+                'Assets/endurance_bg.jpg',
+                'Assets/multiclass_bg.png',
+                'Assets/multiclass_bg.jpg',
+                'Assets/multiclass_wec_bg.jpg',
+                'Assets/multiclass_wec_bg.png',
+                'assets/endurance_bg.png',
+                'assets/endurance_bg.jpg',
+                'assets/multiclass_bg.png',
+                'assets/multiclass_bg.jpg'
+            ];
+
+        let active = true;
+        (async () => {
+            for (const path of candidates) {
+                try {
+                    const url = await getDownloadURL(ref(storage, path));
+                    if (url && active) {
+                        bgCache[cacheKey] = url;
+                        setCustomBg(url);
+                        return;
+                    }
+                } catch {
+                    // Try next path
+                }
+            }
+        })();
+
+        return () => {
+            active = false;
+        };
+    }, [seasonId, isSprint]);
+
+    const backgroundImage = customBg || defaultBg;
 
     const containerStyle = {
         display: 'flex',
