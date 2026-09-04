@@ -13,6 +13,7 @@ import Qualifying from './pages/Qualifying';
 import Stewarding from './pages/Stewarding';
 import Home from './pages/Home';
 import Archive from './pages/Archive';
+import About from './pages/About';
 import { ChampionshipProvider } from './context/ChampionshipContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -36,6 +37,9 @@ function App() {
               
               {/* Archive Page */}
               <Route path="/archive" element={<Archive />} />
+
+              {/* About Us Page */}
+              <Route path="/about" element={<About />} />
 
               {/* Login Page */}
               <Route path="/login" element={<Login />} />

@@ -212,6 +212,14 @@ const Home = () => {
                     View Archived Seasons
                 </button>
 
+                <button
+                    className="archive-btn"
+                    onClick={() => navigate('/about')}
+                    style={{ marginTop: '0.75rem' }}
+                >
+                    About Us
+                </button>
+
                 {/* OOFS Logo */}
                 <div style={{ marginTop: '4rem', opacity: 0.8 }}>
                     <img src={logo} alt="OOFS Racing Logo" style={{ width: '120px', height: 'auto' }} />

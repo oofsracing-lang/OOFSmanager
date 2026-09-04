@@ -845,3 +845,198 @@ div[style*="overflow-x"] {
   background-color: var(--bg-surface);
   color: var(--text-main);
 }
+
+/* ==========================================================================
+   About Page Styles
+   ========================================================================== */
+.about-content {
+  max-width: 960px !important;
+}
+
+.about-hero-card {
+  background: rgba(26, 19, 46, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 2.2rem 2.5rem;
+  margin: 1.5rem 0 2.5rem 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.about-hero-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--brand-green), #60a5fa, #a855f7);
+}
+
+.about-mission-quote {
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #f3f4f6;
+  line-height: 1.75;
+  font-weight: 400;
+  margin: 0;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+.about-card {
+  background: rgba(22, 17, 39, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 1.75rem 1.5rem;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  backdrop-filter: blur(8px);
+}
+
+.about-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.about-card-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.about-card-title {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 1.05rem;
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.about-card-text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.about-section-heading {
+  font-family: 'Classic Cobra Condensed', sans-serif;
+  font-size: 1.8rem;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.about-series-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+.about-series-card {
+  background: rgba(22, 17, 39, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.about-series-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+.about-series-card.endurance-accent {
+  border-top: 3px solid #7B1FA2;
+}
+
+.about-series-card.sprint-accent {
+  border-top: 3px solid #f5901d;
+}
+
+.about-series-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--brand-green);
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.75rem;
+}
+
+.about-series-title {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 1.35rem;
+  color: #ffffff;
+  font-weight: 800;
+  margin-bottom: 0.35rem;
+}
+
+.about-series-classes {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #60a5fa;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+}
+
+.about-series-desc {
+  font-size: 0.9rem;
+  color: #d1d5db;
+  line-height: 1.6;
+}
+
+.about-actions {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.about-discord-btn {
+  color: #818cf8 !important;
+  border-color: rgba(129, 140, 248, 0.4) !important;
+}
+
+.about-discord-btn:hover {
+  background: #5865F2 !important;
+  color: #ffffff !important;
+  border-color: #5865F2 !important;
+  box-shadow: 0 0 20px rgba(88, 101, 242, 0.5) !important;
+}
+
+@media (max-width: 768px) {
+  .about-hero-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .about-mission-quote {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .about-series-container {
+    grid-template-columns: 1fr;
+  }
+}
