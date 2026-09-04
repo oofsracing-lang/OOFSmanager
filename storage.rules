@@ -1,6 +1,14 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
+    // Allow public read on website promo video and public assets
+    match /assets/{allPaths=**} {
+      allow read: if true;
+    }
+    match /oofs_intro_2026.mp4 {
+      allow read: if true;
+    }
+
     match /{seasonId}/uploads/{allPaths=**} {
       allow write: if true;
       allow read: if request.auth != null;

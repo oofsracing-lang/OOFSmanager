@@ -1,9 +1,34 @@
 
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ref, getDownloadURL } from 'firebase/storage';
+import { storage } from '../firebase';
 import logo from '../assets/oofs_logo.png';
 
 const Home = () => {
     const navigate = useNavigate();
+    const [videoUrl, setVideoUrl] = useState(null);
+
+    useEffect(() => {
+        // Check for promo video in Firebase Storage (checks assets/ folder or root)
+        const loadPromoVideo = async () => {
+            const possiblePaths = ['assets/oofs_intro_2026.mp4', 'oofs_intro_2026.mp4'];
+            for (const path of possiblePaths) {
+                try {
+                    const videoRef = ref(storage, path);
+                    const url = await getDownloadURL(videoRef);
+                    if (url) {
+                        setVideoUrl(url);
+                        return;
+                    }
+                } catch {
+                    // Try next path if not found
+                }
+            }
+        };
+
+        loadPromoVideo();
+    }, []);
 
     const handleSeasonSelect = (seasonId) => {
         // Navigation drives the state now via SeasonLayout
@@ -13,7 +38,20 @@ const Home = () => {
     return (
         <div className="home-wrapper">
             {/* Fixed Background Layers */}
-            <div className="home-bg-layer" />
+            {videoUrl ? (
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    poster="/assets/home_bg_v11.png"
+                    className="home-bg-video"
+                >
+                    <source src={videoUrl} type="video/mp4" />
+                </video>
+            ) : (
+                <div className="home-bg-layer" />
+            )}
             <div className="home-overlay" />
 
             {/* Scrollable Content */}
