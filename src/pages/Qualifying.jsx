@@ -235,7 +235,7 @@ const Qualifying = () => {
                                 <li><strong>Track:</strong> Fuji Classic</li>
                                 <li><strong>Laps:</strong> 7 consecutive</li>
                                 <li><strong>Time:</strong> Average of 104% (1:39.00)</li>
-                                <li><strong>Only new LMP3 drivers need to complete this.</strong> Licenses carry over from the most recent season.</li>
+                                <li><strong>All LMP3 drivers need to complete this.</strong> Licenses carry over from the most recent season.</li>
                             </ul>
                         </div>
 
