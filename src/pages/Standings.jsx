@@ -66,18 +66,19 @@ const Standings = () => {
             .map((driver, index) => ({ ...driver, position: index + 1 }));
     };
 
-    // Calculate team standings by summing points of both drivers
+    // Calculate team standings by dropping the lowest team round
     const getTeamStandings = () => {
         if (!seasonTeams || seasonTeams.length === 0) return [];
 
         const driverMap = new Map();
         (championshipData.drivers || []).forEach(d => {
             if (d && d.name) {
-                const computed = calculateDriverPoints(d);
-                driverMap.set(String(d.id), computed);
-                driverMap.set(d.name.trim().toLowerCase(), computed);
+                driverMap.set(String(d.id), d);
+                driverMap.set(d.name.trim().toLowerCase(), d);
             }
         });
+
+        const roundsHeld = championshipData.currentRound || 0;
 
         return seasonTeams.map(team => {
             const d1 = (team.driver1Id && driverMap.get(String(team.driver1Id))) ||
@@ -86,12 +87,47 @@ const Standings = () => {
             const d2 = (team.driver2Id && driverMap.get(String(team.driver2Id))) ||
                 (team.driver2Name && driverMap.get(team.driver2Name.trim().toLowerCase())) || null;
 
-            const d1Points = d1 ? (d1.effectivePoints || 0) : 0;
-            const d2Points = d2 ? (d2.effectivePoints || 0) : 0;
-            const d1Dropped = d1 ? (d1.droppedPoints || 0) : 0;
-            const d2Dropped = d2 ? (d2.droppedPoints || 0) : 0;
-            const totalPoints = d1Points + d2Points;
-            const totalDropped = d1Dropped + d2Dropped;
+            const d1Results = d1?.raceResults || [];
+            const d2Results = d2?.raceResults || [];
+
+            // Build droppable pool of team round scores across all rounds held
+            const pool = [];
+            for (let rId = 1; rId <= roundsHeld; rId++) {
+                const res1 = d1Results.find(r => String(r.raceId) === String(rId));
+                const res2 = d2Results.find(r => String(r.raceId) === String(rId));
+
+                const isCarSwitchPenalized1 = res1 && res1.pointsBeforeSwitch !== undefined;
+                const isCarSwitchPenalized2 = res2 && res2.pointsBeforeSwitch !== undefined;
+
+                if (!isCarSwitchPenalized1 && !isCarSwitchPenalized2) {
+                    const d1Pts = res1 ? (Number(res1.points) || 0) : 0;
+                    const d2Pts = res2 ? (Number(res2.points) || 0) : 0;
+                    const teamRoundPts = d1Pts + d2Pts;
+                    pool.push({
+                        raceId: rId,
+                        teamPoints: teamRoundPts,
+                        d1Points: d1Pts,
+                        d2Points: d2Pts
+                    });
+                }
+            }
+
+            let worstRound = null;
+            if (pool.length > 0) {
+                worstRound = pool.reduce((min, r) => (r.teamPoints < min.teamPoints ? r : min), pool[0]);
+            }
+
+            const d1RawTotal = d1 ? (Number(d1.totalPoints) || 0) : 0;
+            const d2RawTotal = d2 ? (Number(d2.totalPoints) || 0) : 0;
+            const rawTotalPoints = d1RawTotal + d2RawTotal;
+
+            const d1Dropped = worstRound ? worstRound.d1Points : 0;
+            const d2Dropped = worstRound ? worstRound.d2Points : 0;
+            const totalDropped = worstRound ? worstRound.teamPoints : 0;
+
+            const effectivePoints = useDropRound ? (rawTotalPoints - totalDropped) : rawTotalPoints;
+            const d1Points = useDropRound ? (d1RawTotal - d1Dropped) : d1RawTotal;
+            const d2Points = useDropRound ? (d2RawTotal - d2Dropped) : d2RawTotal;
 
             return {
                 id: team.id,
@@ -107,7 +143,7 @@ const Standings = () => {
                 driver1Dropped: d1Dropped,
                 driver2Dropped: d2Dropped,
                 droppedPoints: totalDropped,
-                effectivePoints: totalPoints
+                effectivePoints: effectivePoints
             };
         })
         .sort((a, b) => b.effectivePoints - a.effectivePoints)
