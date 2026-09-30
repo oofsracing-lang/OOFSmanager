@@ -43,11 +43,805 @@
       "carSwitchResetsPoints": true,
       "carSwitchPenaltyType": "zero_best_finish"
     },
-    "driverRoster": []
+    "driverRoster": [
+      {
+        "name": "Greg Kachadurian",
+        "class": "Hypercar",
+        "number": "123",
+        "car": "Porsche 963",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Ethan Gonzales",
+        "class": "Hypercar",
+        "number": "985",
+        "car": "Alpine A424",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Willie Mangram",
+        "class": "Hypercar",
+        "number": "2",
+        "car": "Ferrari 499P",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Ryan Bellune",
+        "class": "Hypercar",
+        "number": "228",
+        "car": "Genesis GMR-001",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Dakota Botello",
+        "class": "Hypercar",
+        "number": "33",
+        "car": "Ferrari 499P",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Owen LaMarra",
+        "class": "Hypercar",
+        "number": "811",
+        "car": "Alpine A424",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Christopher MacLennan",
+        "class": "Hypercar",
+        "number": "114",
+        "car": "Peugeot 9X8 2024",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Daniel Valasco",
+        "class": "Hypercar",
+        "number": "477",
+        "car": "Porsche 963",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Owen Beerkircher",
+        "class": "Hypercar",
+        "number": "997",
+        "car": "Porsche 963",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Jeffrey Aroyan",
+        "class": "Hypercar",
+        "number": "233",
+        "car": "Porsche 963",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "C M Wilson",
+        "class": "Hypercar",
+        "number": "177",
+        "car": "Genesis GMR-001",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Michael Quandt",
+        "class": "Hypercar",
+        "number": "106",
+        "car": "BMW M Hybrid V8",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Abe Wozniak",
+        "class": "LMGT3",
+        "number": "25",
+        "car": "Aston Martin Vantage AMR GT3 Evo",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Dave Carter",
+        "class": "LMGT3",
+        "number": "390",
+        "car": "Ferrari 296 GT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Andrew Canelli",
+        "class": "LMGT3",
+        "number": "44",
+        "car": "BMW M4 LMGT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Richie Wood",
+        "class": "LMGT3",
+        "number": "101",
+        "car": "Aston Martin Vantage AMR GT3 Evo",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Jesse Olsen",
+        "class": "LMGT3",
+        "number": "16",
+        "car": "BMW M4 LMGT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Wesley Ambrose",
+        "class": "LMGT3",
+        "number": "332",
+        "car": "Ford Mustang GT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Parker thom",
+        "class": "LMGT3",
+        "number": "69",
+        "car": "Porsche 911 GT3 R",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Brian Crane",
+        "class": "LMGT3",
+        "number": "223",
+        "car": "Aston Martin Vantage AMR GT3 Evo",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Mike Dougherty",
+        "class": "LMGT3",
+        "number": "26",
+        "car": "Ferrari 296 GT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Joe Marsiglia",
+        "class": "LMGT3",
+        "number": "517",
+        "car": "Ferrari 296 GT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Dustin Rand",
+        "class": "LMGT3",
+        "number": "5",
+        "car": "Ford Mustang GT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Ryan Dangler",
+        "class": "LMGT3",
+        "number": "11",
+        "car": "Lamborghini Huracan GT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Dick Garcia",
+        "class": "LMGT3",
+        "number": "57",
+        "car": "Aston Martin Vantage AMR GT3 Evo",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Daniel DuChaine",
+        "class": "LMGT3",
+        "number": "173",
+        "car": "Ford Mustang GT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Ron Heslop",
+        "class": "LMGT3",
+        "number": "22",
+        "car": "McLaren 720S GT3 Evo",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Harrison Miller",
+        "class": "LMGT3",
+        "number": "17",
+        "car": "Ford Mustang GT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Ily Bordiyan",
+        "class": "LMGT3",
+        "number": "3",
+        "car": "Porsche 911 GT3 R",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Keith Drury",
+        "class": "LMGT3",
+        "number": "86",
+        "car": "Ferrari 296 GT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Holden Gawehn",
+        "class": "LMGT3",
+        "number": "420",
+        "car": "BMW M4 LMGT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Alex Laplante",
+        "class": "LMGT3",
+        "number": "260",
+        "car": "Porsche 911 GT3 R",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Grayson Head",
+        "class": "LMGT3",
+        "number": "34",
+        "car": "Porsche 911 GT3 R",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Justin Jackson",
+        "class": "LMGT3",
+        "number": "13",
+        "car": "Porsche 911 GT3 R",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Guillermo Paret",
+        "class": "LMGT3",
+        "number": "52",
+        "car": "Lexus RC F GT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Josh Popov",
+        "class": "LMGT3",
+        "number": "6",
+        "car": "Porsche 911 GT3 R",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Donnie Greathouse",
+        "class": "LMGT3",
+        "number": "666",
+        "car": "BMW M4 LMGT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Dan Jr Poulin",
+        "class": "LMGT3",
+        "number": "418",
+        "car": "Lexus RC F GT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Scarlett Brown",
+        "class": "LMGT3",
+        "number": "42",
+        "car": "Porsche 911 GT3 R",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Christian Holmes",
+        "class": "LMGT3",
+        "number": "202",
+        "car": "Lexus RC F GT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "John Calbick",
+        "class": "LMGT3",
+        "number": "9",
+        "car": "Chevrolet Corvette Z06 GT3.R",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "bt bt",
+        "class": "LMGT3",
+        "number": "43",
+        "car": "Porsche 911 GT3 R",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Brian Harris",
+        "class": "LMGT3",
+        "number": "74",
+        "car": "Ferrari 296 GT3",
+        "reserve": false,
+        "team": ""
+      },
+      {
+        "name": "Nick Johnson",
+        "class": "LMGT3",
+        "number": "696",
+        "car": "Porsche 911 GT3 R",
+        "reserve": false,
+        "team": ""
+      }
+    ]
   },
   "currentRound": 0,
   "totalRounds": 6,
-  "drivers": [],
+  "drivers": [
+    {
+      "id": 1,
+      "name": "Greg Kachadurian",
+      "class": "Hypercar",
+      "team": "",
+      "car": "Porsche 963",
+      "number": "123",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 2,
+      "name": "Ethan Gonzales",
+      "class": "Hypercar",
+      "team": "",
+      "car": "Alpine A424",
+      "number": "985",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 3,
+      "name": "Willie Mangram",
+      "class": "Hypercar",
+      "team": "",
+      "car": "Ferrari 499P",
+      "number": "2",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 4,
+      "name": "Ryan Bellune",
+      "class": "Hypercar",
+      "team": "",
+      "car": "Genesis GMR-001",
+      "number": "228",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 5,
+      "name": "Dakota Botello",
+      "class": "Hypercar",
+      "team": "",
+      "car": "Ferrari 499P",
+      "number": "33",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 6,
+      "name": "Owen LaMarra",
+      "class": "Hypercar",
+      "team": "",
+      "car": "Alpine A424",
+      "number": "811",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 7,
+      "name": "Christopher MacLennan",
+      "class": "Hypercar",
+      "team": "",
+      "car": "Peugeot 9X8 2024",
+      "number": "114",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 8,
+      "name": "Daniel Valasco",
+      "class": "Hypercar",
+      "team": "",
+      "car": "Porsche 963",
+      "number": "477",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 9,
+      "name": "Owen Beerkircher",
+      "class": "Hypercar",
+      "team": "",
+      "car": "Porsche 963",
+      "number": "997",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 10,
+      "name": "Jeffrey Aroyan",
+      "class": "Hypercar",
+      "team": "",
+      "car": "Porsche 963",
+      "number": "233",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 11,
+      "name": "C M Wilson",
+      "class": "Hypercar",
+      "team": "",
+      "car": "Genesis GMR-001",
+      "number": "177",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 12,
+      "name": "Michael Quandt",
+      "class": "Hypercar",
+      "team": "",
+      "car": "BMW M Hybrid V8",
+      "number": "106",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 13,
+      "name": "Abe Wozniak",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Aston Martin Vantage AMR GT3 Evo",
+      "number": "25",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 14,
+      "name": "Dave Carter",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Ferrari 296 GT3",
+      "number": "390",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 15,
+      "name": "Andrew Canelli",
+      "class": "LMGT3",
+      "team": "",
+      "car": "BMW M4 LMGT3",
+      "number": "44",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 16,
+      "name": "Richie Wood",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Aston Martin Vantage AMR GT3 Evo",
+      "number": "101",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 17,
+      "name": "Jesse Olsen",
+      "class": "LMGT3",
+      "team": "",
+      "car": "BMW M4 LMGT3",
+      "number": "16",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 18,
+      "name": "Wesley Ambrose",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Ford Mustang GT3",
+      "number": "332",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 19,
+      "name": "Parker thom",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Porsche 911 GT3 R",
+      "number": "69",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 20,
+      "name": "Brian Crane",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Aston Martin Vantage AMR GT3 Evo",
+      "number": "223",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 21,
+      "name": "Mike Dougherty",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Ferrari 296 GT3",
+      "number": "26",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 22,
+      "name": "Joe Marsiglia",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Ferrari 296 GT3",
+      "number": "517",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 23,
+      "name": "Dustin Rand",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Ford Mustang GT3",
+      "number": "5",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 24,
+      "name": "Ryan Dangler",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Lamborghini Huracan GT3",
+      "number": "11",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 25,
+      "name": "Dick Garcia",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Aston Martin Vantage AMR GT3 Evo",
+      "number": "57",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 26,
+      "name": "Daniel DuChaine",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Ford Mustang GT3",
+      "number": "173",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 27,
+      "name": "Ron Heslop",
+      "class": "LMGT3",
+      "team": "",
+      "car": "McLaren 720S GT3 Evo",
+      "number": "22",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 28,
+      "name": "Harrison Miller",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Ford Mustang GT3",
+      "number": "17",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 29,
+      "name": "Ily Bordiyan",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Porsche 911 GT3 R",
+      "number": "3",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 30,
+      "name": "Keith Drury",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Ferrari 296 GT3",
+      "number": "86",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 31,
+      "name": "Holden Gawehn",
+      "class": "LMGT3",
+      "team": "",
+      "car": "BMW M4 LMGT3",
+      "number": "420",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 32,
+      "name": "Alex Laplante",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Porsche 911 GT3 R",
+      "number": "260",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 33,
+      "name": "Grayson Head",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Porsche 911 GT3 R",
+      "number": "34",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 34,
+      "name": "Justin Jackson",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Porsche 911 GT3 R",
+      "number": "13",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 35,
+      "name": "Guillermo Paret",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Lexus RC F GT3",
+      "number": "52",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 36,
+      "name": "Josh Popov",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Porsche 911 GT3 R",
+      "number": "6",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 37,
+      "name": "Donnie Greathouse",
+      "class": "LMGT3",
+      "team": "",
+      "car": "BMW M4 LMGT3",
+      "number": "666",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 38,
+      "name": "Dan Jr Poulin",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Lexus RC F GT3",
+      "number": "418",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 39,
+      "name": "Scarlett Brown",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Porsche 911 GT3 R",
+      "number": "42",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 40,
+      "name": "Christian Holmes",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Lexus RC F GT3",
+      "number": "202",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 41,
+      "name": "John Calbick",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Chevrolet Corvette Z06 GT3.R",
+      "number": "9",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 42,
+      "name": "bt bt",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Porsche 911 GT3 R",
+      "number": "43",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 43,
+      "name": "Brian Harris",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Ferrari 296 GT3",
+      "number": "74",
+      "totalPoints": 0,
+      "raceResults": []
+    },
+    {
+      "id": 44,
+      "name": "Nick Johnson",
+      "class": "LMGT3",
+      "team": "",
+      "car": "Porsche 911 GT3 R",
+      "number": "696",
+      "totalPoints": 0,
+      "raceResults": []
+    }
+  ],
   "races": [
     {
       "id": 1,
