@@ -109,9 +109,14 @@ const TeamsTab = () => {
             return;
         }
 
+        const found1 = availableDrivers.find(d => String(d.id) === String(driver1Id));
+        const found2 = availableDrivers.find(d => String(d.id) === String(driver2Id));
+        const teamClass = found1?.class || found2?.class || '';
+
         const newTeam = {
             id: `team_${Date.now()}`,
             name: trimmedName,
+            class: teamClass,
             driver1Id: String(d1Id),
             driver1Name: d1Name,
             driver2Id: String(d2Id),
@@ -368,13 +373,16 @@ const TeamsTab = () => {
                                 <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--primary)', color: 'var(--text-main)' }}>
                                     <th style={{ padding: '0.85rem 1rem' }}>#</th>
                                     <th style={{ padding: '0.85rem 1rem' }}>Team Name</th>
+                                    <th style={{ padding: '0.85rem 1rem' }}>Class</th>
                                     <th style={{ padding: '0.85rem 1rem' }}>Driver 1</th>
                                     <th style={{ padding: '0.85rem 1rem' }}>Driver 2</th>
                                     <th style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredTeams.map((team, index) => (
+                                {filteredTeams.map((team, index) => {
+                                    const teamClass = team.class || availableDrivers.find(d => d.name === team.driver1Name)?.class || availableDrivers.find(d => d.name === team.driver2Name)?.class || '';
+                                    return (
                                     <tr
                                         key={team.id || index}
                                         style={{
@@ -387,6 +395,23 @@ const TeamsTab = () => {
                                         </td>
                                         <td style={{ padding: '0.85rem 1rem', fontWeight: 'bold', color: 'white' }}>
                                             {team.name}
+                                        </td>
+                                        <td style={{ padding: '0.85rem 1rem' }}>
+                                            {teamClass ? (
+                                                <span style={{
+                                                    fontSize: '0.8rem',
+                                                    padding: '0.2rem 0.5rem',
+                                                    borderRadius: '4px',
+                                                    background: 'rgba(255, 255, 255, 0.08)',
+                                                    border: '1px solid var(--border-color)',
+                                                    color: 'var(--primary-color)',
+                                                    fontWeight: '600'
+                                                }}>
+                                                    {teamClass}
+                                                </span>
+                                            ) : (
+                                                <span style={{ color: 'var(--text-muted)' }}>-</span>
+                                            )}
                                         </td>
                                         <td style={{ padding: '0.85rem 1rem' }}>
                                             {formatDriverName(team.driver1Name)}
@@ -411,7 +436,8 @@ const TeamsTab = () => {
                                             </button>
                                         </td>
                                     </tr>
-                                ))}
+                                    );
+                                })}
                             </tbody>
                         </table>
                     </div>

@@ -10,6 +10,7 @@ const Standings = () => {
         : (seasonConfig.classes || ['LMP2', 'LMGT3']);
 
     const [selectedClass, setSelectedClass] = useState(classesToShow[0] || 'LMGT3');
+    const [selectedTeamClass, setSelectedTeamClass] = useState(classesToShow[0] || 'LMGT3');
     const [useDropRound, setUseDropRound] = useState(false);
 
     const showBallast = seasonConfig.rules?.ballastType !== 'none';
@@ -20,12 +21,15 @@ const Standings = () => {
     const seasonTeams = (teams && teams.length > 0) ? teams : (championshipData?.teams || []);
     const showTeamChampionship = seasonConfig.ui?.showTeamChampionship === true || seasonTeams.length > 0;
 
-    // Effect: Validate Selected Class when switching seasons
+    // Effect: Validate Selected Class and Selected Team Class when switching seasons
     useEffect(() => {
         if (!classesToShow.includes(selectedClass) && selectedClass !== 'Teams') {
             setSelectedClass(classesToShow[0] || 'LMGT3');
         }
-    }, [classesToShow, selectedClass]);
+        if (!classesToShow.includes(selectedTeamClass)) {
+            setSelectedTeamClass(classesToShow[0] || 'LMGT3');
+        }
+    }, [classesToShow, selectedClass, selectedTeamClass]);
 
     // Calculate individual driver points honoring drop round and car switch penalties
     const calculateDriverPoints = (driver) => {
@@ -66,8 +70,8 @@ const Standings = () => {
             .map((driver, index) => ({ ...driver, position: index + 1 }));
     };
 
-    // Calculate team standings by dropping the lowest team round
-    const getTeamStandings = () => {
+    // Calculate team standings by dropping the lowest team round, filtered by class
+    const getTeamStandings = (targetClass) => {
         if (!seasonTeams || seasonTeams.length === 0) return [];
 
         const driverMap = new Map();
@@ -80,7 +84,7 @@ const Standings = () => {
 
         const roundsHeld = championshipData.currentRound || 0;
 
-        return seasonTeams.map(team => {
+        const allProcessed = seasonTeams.map(team => {
             const d1 = (team.driver1Id && driverMap.get(String(team.driver1Id))) ||
                 (team.driver1Name && driverMap.get(team.driver1Name.trim().toLowerCase())) || null;
 
@@ -89,6 +93,10 @@ const Standings = () => {
 
             const d1Results = d1?.raceResults || [];
             const d2Results = d2?.raceResults || [];
+
+            const d1Class = d1?.class || '';
+            const d2Class = d2?.class || '';
+            const teamClass = team.class || d1Class || d2Class || '';
 
             // Build droppable pool of team round scores across all rounds held
             const pool = [];
@@ -132,10 +140,11 @@ const Standings = () => {
             return {
                 id: team.id,
                 name: team.name,
+                class: teamClass,
                 driver1Name: team.driver1Name || d1?.name || 'Driver 1',
                 driver2Name: team.driver2Name || d2?.name || 'Driver 2',
-                driver1Class: d1?.class || '',
-                driver2Class: d2?.class || '',
+                driver1Class: d1Class,
+                driver2Class: d2Class,
                 driver1Id: d1?.id,
                 driver2Id: d2?.id,
                 driver1Points: d1Points,
@@ -145,13 +154,19 @@ const Standings = () => {
                 droppedPoints: totalDropped,
                 effectivePoints: effectivePoints
             };
-        })
-        .sort((a, b) => b.effectivePoints - a.effectivePoints)
-        .map((team, index) => ({ ...team, position: index + 1 }));
+        });
+
+        const filtered = targetClass
+            ? allProcessed.filter(t => (t.class || '').toLowerCase() === targetClass.toLowerCase())
+            : allProcessed;
+
+        return filtered
+            .sort((a, b) => b.effectivePoints - a.effectivePoints)
+            .map((team, index) => ({ ...team, position: index + 1 }));
     };
 
     const standings = selectedClass !== 'Teams' ? getClassStandings(selectedClass) : [];
-    const teamStandings = selectedClass === 'Teams' ? getTeamStandings() : [];
+    const teamStandings = selectedClass === 'Teams' ? getTeamStandings(selectedTeamClass) : [];
 
     return (
         <div>
@@ -202,12 +217,46 @@ const Standings = () => {
 
                 {/* Standings Table */}
                 {selectedClass === 'Teams' ? (
-                    <div style={{ overflowX: 'auto' }}>
-                        {teamStandings.length === 0 ? (
-                            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
-                                No teams registered yet for this series. Teams can be created in the Admin panel.
+                    <div>
+                        {/* Team Class Sub-Tabs */}
+                        {classesToShow.length > 1 && (
+                            <div style={{
+                                display: 'flex',
+                                gap: '0.75rem',
+                                marginBottom: '1.5rem',
+                                alignItems: 'center',
+                                padding: '0.75rem 1rem',
+                                background: 'rgba(255, 255, 255, 0.03)',
+                                borderRadius: 'var(--radius-sm)',
+                                border: '1px solid var(--border-color)',
+                                flexWrap: 'wrap'
+                            }}>
+                                <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 'bold' }}>
+                                    Team Class:
+                                </span>
+                                {classesToShow.map(cls => (
+                                    <button
+                                        key={cls}
+                                        className={selectedTeamClass === cls ? 'btn btn-primary' : 'btn btn-ghost'}
+                                        onClick={() => setSelectedTeamClass(cls)}
+                                        style={{
+                                            padding: '0.35rem 0.9rem',
+                                            fontSize: '0.85rem',
+                                            fontWeight: selectedTeamClass === cls ? 'bold' : 'normal'
+                                        }}
+                                    >
+                                        {cls} Teams
+                                    </button>
+                                ))}
                             </div>
-                        ) : (
+                        )}
+
+                        <div style={{ overflowX: 'auto' }}>
+                            {teamStandings.length === 0 ? (
+                                <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+                                    No {selectedTeamClass} teams registered yet for this series. Teams can be created in the Admin panel.
+                                </div>
+                            ) : (
                             <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '700px' }}>
                                 <thead>
                                     <tr style={{
@@ -310,6 +359,7 @@ const Standings = () => {
                             </table>
                         )}
                     </div>
+                </div>
                 ) : (
                     <div style={{ overflowX: 'auto' }}>
                         <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
