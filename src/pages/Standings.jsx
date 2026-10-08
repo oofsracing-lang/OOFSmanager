@@ -1,16 +1,29 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useChampionship } from '../context/ChampionshipContext';
 import { formatDriverName, formatTeamName } from '../utils/formatting';
 
 const Standings = () => {
     const { championshipData, seasonConfig, licensePoints, teams } = useChampionship();
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const paramTab = searchParams.get('tab') || location.state?.tab;
+    const paramClass = searchParams.get('class') || location.state?.class;
+    const paramTeamClass = searchParams.get('teamClass') || location.state?.teamClass || (paramTab === 'Teams' ? paramClass : null);
+
     const classesToShow = (seasonConfig.id === '2' || championshipData.season === 'Season 2')
         ? ['LMP2-UR', 'LMGT3']
         : (seasonConfig.classes || ['LMP2', 'LMGT3']);
 
-    const [selectedClass, setSelectedClass] = useState(classesToShow[0] || 'LMGT3');
-    const [selectedTeamClass, setSelectedTeamClass] = useState(classesToShow[0] || 'LMGT3');
+    const [selectedClass, setSelectedClass] = useState(() => {
+        if (paramTab === 'Teams') return 'Teams';
+        if (paramClass && classesToShow.includes(paramClass)) return paramClass;
+        return classesToShow[0] || 'LMGT3';
+    });
+    const [selectedTeamClass, setSelectedTeamClass] = useState(() => {
+        if (paramTeamClass && classesToShow.includes(paramTeamClass)) return paramTeamClass;
+        return classesToShow[0] || 'LMGT3';
+    });
     const [useDropRound, setUseDropRound] = useState(false);
 
     const showBallast = seasonConfig.rules?.ballastType !== 'none';
@@ -20,6 +33,18 @@ const Standings = () => {
 
     const seasonTeams = (teams && teams.length > 0) ? teams : (championshipData?.teams || []);
     const showTeamChampionship = seasonConfig.ui?.showTeamChampionship === true || seasonTeams.length > 0;
+
+    // Effect: Handle navigation with tab/class query params or state
+    useEffect(() => {
+        if (paramTab === 'Teams') {
+            setSelectedClass('Teams');
+        } else if (paramClass && classesToShow.includes(paramClass)) {
+            setSelectedClass(paramClass);
+        }
+        if (paramTeamClass && classesToShow.includes(paramTeamClass)) {
+            setSelectedTeamClass(paramTeamClass);
+        }
+    }, [location.search, location.state]);
 
     // Effect: Validate Selected Class and Selected Team Class when switching seasons
     useEffect(() => {
